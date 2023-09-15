@@ -1,7 +1,11 @@
 {
   "token": {
-    "colorPrimary": "#0074FF",
-    "colorSuccess": "#31c048",
+    "colorBgBase": "tomato",
+    "colorBgLayout": "#F8F8F8",
+    "colorBgContainer": "green",
+    "colorBgElevated": "blue",
+    "colorPrimary": "#304FFD",
+    "colorSuccess": "#148D09",
     "colorWarning": "#f5ba20",
     "fontSize": 14,
     "fontSizeHeading1": 30,

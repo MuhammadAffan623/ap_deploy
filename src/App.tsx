@@ -1,11 +1,9 @@
-import Hello from '~/components/Hello/Hello'
-import Button from '~/components/Button/Button'
+import MainLayout from './layout/MainLayout'
 
 const App = () => {
   return (
     <div className='app'>
-      <Hello />
-      <Button type='primary'>Click me</Button>
+      <MainLayout />
     </div>
   )
 }

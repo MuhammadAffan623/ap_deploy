@@ -1,0 +1,65 @@
+.header {
+  background-color: white;
+  padding: 0px $margin;
+  // height: unset;
+  line-height: calc($margin * 1.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .row {
+    // margin-top: 25px;
+    width: 100%;
+    // column-gap: $margin;
+    // flex-wrap: nowrap;
+
+    .toggleMenuBtn {
+      margin-right: 20px;
+      height: 48px;
+      border-color: transparent;
+    }
+
+    .searchField {
+      padding-left: 12px;
+      padding-right: 12px;
+
+      &.sm {
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+
+      &:focus,
+      &:focus-within {
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+    }
+
+    .userDetailsWrapper {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: $margin;
+
+      .userContainer {
+        display: flex;
+        align-items: center;
+        gap: math.div($margin, 2);
+      }
+
+      .settings {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .toggleSettingsBtn {
+          display: flex;
+          align-items: center;
+          padding: 0px calc($padding * 0.75);
+          height: 48px;
+        }
+      }
+    }
+  }
+}

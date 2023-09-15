@@ -1,0 +1,15 @@
+.ant-badge{
+  height: auto;
+  line-height: 1 !important;
+  
+  .ant-avatar {
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+  .ant-badge-dot{
+    top: 100%;
+    right: 3px;
+    border: 1px solid #222;
+  }
+}
