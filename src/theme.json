@@ -1,0 +1,29 @@
+{
+  "token": {
+    "colorPrimary": "#0074FF",
+    "colorSuccess": "#31c048",
+    "colorWarning": "#f5ba20",
+    "fontSize": 14,
+    "fontSizeHeading1": 30,
+    "fontSizeHeading2": 26,
+    "fontSizeHeading3": 24,
+    "fontSizeHeading4": 20,
+    "borderRadius": 10,
+    "borderRadiusXS": 8,
+    "borderRadiusLG": 16,
+    "borderRadiusSM": 12,
+    "borderRadiusOuter": 5,
+    "boxShadow": "0px -3px 10px rgba(0, 0, 0, 0.25)",
+    "colorBgMask": "rgba(19, 19, 19, 0.4)",
+    "colorTextBase": "#001D3F",
+    "colorTextHeading": "#000000",
+    "colorText": "#001D3F",
+    "colorTextSecondary": "#171832",
+    "colorTextTertiary": "#8492A6",
+    "colorTextQuaternary": "#001D3F",
+    "colorBorder": "#F4F4F4",
+    "fontFamily": "Geometria",
+    "padding": 12,
+    "controlHeightLG": 45
+  }
+}
