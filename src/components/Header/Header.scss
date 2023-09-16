@@ -1,7 +1,6 @@
-.header {
+.userHeader {
   background-color: white;
   padding: 0px $margin;
-  // height: unset;
   line-height: calc($margin * 1.5);
   display: flex;
   justify-content: center;
@@ -9,10 +8,7 @@
   width: 100%;
 
   .row {
-    // margin-top: 25px;
     width: 100%;
-    // column-gap: $margin;
-    // flex-wrap: nowrap;
 
     .toggleMenuBtn {
       margin-right: 20px;

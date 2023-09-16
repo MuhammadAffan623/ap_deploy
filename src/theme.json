@@ -2,8 +2,8 @@
   "token": {
     "colorBgBase": "tomato",
     "colorBgLayout": "#F8F8F8",
-    "colorBgContainer": "green",
-    "colorBgElevated": "blue",
+    "colorBgContainer": "white",
+    "colorBgElevated": "lightgrey",
     "colorPrimary": "#304FFD",
     "colorSuccess": "#148D09",
     "colorWarning": "#f5ba20",

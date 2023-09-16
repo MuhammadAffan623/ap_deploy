@@ -1,10 +1,18 @@
-import MainLayout from './layout/MainLayout'
+import { ConfigProvider } from 'antd'
+import theme from './theme.json'
+import UserContainer from './context/UserContext'
+import { BrowserRouter as Router } from 'react-router-dom'
+import Routes from './routes'
 
 const App = () => {
   return (
-    <div className='app'>
-      <MainLayout />
-    </div>
+    <ConfigProvider theme={theme}>
+      <Router>
+        <UserContainer>
+          <Routes />
+        </UserContainer>
+      </Router>
+    </ConfigProvider>
   )
 }
 

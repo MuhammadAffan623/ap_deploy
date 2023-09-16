@@ -1,0 +1,31 @@
+.formItem {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  .ant-input-affix-wrapper {
+    input {
+      background-color: transparent !important;
+    }
+  }
+
+  .ant-form-item-label {
+    label {
+      font-weight: 600;
+    }
+
+    .ant-form-item-required {
+      &::before {
+        content: '' !important;
+      }
+
+      &::after {
+        display: inline-block !important;
+        margin-left: 4px;
+        color: $error-color;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: '*' !important;
+      }
+    }
+  }
+}
