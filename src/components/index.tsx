@@ -7,5 +7,17 @@ import TextArea from './Inputs/TextArea/TextArea'
 import RadioField from './Inputs/RadioField/RadioField'
 import SearchField from './Inputs/SearchField/SearchField'
 import SelectField from './Inputs/SelectField/SelectField'
+import ImagesBox from './Image/Images'
 
-export { Avatar, Button, Sider, Header, TextField, TextArea, RadioField, SearchField, SelectField }
+export {
+  Avatar,
+  Button,
+  Sider,
+  Header,
+  TextField,
+  TextArea,
+  RadioField,
+  SearchField,
+  SelectField,
+  ImagesBox
+}

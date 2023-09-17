@@ -1,0 +1,203 @@
+.menu-item-heading {
+  margin: 16px;
+}
+
+.ant-layout-sider,
+.ant-drawer {
+  .sidebarContentWrapper {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($color: $text-over-primary, $alpha: 0.2);
+    }
+
+    border-right: 0.5px solid $text-over-primary;
+    background-blend-mode: color;
+    .logo {
+      padding: 20px 10px 0px 10px;
+      text-decoration: none;
+
+      .logoImage {
+        width: 60%;
+      }
+
+      .logoText {
+        display: block;
+        margin-top: $margin;
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .logoutSidebarMenuWrapper {
+      padding-bottom: 5px;
+      padding-top: 5px;
+      position: relative;
+      bottom: 0px;
+      width: 100%;
+    }
+
+    .sidebarMenu {
+      margin-top: calc($margin * 0.75);
+      background: unset !important;
+      background-color: unset !important;
+      border-color: transparent;
+
+      &.dmsMenu {
+        margin-bottom: calc($margin * 0.75);
+      }
+
+      &:first-of-type {
+        margin-top: 0px;
+      }
+
+      .menuHeading {
+        .ant-badge {
+          margin-right: 10px;
+        }
+      }
+
+      .menuItem {
+        // display: flex;
+        // align-items: center;
+        // height: 40px !important;
+        line-height: 40px !important;
+
+        .channelMenuItemTitle {
+          line-height: 1rem;
+          .text {
+            display: inline-block;
+            width: 85%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        &:not(.ant-menu-item-selected):hover {
+          background-color: rgba($color: $white, $alpha: 0.15) !important;
+        }
+
+        .anticon {
+          min-width: calc($margin * 1.5) !important;
+        }
+
+        .ant-image {
+          margin-right: $margin !important;
+        }
+        .ant-badge {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .skeletonWrapper {
+      padding-left: 28px;
+      margin-top: 8px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      width: 100%;
+    }
+  }
+  &.ant-layout-sider-collapsed {
+    .sidebarContentWrapper {
+      .logo {
+        .logoImage {
+          width: 90%;
+        }
+      }
+
+      .sidebarMenu {
+        background: unset !important;
+        background-color: unset !important;
+
+        .menuItem {
+          display: flex;
+          align-items: center;
+          height: 40px !important;
+          line-height: 40px !important;
+
+          .avatarItem {
+            padding-inline-start: calc(50% - 18px) !important;
+          }
+
+          .ant-badge {
+            margin-right: calc($margin * 2) !important;
+          }
+        }
+
+        .menuHeading {
+          .ant-menu-submenu-title {
+            display: flex;
+            align-items: center;
+            height: 40px !important;
+            line-height: 40px !important;
+            padding-inline-start: calc(50% - 18px) !important;
+
+            .ant-badge {
+              margin-right: calc($margin * 2) !important;
+            }
+          }
+        }
+
+        .avatarItem {
+          padding-inline-start: calc(50% - 18px);
+
+          .ant-badge {
+            margin-right: calc($margin * 2) !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ant-menu-submenu {
+  .ant-menu.ant-menu-sub,
+  .ant-menu-vertical {
+    .menuItem {
+      display: flex !important;
+      align-items: center;
+      height: 40px !important;
+      line-height: 40px !important;
+
+      .channelGroupMenuItem {
+        line-height: 1rem;
+        display: flex;
+        align-items: center;
+        .channelGroupName {
+          display: inline-block;
+          width: 80%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .addChannelToChannelGroupBtn {
+          padding: 0;
+          height: auto;
+        }
+      }
+
+      &:not(.ant-menu-item-selected):hover {
+        background-color: rgba($color: $white, $alpha: 0.4) !important;
+      }
+
+      .anticon {
+        min-width: calc($margin * 1.5) !important;
+      }
+
+      .ant-image {
+        margin-right: $margin !important;
+      }
+      .ant-badge {
+        margin-right: 10px;
+      }
+    }
+  }
+}

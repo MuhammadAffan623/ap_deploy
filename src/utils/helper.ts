@@ -1,5 +1,7 @@
+import { MenuProps } from 'antd'
 import { DefaultOptionType } from 'antd/es/select'
 import moment from 'moment'
+import { CSSProperties, Key } from 'react'
 
 export const monthOptions: DefaultOptionType[] = [
   { label: 'Select Month', value: '' },
@@ -33,6 +35,30 @@ export const phoneRegex = /^\+\d{1,3} \d{3} \d{7}$/
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~\-=?]).*$/
 
 export const imageMimeTypeRegex = /(^image)(\/)[a-zA-Z0-9_]*/gm
+
+export type MenuItem = Required<MenuProps>['items'][number]
+
+export const getMenuItem = (
+  label: ReactNode,
+  key: Key,
+  icon?: ReactNode,
+  children?: MenuItem[] | null,
+  className?: string,
+  style?: CSSProperties,
+  onClick?: () => void,
+  type?: 'group'
+): MenuItem => {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+    style,
+    className,
+    onClick
+  } as MenuItem
+}
 
 export const getToken = () => {
   return localStorage.getItem('jwt_access_token')

@@ -1,13 +1,16 @@
 import { Navigate, useRoutes } from 'react-router-dom'
 import MainLayout from '~/layout/MainLayout'
-import { Dashboard, NotFound } from '~/pages'
+import { Dashboard, NotFound, Settings } from '~/pages'
 
 const Routes = () => {
   const element = useRoutes([
     {
       path: '/',
       element: <MainLayout />,
-      children: [{ path: '', element: <Dashboard /> }]
+      children: [
+        { path: 'dashboard', element: <Dashboard /> },
+        { path: 'settings', element: <Settings /> }
+      ]
     },
     { path: '404', element: <NotFound /> },
     {

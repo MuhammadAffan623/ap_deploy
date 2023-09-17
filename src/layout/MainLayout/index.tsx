@@ -1,5 +1,6 @@
 import { Layout } from 'antd'
 import { useState } from 'react'
+import './styles.scss'
 
 import { Outlet } from 'react-router-dom'
 import { Header, Sider } from '~/components'
