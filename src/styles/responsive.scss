@@ -1,0 +1,35 @@
+$xs: 480px;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1600px;
+
+@mixin responsive($width) {
+  @if $width == xs {
+    @media only screen and (max-width: $xs) {
+      @content;
+    }
+  }
+  @if $width == sm {
+    @media only screen and (max-width: $sm) {
+      @content;
+    }
+  } @else if $width == md {
+    @media only screen and (max-width: $md) {
+      @content;
+    }
+  } @else if $width == lg {
+    @media only screen and (max-width: $lg) {
+      @content;
+    }
+  } @else if $width == xl {
+    @media only screen and (max-width: $xl) {
+      @content;
+    }
+  } @else if $width == xxl {
+    @media only screen and (max-width: $xxl) {
+      @content;
+    }
+  }
+}

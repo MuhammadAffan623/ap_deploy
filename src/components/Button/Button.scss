@@ -1,0 +1,16 @@
+.ant-btn-primary {
+  box-shadow: none !important;
+}
+
+:where(:not(.ant-btn-dangerous)).ant-btn-primary {
+  background-color: $white;
+  color: $text-over-primary;
+}
+
+:where(:not(.ant-btn-dangerous)).ant-btn-primary:disabled:hover {
+  color: rgba($white, 0.7) !important;
+}
+
+:where(:not(.ant-btn-dangerous)).ant-btn-primary:hover {
+  color: $text-over-primary !important;
+}

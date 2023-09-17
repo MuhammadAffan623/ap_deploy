@@ -1,16 +1,18 @@
 import { Button as AntButton, ButtonProps, theme } from 'antd'
+import './Button.scss'
 
 const Button = ({ children, style, ...rest }: ButtonProps): ReactNode => {
   const { useToken } = theme
   const {
-    token: { borderRadius, controlHeightLG }
+    token: { borderRadius, fontWeightStrong }
   } = useToken()
+
   return (
     <AntButton
       size='large'
       style={{
         borderRadius: borderRadius,
-        height: controlHeightLG,
+        fontWeight: fontWeightStrong,
         ...style
       }}
       {...rest}

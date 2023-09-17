@@ -1,5 +1,5 @@
 {
-  "name": "vite-react-ts-eslint-prettier",
+  "name": "apsone",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -14,8 +14,12 @@
   },
   "dependencies": {
     "antd": "^5.5.1",
+    "moment": "^2.29.4",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "react-perfect-scrollbar": "^1.5.8",
+    "react-router-dom": "^6.16.0",
+    "sass": "^1.67.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",
