@@ -1,5 +1,5 @@
 import { Select as AntSelect, Form, SelectProps, theme } from 'antd'
-import './SelectField.scss'
+import './style.scss'
 import { CSSProperties } from 'react'
 
 type IProps = {

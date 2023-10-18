@@ -1,18 +1,18 @@
-import Avatar from './Avatar/Avatar'
-import Button from './Button/Button'
-import Sider from './Sider'
-import Header from './Header/Header'
-import TextField from './Inputs/TextField/TextField'
-import TextArea from './Inputs/TextArea/TextArea'
-import RadioField from './Inputs/RadioField/RadioField'
-import SearchField from './Inputs/SearchField/SearchField'
-import SelectField from './Inputs/SelectField/SelectField'
-import ImagesBox from './Image/Images'
+import Avatar from './Avatar'
+import Button from './Button'
+import SideBar from './SideBar'
+import Header from './Header'
+import TextField from './Inputs/TextField'
+import TextArea from './Inputs/TextArea'
+import RadioField from './Inputs/RadioField'
+import SearchField from './Inputs/SearchField'
+import SelectField from './Inputs/SelectField'
+import ImagesBox from './Image'
 
 export {
   Avatar,
   Button,
-  Sider,
+  SideBar,
   Header,
   TextField,
   TextArea,

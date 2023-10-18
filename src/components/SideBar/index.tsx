@@ -1,19 +1,14 @@
 import { Divider, Menu, SiderProps, Typography, theme } from 'antd'
-import Sidebar from './Sidebar/Sidebar'
+import SidebarWrapper from './SideBarWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MenuItem, getMenuItem } from '~/utils/helper'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import {
-  LogoutOutlined,
-  SettingOutlined,
-  UsergroupAddOutlined,
-  DashboardOutlined
-} from '@ant-design/icons'
+import { LogoutOutlined, SettingOutlined, DashboardOutlined } from '@ant-design/icons'
 import { useUserContext } from '~/context/UserContext'
 import { CSSProperties } from 'react'
-import ImagesBox from '../Image/Images'
+import ImagesBox from '../Image'
 import logo from '~/assets/images/logo.svg'
-import './Sider.scss'
+import './style.scss'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -29,7 +24,7 @@ const childrenWrapperStyles: CSSProperties = {
   height: '100%'
 }
 
-const Sider = ({ collapsible, collapsed, style, setCollapsed, ...rest }: SidebarProps) => {
+const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: SidebarProps) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { logoutUser } = useUserContext()
@@ -63,7 +58,7 @@ const Sider = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Sidebar
   ]
 
   return (
-    <Sidebar
+    <SidebarWrapper
       setCollapsed={setCollapsed}
       collapsible={collapsible}
       collapsed={collapsed}
@@ -113,8 +108,8 @@ const Sider = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Sidebar
           <Menu items={logoutMenuItem} selectable={false} className='sidebarMenu' />
         </div>
       </div>
-    </Sidebar>
+    </SidebarWrapper>
   )
 }
 
-export default Sider
+export default SiderBar
