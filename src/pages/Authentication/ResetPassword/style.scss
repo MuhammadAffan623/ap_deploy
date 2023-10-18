@@ -1,0 +1,56 @@
+.auth-input {
+    width: 426px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 40px;
+    background: #FFF;
+    margin-bottom: $margin/2;
+
+    color: #8692A6;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 22px 30px;
+
+    &:focus,
+    &.ant-input-affix-wrapper-focused {
+        box-shadow: 0px 4px 10px 3px rgba(0, 0, 0, 0.11);
+
+    }
+}
+
+.auth-label {
+
+    .ant-form-item-label label {
+        color: #696F79;
+
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500 !important;
+        line-height: normal;
+    }
+
+}
+
+.auth-link {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.auth-button {
+    width: 100%;
+    margin-top: 40px;
+    height: 64px;
+    border-radius: 6px;
+
+    color: #FFF;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500 !important;
+    line-height: normal;
+}

@@ -1,0 +1,38 @@
+.auth-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+
+    .blue-box {
+        flex: 1;
+        background-color: $primary-color;
+        transition: flex 0.5s ease;
+
+        @include responsive(lg) {
+            flex: 0
+        }
+
+        .img-container {
+            margin-left: 58px;
+            margin-top: 63px;
+            width: 90px;
+            height: 98px;
+            text-align: center;
+
+            @include responsive(lg) {
+                display: none;
+            }
+
+            .logo-text{
+                color: white;
+            }
+        }
+    }
+
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

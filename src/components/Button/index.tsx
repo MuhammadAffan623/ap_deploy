@@ -9,7 +9,7 @@ const Button = ({ children, style, ...rest }: ButtonProps): ReactNode => {
 
   return (
     <AntButton
-      size='large'
+      // size='large'
       style={{
         borderRadius: borderRadius,
         fontWeight: fontWeightStrong,
