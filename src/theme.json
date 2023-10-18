@@ -1,10 +1,20 @@
 {
+  "components": {
+    "Input": {
+      "colorBorder": "rgb(232, 233, 235)"
+    },
+    "Form": {
+      "labelRequiredMarkColor": "rgb(207, 202, 202)",
+      "labelColor": "rgba(161, 160, 160, 0.88)"
+    }
+  },
   "token": {
     "colorBgBase": "tomato",
     "colorBgLayout": "#F8F8F8",
     "colorBgContainer": "white",
     "colorBgElevated": "lightgrey",
     "colorPrimary": "#304FFD",
+    "colorLink": "#304FFD",
     "colorSuccess": "#148D09",
     "colorWarning": "#f5ba20",
     "fontSize": 14,
@@ -12,6 +22,7 @@
     "fontSizeHeading2": 26,
     "fontSizeHeading3": 24,
     "fontSizeHeading4": 20,
+    "colorSplit": "#F5F5F5",
     "borderRadius": 10,
     "borderRadiusXS": 8,
     "borderRadiusLG": 16,
@@ -20,13 +31,13 @@
     "boxShadow": "0px -3px 10px rgba(0, 0, 0, 0.25)",
     "colorBgMask": "rgba(19, 19, 19, 0.4)",
     "colorTextBase": "#001D3F",
-    "colorTextHeading": "#000000",
+    "colorTextHeading": "#3F434A",
     "colorText": "#001D3F",
     "colorTextSecondary": "#171832",
     "colorTextTertiary": "#8492A6",
     "colorTextQuaternary": "#001D3F",
     "colorBorder": "#F4F4F4",
-    "fontFamily": "Geometria",
+    "fontFamily": "Poppins",
     "padding": 12,
     "controlHeightLG": 45
   }

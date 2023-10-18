@@ -5,6 +5,10 @@ declare global {
     | React.ComponentClass<unknown>
     | null
 
+  type KeyValuePair = {
+    [key: string]: any
+  }
+
   interface IBase extends Record<string, unknown> {
     id?: string | number
     _id?: string | number
