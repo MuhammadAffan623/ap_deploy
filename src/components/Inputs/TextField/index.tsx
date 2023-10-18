@@ -173,7 +173,6 @@ const TextField = forwardRef(
             placeholder={placeholder}
             style={{
               color: token.colorTextHeading,
-              border: 'none',
               ...style
             }}
             suffix={suffix}
@@ -191,7 +190,6 @@ const TextField = forwardRef(
             placeholder={placeholder}
             style={{
               color: token.colorTextHeading,
-              border: 'none',
               ...style
             }}
             suffix={suffix}
