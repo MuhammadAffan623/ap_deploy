@@ -1,5 +1,5 @@
 import { Avatar as AntAvatar, Badge, AvatarProps as AntAvatarProps } from 'antd'
-import './Avatar.scss'
+import './style.scss'
 
 interface AvatarProps extends AntAvatarProps {
   src?: string

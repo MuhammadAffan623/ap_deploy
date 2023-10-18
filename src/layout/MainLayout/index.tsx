@@ -3,7 +3,7 @@ import { useState } from 'react'
 import './styles.scss'
 
 import { Outlet } from 'react-router-dom'
-import { Header, Sider } from '~/components'
+import { Header, SideBar } from '~/components'
 const { Content } = Layout
 
 const MainLayout = () => {
@@ -14,7 +14,7 @@ const MainLayout = () => {
   }
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider
+      <SideBar
         breakpoint='xl'
         onBreakpoint={(broken) => {
           if (broken) {

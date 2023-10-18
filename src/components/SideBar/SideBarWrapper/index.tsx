@@ -1,7 +1,8 @@
 import { Layout, SiderProps, Grid } from 'antd'
-import Drawer from '../Drawer/Drawer'
+import Mobile from '../../Drawer'
 import { CSSProperties } from 'react'
 // import './Sidebar.scss'
+
 interface SidebarProps extends SiderProps {
   drawerStyles: CSSProperties
   sidebarStyles: CSSProperties
@@ -9,7 +10,7 @@ interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
 }
 
-const Sidebar = ({
+const SidebarWrapper = ({
   drawerStyles,
   sidebarStyles,
   width,
@@ -37,7 +38,7 @@ const Sidebar = ({
     )
   }
   return (
-    <Drawer
+    <Mobile
       placement='left'
       closable={collapsible}
       open={collapsed}
@@ -51,8 +52,8 @@ const Sidebar = ({
       {...rest}
     >
       {children}
-    </Drawer>
+    </Mobile>
   )
 }
 
-export default Sidebar
+export default SidebarWrapper

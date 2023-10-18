@@ -1,5 +1,5 @@
-import NotFound from './NotFound/NotFound'
-import Dashboard from './Dashboard/Dashboard'
-import Settings from './Settings/Settings'
+import NotFound from './NotFound'
+import Dashboard from './Dashboard'
+import Settings from './Settings'
 
 export { NotFound, Dashboard, Settings }

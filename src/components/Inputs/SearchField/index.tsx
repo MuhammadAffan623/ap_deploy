@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
 import { Form, Input, InputProps, theme } from 'antd'
-import './SearchField.scss'
+import './style.scss'
 import SearchOutlined from '@ant-design/icons/SearchOutlined'
 
 interface IProps extends InputProps {

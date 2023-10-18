@@ -1,5 +1,5 @@
 import { Button as AntButton, ButtonProps, theme } from 'antd'
-import './Button.scss'
+import './style.scss'
 
 const Button = ({ children, style, ...rest }: ButtonProps): ReactNode => {
   const { useToken } = theme
