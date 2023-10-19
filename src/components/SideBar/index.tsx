@@ -1,14 +1,16 @@
 import { Divider, Menu, SiderProps, Typography, theme } from 'antd'
 import SidebarWrapper from './SideBarWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { MenuItem, getMenuItem } from '~/utils/helper'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { LogoutOutlined, SettingOutlined, DashboardOutlined } from '@ant-design/icons'
 import { useUserContext } from '~/context/UserContext'
 import { CSSProperties } from 'react'
 import ImagesBox from '../Image'
 import logo from '~/assets/images/logo.svg'
+import { LogoutOutlined } from '@ant-design/icons'
+
 import './style.scss'
+import { MenuItem, getMenuItem } from '~/utils/helper'
+import { navigationMenuItems } from './MenuItems'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -31,25 +33,6 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { useToken } = theme
   const { token } = useToken()
   const { colorBgContainer, colorPrimary, colorText, fontSizeHeading1, fontSizeHeading3 } = token
-
-  const navigationMenuItems: MenuItem[] = [
-    getMenuItem(
-      'Dashboard',
-      '/dashboard',
-      // <ImagesBox src={UsersIcon} />,
-      <DashboardOutlined rev='rev' />,
-      null,
-      'menuItem'
-    ),
-    getMenuItem(
-      'Settings',
-      '/settings',
-      // <ImagesBox src={MyAccountIcon} />,
-      <SettingOutlined rev='rev' />,
-      null,
-      'menuItem'
-    )
-  ]
 
   const logoutMenuItem: MenuItem[] = [
     getMenuItem('Logout', 'logout', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
@@ -105,7 +88,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
 
         <Divider style={{ margin: 0 }} />
         <div className='logoutSidebarMenuWrapper'>
-          <Menu items={logoutMenuItem} selectable={false} className='sidebarMenu' />
+          <Menu items={logoutMenuItem} mode='inline' selectable={false} className='sidebarMenu' />
         </div>
       </div>
     </SidebarWrapper>
