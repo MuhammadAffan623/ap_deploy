@@ -4,7 +4,7 @@
     flex-shrink: 0;
     border-radius: 40px;
     background: #FFF;
-    margin-bottom: $margin/2;
+    margin-bottom: calc($margin / 2);
 
     color: #8692A6;
     font-family: Poppins;

@@ -1,4 +1,5 @@
 import React, { useReducer, useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { userReducer, UserActionType, UserState } from '~/reducer/userReducer'
 
 export const UserContext = React.createContext<IUserContext>({} as IUserContext)
@@ -30,6 +31,7 @@ const initialState: UserState = {
 export function UserContainer({ children }: IUserContainer): ReactNode {
   const [state, dispatch] = useReducer(userReducer, initialState)
   const [loading, setLoading] = useState<boolean>(true)
+  const navigate = useNavigate()
 
   const loginUser = (user: IUser, token: string): void => {
     dispatch({ type: UserActionType.LOGIN, payload: { user, token } })
@@ -38,6 +40,7 @@ export function UserContainer({ children }: IUserContainer): ReactNode {
 
   const logoutUser = (): void => {
     dispatch({ type: UserActionType.LOGOUT, payload: {} })
+    navigate('/login')
   }
 
   const updateUser = (user: IUser): void => {
