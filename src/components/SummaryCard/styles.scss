@@ -1,0 +1,17 @@
+.customSummaryCard {
+  .textCol {
+    flex-grow: 1;
+
+    .title {
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    .value {
+      margin-top: 6px;
+      font-size: 2rem;
+      line-height: 1;
+    }
+  }
+}

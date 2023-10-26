@@ -1,0 +1,26 @@
+.ant-table-wrapper .ant-table-thead>tr>th {
+    background: #fff;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>td {
+    background: #fff;
+}
+
+.ant-table-wrapper .ant-table-pagination.ant-pagination {
+    margin: 0;
+    padding: 16px 0;
+    background-color: #fff;
+}
+
+.ant-pagination .ant-pagination-item-active {
+    background-color: #304ffd;
+    border-color: #304ffd;
+
+    a {
+        color: #fff;
+
+        &:hover {
+            color: #fff
+        }
+    }
+}

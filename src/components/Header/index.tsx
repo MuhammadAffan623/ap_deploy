@@ -1,15 +1,15 @@
-import React, { CSSProperties, useEffect, useState } from 'react'
-import { Col, Layout, Row, Grid } from 'antd'
+import BellOutlined from '@ant-design/icons/BellOutlined'
 import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined'
 import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined'
-import BellOutlined from '@ant-design/icons/BellOutlined'
-import SearchField from '../Inputs/SearchField'
+import { Col, Grid, Layout, Row } from 'antd'
+import React, { CSSProperties, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '../Button'
-import Avatar from '../Avatar'
-import { getInitials } from '~/utils/helper'
-import './style.scss'
 import { useUserContext } from '~/context/UserContext'
+import { getInitials } from '~/utils/helper'
+import Avatar from '../Avatar'
+import Button from '../Button'
+import SearchField from '../Inputs/SearchField'
+import './style.scss'
 
 interface HeaderProps {
   isCollapsed?: boolean

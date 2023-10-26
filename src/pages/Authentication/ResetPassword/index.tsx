@@ -1,5 +1,5 @@
 import { Divider, Form, Typography } from 'antd'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, TextField } from '~/components'
 import './style.scss'

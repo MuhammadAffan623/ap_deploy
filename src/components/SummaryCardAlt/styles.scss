@@ -1,0 +1,13 @@
+.customSummaryCardAlt {
+  .textCol {
+    .title {
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+    .count {
+      font-weight: normal;
+      margin-bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+.dashboardPage {
+  .devicesRegisteredChartCard {
+    .threeDotsButton {
+      color: #fff;
+      border-radius: 50%;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  .activeUsersCard {
+    .activeUsersMenu {
+      .activeUser {
+        display: flex;
+        align-items: center;
+        gap: calc($margin / 2);
+        height: 50px;
+
+        .ant-menu-title-content {
+          flex-grow: 1;
+
+          .detailsCol {
+            line-height: 1;
+          }
+          .userMenuButton {
+            min-width: 80px;
+            text-align: center;
+            font-weight: bold;
+            padding: 8px 16px;
+            transition: background-color 0.3s ease-in-out;
+
+            &:hover {
+              background-color: #bde1ff;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .onlineDevicesCard,
+  .offlineDevicesCard {
+    .contentRow {
+      margin-top: $margin;
+
+      .onlineDevicesTag,
+      .offlineDevicesTag {
+        padding: $margin calc($margin * 2);
+
+        .count {
+          color: #000;
+          display: inline-flex;
+          margin: 0px;
+        }
+      }
+    }
+  }
+}
