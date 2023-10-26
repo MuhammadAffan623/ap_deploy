@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+
+  .select-box {
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    border: 1px solid $primary-color;
+    border-radius: 8px;
+    padding-left: 8px;
+
+    .ant-image {
+      margin-bottom: 4px;
+    }
+
+    .ant-form-item {
+      flex-grow: 1;
+    }
+  }
+
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

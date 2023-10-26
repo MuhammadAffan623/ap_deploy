@@ -1,0 +1,24 @@
+.table-container {
+    background-color: #fff;
+    padding: $padding 0;
+    border-radius: 0px 20px 20px 20px;
+    border-bottom: 1px solid #E8E9EB;
+    border-left: 1px solid #E8E9EB;
+    border-right: 1px solid #E8E9EB;
+
+    .actions-wrapper {
+        display: flex;
+        padding: $padding;
+        gap: $margin;
+
+        .search-box {
+            flex-grow: 1;
+            border: 1px solid $borderColor;
+            border-radius: 16px;
+        }
+    }
+}
+
+.ant-tabs-top>.ant-tabs-nav::before {
+    right: 16px;
+}

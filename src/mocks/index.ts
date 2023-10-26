@@ -1,0 +1,37 @@
+import { faker } from '@faker-js/faker'
+
+export const getMockUsers = (
+  count: number,
+  isActive: boolean | 'random',
+  isBlocked: boolean | 'random'
+): Partial<IUser>[] => {
+  return Array.from({ length: count }, () => {
+    return {
+      _id: faker.datatype.uuid(),
+      name: faker.name.firstName(),
+      avatarUrl: faker.image.avatar(),
+      createdAt: faker.date.past().toString(),
+      updatedAt: faker.date.recent().toString(),
+      email: faker.internet.email(),
+      role: 'user',
+      isActive: isActive !== 'random' ? faker.datatype.boolean() : !!isActive,
+      isBlocked: isBlocked !== 'random' ? faker.datatype.boolean() : !!isBlocked,
+      phoneNumber: faker.phone.number(),
+      username: faker.internet.userName()
+    }
+  })
+}
+
+export const getMockForms = (count: number, isCompleted: boolean | 'random'): Partial<IForm>[] => {
+  return Array.from({ length: count }, () => {
+    return {
+      _id: faker.datatype.uuid(),
+      name: faker.name.firstName(),
+      owner: faker.name.lastName(),
+      createdAt: faker.date.past().toString(),
+      updatedAt: faker.date.recent().toString(),
+      version: `v${faker.datatype.float({ max: 50, precision: 0.01 })}`,
+      status: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted
+    }
+  })
+}

@@ -5,25 +5,24 @@ import { AiOutlineMobile } from 'react-icons/ai'
 import { BsFolder2 } from 'react-icons/bs'
 
 export const navigationMenuItems: MenuItem[] = [
-  getMenuItem(
-    'Dashboard',
-    '/dashboard',
-    // <ImagesBox src={UsersIcon} />,
-    <RxDashboard size={20} />,
-    null,
-    'menuItem'
-  ),
+  getMenuItem('Dashboard', '/dashboard', <RxDashboard size={20} />, null, 'menuItem'),
   getMenuItem(
     'Forms Hub',
     '/forms-hub',
     <RxFileText size={20} />,
     [
-      getMenuItem('Templates', '/templates', <RxDotFilled size={20} />, null, 'menuItem',),
-      getMenuItem('Forms', '/forms', <RxDotFilled size={20} />, null, 'menuItem'),
-      getMenuItem('Public Forms', '/public-forms', <RxDotFilled size={20} />, null, 'menuItem'),
+      getMenuItem('Templates', '/forms-hub/templates', <RxDotFilled size={20} />, null, 'menuItem'),
+      getMenuItem('Forms', '/forms-hub/forms', <RxDotFilled size={20} />, null, 'menuItem'),
+      getMenuItem(
+        'Public Forms',
+        '/forms-hub/public-forms',
+        <RxDotFilled size={20} />,
+        null,
+        'menuItem'
+      ),
       getMenuItem(
         'Delivery Activity',
-        '/delivery-activity',
+        '/forms-hub/delivery-activity',
         <RxDotFilled size={20} />,
         null,
         'menuItem'
@@ -43,12 +42,5 @@ export const navigationMenuItems: MenuItem[] = [
     'menuItem'
   ),
   getMenuItem('User & Groups', '/user-and-groups', <UserOutlined rev={false} />, null, 'menuItem'),
-  getMenuItem(
-    'Settings',
-    '/settings',
-    // <ImagesBox src={MyAccountIcon} />,
-    <SettingOutlined rev='rev' />,
-    null,
-    'menuItem'
-  )
+  getMenuItem('Settings', '/settings', <SettingOutlined rev='rev' />, null, 'menuItem')
 ]

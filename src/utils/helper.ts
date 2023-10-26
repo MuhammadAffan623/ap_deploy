@@ -65,6 +65,11 @@ export const getToken = () => {
 }
 
 export const getInitials = (str: string) => {
-  const firstChar = str?.charAt(0).toUpperCase()
+  const firstChar = str?.charAt(0)?.toUpperCase()
   return firstChar
+}
+
+export const formatDate = (date: string) => {
+  const d = moment(date).format('MM-DD-YY')
+  return d
 }
