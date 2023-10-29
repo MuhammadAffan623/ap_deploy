@@ -11,6 +11,7 @@ import DeviceManagement from './DeviceManagement'
 import BlueprintsHub from './BlueprintsHub'
 import UserAndGroups from './UserAndGroups'
 import Settings from './Settings'
+import AddGroup from './AddGroup'
 
 // Public
 import NotFound from './NotFound'
@@ -32,5 +33,6 @@ export {
   Library,
   DeviceManagement,
   BlueprintsHub,
-  UserAndGroups
+  UserAndGroups,
+  AddGroup
 }

@@ -1,0 +1,14 @@
+.customBasicModal {
+  .ant-modal-close {
+    top: 20px;
+  }
+
+  .ant-modal-content {
+    padding: 0;
+    background-color: $white;
+  }
+
+  .ant-modal-body {
+    padding: calc($padding + 4px) calc($padding * 1.5) calc($padding * 3) calc($padding * 1.5);
+  }
+}

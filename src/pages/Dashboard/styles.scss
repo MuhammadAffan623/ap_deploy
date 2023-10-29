@@ -1,18 +1,34 @@
-.dashboardPage {
-  .devicesRegisteredChartCard {
-    .threeDotsButton {
-      color: #fff;
+.dashboard-page {
+  .forms-line-chart-card {
+    height: 100%;
+  }
+
+  .devices-registered-chart-card {
+    .text-white {
+      color: $white;
+    }
+
+    .title-count-row {
+      margin-top: calc($margin * 1.5);
+    }
+    .three-dots-button {
+      color: $white;
       border-radius: 50%;
 
       &:hover {
-        color: #fff;
+        color: $white;
       }
+    }
+
+    .registered-devices-count {
+      display: inline-flex;
+      color: $white;
     }
   }
 
-  .activeUsersCard {
-    .activeUsersMenu {
-      .activeUser {
+  .active-users-card {
+    .active-users-menu {
+      .active-user {
         display: flex;
         align-items: center;
         gap: calc($margin / 2);
@@ -21,10 +37,10 @@
         .ant-menu-title-content {
           flex-grow: 1;
 
-          .detailsCol {
+          .details-col {
             line-height: 1;
           }
-          .userMenuButton {
+          .user-menu-button {
             min-width: 80px;
             text-align: center;
             font-weight: bold;
@@ -35,24 +51,6 @@
               background-color: #bde1ff;
             }
           }
-        }
-      }
-    }
-  }
-
-  .onlineDevicesCard,
-  .offlineDevicesCard {
-    .contentRow {
-      margin-top: $margin;
-
-      .onlineDevicesTag,
-      .offlineDevicesTag {
-        padding: $margin calc($margin * 2);
-
-        .count {
-          color: #000;
-          display: inline-flex;
-          margin: 0px;
         }
       }
     }

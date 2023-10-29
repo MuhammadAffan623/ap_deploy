@@ -22,6 +22,18 @@ export const getMockUsers = (
   })
 }
 
+export const getMockUserGroups = (count: number): IUserGroup[] => {
+  return Array.from({ length: count }, () => {
+    return {
+      _id: faker.datatype.uuid(),
+      name: faker.name.firstName(),
+      users: getMockUsers(faker.datatype.number({ min: 1, max: 11 }), false, false),
+      createdAt: faker.date.past().toString(),
+      updatedAt: faker.date.recent().toString()
+    }
+  })
+}
+
 export const getMockForms = (count: number, isCompleted: boolean | 'random'): Partial<IForm>[] => {
   return Array.from({ length: count }, () => {
     return {

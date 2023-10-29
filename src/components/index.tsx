@@ -1,17 +1,22 @@
 import Avatar from './Avatar'
+import BasicModal from './BasicModal'
 import Button from './Button'
-import SideBar from './SideBar'
+import Card from './Card'
+import ContactCard from './ContactCard'
 import Header from './Header'
-import TextField from './Inputs/TextField'
-import TextArea from './Inputs/TextArea'
+import IconTag from './IconTag'
+import ImagesBox from './Image'
 import RadioField from './Inputs/RadioField'
 import SearchField from './Inputs/SearchField'
 import SelectField from './Inputs/SelectField'
-import ImagesBox from './Image'
-import Card from './Card'
+import TextArea from './Inputs/TextArea'
+import TextField from './Inputs/TextField'
+import SideBar from './SideBar'
 import SummaryCard from './SummaryCard'
 import SummaryCardAlt from './SummaryCardAlt'
-import IconTag from './IconTag'
+import UserGroupCard from './UserGroupCard'
+import PermissionSwitch from './PermissionSwitch'
+import Loader from './Loader'
 import DropDown from './DropDown'
 import Pill from './Pill/Pill'
 import DynamicTable from './DynamicTable/DynamicTable'
@@ -23,17 +28,22 @@ export {
   DynamicTable,
   DropDown,
   Avatar,
+  BasicModal,
   Button,
-  SideBar,
+  Card,
+  ContactCard,
   Header,
-  TextField,
-  TextArea,
+  IconTag,
+  ImagesBox,
   RadioField,
   SearchField,
   SelectField,
-  ImagesBox,
-  Card,
+  SideBar,
   SummaryCard,
   SummaryCardAlt,
-  IconTag
+  TextArea,
+  TextField,
+  UserGroupCard,
+  PermissionSwitch,
+  Loader
 }

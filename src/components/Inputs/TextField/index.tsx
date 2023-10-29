@@ -1,5 +1,5 @@
 import { CSSProperties, ForwardedRef, forwardRef } from 'react'
-import { Form, Input, InputProps, InputRef, theme } from 'antd'
+import { ColProps, Form, Input, InputProps, InputRef, theme } from 'antd'
 import { RuleObject } from 'antd/es/form'
 import { emailRegex, passwordRegex, usernameRegex } from '~/utils/helper'
 
@@ -10,6 +10,7 @@ interface IProps extends InputProps {
   label?: string
   formItemClass?: string
   inputClass?: string
+  labelCol?: ColProps
 }
 
 const TextField = forwardRef(
@@ -28,6 +29,7 @@ const TextField = forwardRef(
       required,
       formItemClass,
       inputClass,
+      labelCol,
       ...rest
     }: IProps,
     ref: ForwardedRef<InputRef>
@@ -161,6 +163,7 @@ const TextField = forwardRef(
         label={label}
         className={['formItem', formItemClass].join(' ')}
         rules={rules}
+        labelCol={labelCol}
         style={{ ...styleFormItem }}
       >
         {type === 'password' ? (

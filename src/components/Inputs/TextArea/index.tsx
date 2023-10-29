@@ -45,7 +45,7 @@ const TextArea = ({
         name={name}
         size='large'
         placeholder={placeholder}
-        style={{ border: 'none', ...style }}
+        style={{ ...style }}
         onChange={onChange}
         className={className}
         {...rest}

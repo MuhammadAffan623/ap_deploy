@@ -55,6 +55,7 @@ const Header = ({ isCollapsed, toggleSidebar, style }: HeaderProps) => {
             </Button>
 
             <SearchField
+              inverseBg
               inputClass={['searchField', sm && 'sm'].join(' ')}
               value={search}
               onChange={handleSearchChange}

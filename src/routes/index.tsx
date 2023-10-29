@@ -16,7 +16,8 @@ import {
   ResetPassword,
   Settings,
   Templates,
-  UserAndGroups
+  UserAndGroups,
+  AddGroup
 } from '~/pages'
 
 const Routes = () => {
@@ -44,6 +45,7 @@ const Routes = () => {
         { path: 'blueprints-hub', element: <BlueprintsHub /> },
         { path: 'device-management', element: <DeviceManagement /> },
         { path: 'user-and-groups', element: <UserAndGroups /> },
+        { path: 'add-group', element: <AddGroup /> },
         { path: 'settings', element: <Settings /> },
         { path: 'forms-hub/templates', element: <Templates /> },
         { path: 'forms-hub/forms', element: <Forms /> },

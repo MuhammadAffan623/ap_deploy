@@ -1,0 +1,17 @@
+.online-devices-card,
+.offline-devices-card {
+  .content-row {
+    margin-top: $margin;
+
+    .online-devices-tag,
+    .offline-devices-tag {
+      padding: $margin calc($margin * 2);
+
+      .count {
+        color: #000;
+        display: inline-flex;
+        margin: 0px;
+      }
+    }
+  }
+}

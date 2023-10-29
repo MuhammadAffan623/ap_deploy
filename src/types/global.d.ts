@@ -9,10 +9,25 @@ declare global {
     [key: string]: any
   }
 
+  type TPermissions =
+    | 'managementPermissions'
+    | 'userPermissions'
+    | 'formsHubPermissions'
+    | 'blueprintHubPermissions'
+    | 'calendarPermissions'
+
   interface IBase extends Record<string, unknown> {
     _id: string
     createdAt?: string
     updatedAt?: string
+  }
+
+  interface IDevice {
+    deviceType: string
+    name: string
+    lastSync: string
+    appVersion: string
+    os: string
   }
   interface IUser extends IBase {
     avatarUrl?: string | null
@@ -23,6 +38,21 @@ declare global {
     isActive?: boolean
     isBlocked?: boolean
     role: string
+    groups?: Partial<IUserGroup>[] | string[]
+    password?: string
+    confirmPassword: string
+    activeDevices?: IDevice[]
+  }
+
+  interface IUserGroup extends IBase {
+    name: string
+    users: Partial<IUser>[]
+  }
+
+  interface IPermission {
+    label: string
+    value: string
+    children?: IPermission[]
   }
   interface IForm extends IBase {
     name: string

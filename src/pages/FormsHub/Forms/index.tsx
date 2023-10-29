@@ -9,23 +9,39 @@ import Archived from './Tabs/Archived'
 
 const tabsItems = [
   {
-    label: `All`,
-    key: 'all',
+    label: (
+      <span>
+        All <span className='tab-count'>10</span>
+      </span>
+    ),
+    key: '1',
     children: <All />
   },
   {
-    label: `Available`,
-    key: 'available',
+    label: (
+      <span>
+        Available <span className='tab-count'>10</span>
+      </span>
+    ),
+    key: '2',
     children: <Available />
   },
   {
-    label: `Disabled`,
-    key: 'disabled',
+    label: (
+      <span>
+        Disabled <span className='tab-count'>10</span>
+      </span>
+    ),
+    key: '3',
     children: <Disabled />
   },
   {
-    label: `Archived`,
-    key: 'archived',
+    label: (
+      <span>
+        Archived <span className='tab-count'>10</span>
+      </span>
+    ),
+    key: '4',
     children: <Archived />
   }
 ]

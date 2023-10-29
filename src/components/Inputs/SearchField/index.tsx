@@ -8,6 +8,7 @@ interface IProps extends InputProps {
   label?: string
   formItemClass?: string
   inputClass?: string
+  inverseBg?: boolean
 }
 
 const searchFieldPrefixIconStyles: CSSProperties = { fontSize: 20, marginRight: 10 }
@@ -23,12 +24,21 @@ const SearchField = ({
   disabled,
   formItemClass,
   inputClass,
+  inverseBg = false,
   ...rest
 }: IProps): ReactNode => {
   const { useToken } = theme
-  const { token } = useToken()
+  const {
+    token: { colorTextHeading, colorBgLayout }
+  } = useToken()
 
-  const { colorTextHeading } = token
+  let searchInverseStyles: CSSProperties = {
+    backgroundColor: colorBgLayout
+  }
+
+  if (!inverseBg) {
+    searchInverseStyles = {}
+  }
 
   return (
     <Form.Item
@@ -48,6 +58,7 @@ const SearchField = ({
         style={{
           color: colorTextHeading,
           border: 'none',
+          ...searchInverseStyles,
           ...style
         }}
         prefix={<SearchOutlined rev='rev' style={searchFieldPrefixIconStyles} />}

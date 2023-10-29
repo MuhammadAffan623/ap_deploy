@@ -1,13 +1,14 @@
 .formItem {
   margin-bottom: 0px !important;
   margin-top: 0px !important;
+
   // .ant-select .ant-select-arrow {
   // color: #fff;
   // }
 
   .ant-select-dropdown {
     .ant-select-item-option-selected {
-      background-color: $bg-color-a !important;
+      // background-color: $bg-color-a !important;
     }
   }
 
@@ -16,6 +17,6 @@
   // }
 
   .ant-select-selector {
-    border: none !important;
+    // border: none !important;
   }
 }

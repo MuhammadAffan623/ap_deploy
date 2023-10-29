@@ -2,11 +2,12 @@ import { Col, DatePicker, Menu, Row, Tag, Typography, theme } from 'antd'
 import dayjs from 'dayjs'
 import { EChartsOption } from 'echarts'
 import ReactECharts from 'echarts-for-react'
-import React, { useEffect } from 'react'
-import { FaApple, FaEllipsis } from 'react-icons/fa6'
+import React, { CSSProperties, useEffect } from 'react'
+import { FaEllipsis } from 'react-icons/fa6'
 import { Avatar, Button, Card, PageHeader, SummaryCard, SummaryCardAlt } from '~/components'
 import { getMockUsers } from '~/mocks'
 import { MenuItem, getMenuItem } from '~/utils/helper'
+import DevicesStatusCard from './DevicesStatusCard'
 import './styles.scss'
 
 const dateFormat = 'DD MMM'
@@ -17,23 +18,27 @@ const Dashboard = () => {
     token: { colorTextTertiary, colorPrimary }
   } = useToken()
 
+  const colorTextTertiaryStyles: CSSProperties = {
+    color: colorTextTertiary
+  }
+
   const [userMenuItem, setUsersMenuItems] = React.useState<MenuItem[]>([])
 
   useEffect(() => {
     const menuItemTemp = getMockUsers(5, true, false).map((user) => {
       return getMenuItem(
         <Row justify='space-between'>
-          <Col className='detailsCol'>
-            <Typography.Paragraph style={{ marginBottom: 0 }} strong>
+          <Col className='details-col'>
+            <Typography.Paragraph className='mb-0' strong>
               {user?.name}
             </Typography.Paragraph>
-            <Typography.Text style={{ color: colorTextTertiary }}>PK</Typography.Text>
+            <Typography.Text style={colorTextTertiaryStyles}>PK</Typography.Text>
           </Col>
           <Col>
             <Tag
               color='blue'
               bordered={false}
-              className='userMenuButton'
+              className='user-menu-button'
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -47,7 +52,7 @@ const Dashboard = () => {
         user?._id as string,
         <Avatar size='default' src={user?.avatarUrl as string} name={user?.name as string} />,
         null,
-        'activeUser'
+        'active-user'
       )
     })
 
@@ -123,7 +128,7 @@ const Dashboard = () => {
   return (
     <>
       <PageHeader title='Overview' />
-      <Row gutter={[20, 20]} className='dashboardPage'>
+      <Row gutter={[20, 20]} className='dashboard-page'>
         <Col span={24} md={12} xxl={6}>
           <SummaryCard isRise={false} percentage={77.5} title='Users' value={233} />
         </Col>
@@ -144,7 +149,7 @@ const Dashboard = () => {
         </Col>
 
         <Col span={24} lg={16}>
-          <Card>
+          <Card className='forms-line-chart-card'>
             <Row justify='space-between'>
               <Col>
                 <Typography.Title level={4}>Forms</Typography.Title>
@@ -154,10 +159,6 @@ const Dashboard = () => {
                   <DatePicker.RangePicker
                     allowClear={false}
                     allowEmpty={[false, false]}
-                    defaultPickerValue={[
-                      dayjs(dayjs().startOf('week').format(dateFormat)),
-                      dayjs()
-                    ]}
                     defaultValue={[dayjs(dayjs().startOf('week').format(dateFormat)), dayjs()]}
                     format={dateFormat}
                   />
@@ -182,23 +183,20 @@ const Dashboard = () => {
         </Col>
 
         <Col span={24} lg={8}>
-          <Card
-            style={{ backgroundColor: colorPrimary, color: 'white' }}
-            className='devicesRegisteredChartCard'
-          >
+          <Card style={{ backgroundColor: colorPrimary }} className='devices-registered-chart-card'>
             <Row justify='space-between'>
               <Col>
-                <Typography.Title level={4} style={{ color: 'white' }}>
+                <Typography.Title level={4} className='text-white'>
                   Devices Registered
                 </Typography.Title>
               </Col>
               <Col>
-                <Button icon={<FaEllipsis />} type='text' className='threeDotsButton' />
+                <Button icon={<FaEllipsis />} type='text' className='three-dots-button' />
               </Col>
             </Row>
-            <Row gutter={[20, 20]} style={{ marginTop: 24 }}>
+            <Row gutter={[20, 20]} className='title-count'>
               <Col span={24}>
-                <Typography.Title level={1} style={{ color: 'white' }}>
+                <Typography.Title level={1} className='text-white'>
                   233
                 </Typography.Title>
               </Col>
@@ -207,9 +205,9 @@ const Dashboard = () => {
                 <ReactECharts option={optionsDevicesChart} />
               </Col>
               <Col>
-                <Typography.Text style={{ color: 'white' }}>
+                <Typography.Text className='text-white'>
                   Devices:{' '}
-                  <Typography.Title level={4} style={{ color: 'white', display: 'inline-flex' }}>
+                  <Typography.Title level={4} className='registered-devices-count'>
                     700
                   </Typography.Title>
                 </Typography.Text>
@@ -218,8 +216,8 @@ const Dashboard = () => {
           </Card>
         </Col>
 
-        <Col span={8}>
-          <Card className='activeUsersCard'>
+        <Col span={24} md={12} xl={8}>
+          <Card className='active-users-card'>
             <Row>
               <Col>
                 <Typography.Title level={4}>Active Users</Typography.Title>
@@ -230,7 +228,7 @@ const Dashboard = () => {
                 <Menu
                   items={userMenuItem}
                   key='_id'
-                  className='activeUsersMenu'
+                  className='active-users-menu'
                   selectable={false}
                 />
               </Col>
@@ -238,66 +236,12 @@ const Dashboard = () => {
           </Card>
         </Col>
 
-        <Col span={8}>
-          <Card className='onlineDevicesCard'>
-            <Row justify='space-between'>
-              <Col>
-                <Typography.Title level={4} style={{ color: colorTextTertiary }}>
-                  <FaApple /> Devices Online
-                </Typography.Title>
-              </Col>
-
-              <Col>
-                <Button icon={<FaEllipsis />} type='text' style={{ color: colorTextTertiary }} />
-              </Col>
-            </Row>
-
-            <Row className='contentRow'>
-              <Col span={24} className='center'>
-                <Tag
-                  color='default'
-                  className='onlineDevicesTag'
-                  style={{ color: colorTextTertiary }}
-                >
-                  <Typography.Title level={2} className='count'>
-                    233
-                  </Typography.Title>
-                  /sessions
-                </Tag>
-              </Col>
-            </Row>
-          </Card>
+        <Col span={24} md={12} xl={8}>
+          <DevicesStatusCard status='online' count={233} />
         </Col>
 
-        <Col span={8}>
-          <Card className='offlineDevicesCard'>
-            <Row justify='space-between'>
-              <Col>
-                <Typography.Title level={4} style={{ color: colorTextTertiary }}>
-                  <FaApple /> Devices Offline
-                </Typography.Title>
-              </Col>
-
-              <Col>
-                <Button icon={<FaEllipsis />} type='text' style={{ color: colorTextTertiary }} />
-              </Col>
-            </Row>
-
-            <Row className='contentRow'>
-              <Col span={24} className='center'>
-                <Tag
-                  color='default'
-                  className='offlineDevicesTag'
-                  style={{ color: colorTextTertiary }}
-                >
-                  <Typography.Title level={2} className='count'>
-                    233
-                  </Typography.Title>
-                  /sessions
-                </Tag>
-              </Col>
-            </Row>
-          </Card>
+        <Col span={24} md={12} xl={8}>
+          <DevicesStatusCard status='offline' count={234} />
         </Col>
       </Row>
     </>

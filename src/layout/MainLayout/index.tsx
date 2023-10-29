@@ -7,7 +7,7 @@ import { Header, SideBar } from '~/components'
 const { Content } = Layout
 
 const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed)

@@ -1,6 +1,6 @@
 import { MenuProps } from 'antd'
 import { DefaultOptionType } from 'antd/es/select'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { CSSProperties, Key } from 'react'
 
 export const monthOptions: DefaultOptionType[] = [
@@ -21,7 +21,7 @@ export const monthOptions: DefaultOptionType[] = [
 
 export const yearOptions: DefaultOptionType[] = [
   { label: 'Select Year', value: '' },
-  ...Array.from({ length: moment().year() - 1970 + 1 }, (_, i) => {
+  ...Array.from({ length: dayjs().year() - 1970 + 1 }, (_, i) => {
     return { label: (1970 + i).toString(), value: (1970 + i).toString() }
   })
 ]
@@ -69,7 +69,167 @@ export const getInitials = (str: string) => {
   return firstChar
 }
 
+export const managementPermissions: IPermission[] = [
+  {
+    label: 'Forms Hub',
+    value: 'formsHub'
+  },
+  {
+    label: 'Calendar',
+    value: 'calendar'
+  },
+  {
+    label: 'Contacts',
+    value: 'contacts'
+  },
+  {
+    label: 'Library',
+    value: 'library'
+  },
+  {
+    label: 'Blueprints Hub',
+    value: 'blueprintsHub'
+  },
+  {
+    label: 'Device Management',
+    value: 'deviceManagement'
+  },
+  {
+    label: 'User Groups',
+    value: 'userGroups'
+  },
+  {
+    label: 'Settings',
+    value: 'settings'
+  }
+]
+
+export const userPermissions: IPermission[] = [
+  {
+    label: 'Forms Hub',
+    value: 'formsHub',
+    children: [
+      {
+        label: 'Form Templates',
+        value: 'formTemplates'
+      },
+      {
+        label: 'Forms',
+        value: 'form'
+      },
+      {
+        label: 'Public Forms',
+        value: 'publicForms'
+      },
+      {
+        label: 'Delivery Activity',
+        value: 'deliveryActivity'
+      }
+    ]
+  },
+  {
+    label: 'Calendar',
+    value: 'calendar'
+  },
+  {
+    label: 'Contacts',
+    value: 'contacts'
+  },
+  {
+    label: 'Library',
+    value: 'library'
+  },
+  {
+    label: 'Blueprints Hub',
+    value: 'blueprintsHub',
+    children: [
+      {
+        label: 'Projects',
+        value: 'projects'
+      }
+    ]
+  }
+]
+
+export const formsHubPermissions: IPermission[] = [
+  {
+    label: 'Allow export to PDF',
+    value: 'allowExportToPdf'
+  },
+  {
+    label: 'Add Tags to forms',
+    value: 'addTagsToForms'
+  },
+  {
+    label: 'Rename existing Forms',
+    value: 'renameExistingForms'
+  },
+  {
+    label: 'Delete forms',
+    value: 'deleteForms'
+  },
+  {
+    label: 'Create copies of forms',
+    value: 'createCopiesOfForms'
+  },
+  {
+    label: 'Delete Public Form',
+    value: 'deletePublicForms'
+  }
+]
+
+export const blueprintsHubPermissions: IPermission[] = [
+  {
+    label: 'Allow export to PDF',
+    value: 'allowExportToPdf'
+  },
+  {
+    label: 'Add Tags to projects',
+    value: 'addTagsToProjects'
+  },
+  {
+    label: 'Rename existing Projects',
+    value: 'renameExistingProjects'
+  },
+  {
+    label: 'Delete Projects',
+    value: 'deleteProjects'
+  },
+  {
+    label: 'Email Plans',
+    value: 'emailPlans'
+  },
+  {
+    label: 'Delete Annotations',
+    value: 'deleteAnnotations'
+  },
+  {
+    label: 'Change Status',
+    value: 'changeStatus'
+  }
+]
+
+export const calendarPermissions: IPermission[] = [
+  {
+    label: 'Lining Schedule',
+    value: 'liningSchedule'
+  },
+  {
+    label: 'Jax Schedule',
+    value: 'jaxSchedule'
+  },
+  {
+    label: 'TPA Schedule',
+    value: 'tpaSchedule'
+  },
+  {
+    label: 'Orlando Weekly',
+    value: 'orlandoWeekly'
+  }
+]
+
+
 export const formatDate = (date: string) => {
-  const d = moment(date).format('MM-DD-YY')
+  const d = dayjs(date).format('MM-DD-YY')
   return d
 }

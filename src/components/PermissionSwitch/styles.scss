@@ -1,0 +1,15 @@
+.permission-row {
+  .text-col {
+    .title {
+      margin-bottom: 0px;
+      &.bold {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .children-col {
+    margin-top: $margin;
+    padding-left: calc($padding * 2);
+  }
+}

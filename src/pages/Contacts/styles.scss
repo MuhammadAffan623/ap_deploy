@@ -1,0 +1,18 @@
+.topBar {
+  margin-bottom: calc($margin * 2);
+  margin-top: -24px;
+  border-top: 2px solid #f8f8f8;
+
+  .topBarCard {
+    .contactSearchField.ant-input-affix-wrapper {
+      padding-left: $margin;
+      padding-right: $margin;
+      padding-top: calc($margin / 4);
+      padding-bottom: calc($margin / 4);
+      .filterButton {
+        // padding: 0;
+        height: auto !important;
+      }
+    }
+  }
+}

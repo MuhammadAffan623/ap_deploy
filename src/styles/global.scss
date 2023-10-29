@@ -34,6 +34,11 @@ input:-webkit-autofill:focus {
   margin-bottom: 0px !important;
   margin-top: 0px !important;
 
+  input::placeholder,
+  textarea::placeholder {
+    color: $text-color-label;
+  }
+
   .ant-input-affix-wrapper {
     input {
       background-color: transparent !important;
@@ -43,7 +48,8 @@ input:-webkit-autofill:focus {
 
   .ant-form-item-label {
     label {
-      font-weight: 600;
+      font-weight: 500;
+      color: $text-color-label;
     }
 
     .ant-form-item-required {
@@ -135,4 +141,8 @@ input:-webkit-autofill:focus {
   40% {
     transform: scale(1);
   }
+}
+
+.mb-0 {
+  margin-bottom: 0px !important;
 }
