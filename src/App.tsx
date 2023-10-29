@@ -19,7 +19,7 @@ const App = () => {
           Form: {}
         },
         token: {
-          colorBgBase: 'tomato',
+          colorBgBase: '#E8E9EB',
           colorBgLayout: '#F8F8F8',
           colorBgContainer: 'white',
           colorBgElevated: 'white',
