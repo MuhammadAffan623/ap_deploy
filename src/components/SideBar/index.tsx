@@ -54,7 +54,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const rootSubmenuKeys = ['/forms-hub']
 
   const onOpenChange: MenuProps['onOpenChange'] = (keys: string[]) => {
-    const latestOpenKey = keys.find((key) => isOpenMenu.indexOf(key) === -1)
+    const latestOpenKey = keys.find((key) => isOpenMenu.indexOf(key as never) === -1)
     if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
       setOpenMenu(keys)
     } else {
