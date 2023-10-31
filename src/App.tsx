@@ -13,9 +13,13 @@ const App = () => {
           Input: {
             colorBorder: 'rgb(232, 233, 235)'
           },
-          // Menu: {
-          // controlHeight:
-          // },
+          Tabs: {
+            colorText: '#8A9099',
+            colorBorderSecondary: '#E8E9EB',
+            colorFillAlter: 'rgba(0, 0, 0, 0.02)',
+            borderRadius: 10,
+            margin: 0
+          },
           Form: {}
         },
         token: {
@@ -56,7 +60,6 @@ const App = () => {
         }
       }}
     >
-
       <Router>
         <Provider store={store}>
           <UserContainer>
