@@ -25,12 +25,15 @@
       text-decoration: none;
 
       .logoImage {
-        width: 60%;
+        width: 100%;
       }
 
       .logoText {
-        display: block;
+        display: inline;
+        font-size: 18px;
+        font-weight: 500;
         margin-top: $margin;
+        color: $white;
       }
 
       &:hover {

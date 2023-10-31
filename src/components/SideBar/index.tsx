@@ -1,9 +1,9 @@
-import { Divider, Menu, SiderProps, Typography, theme } from 'antd'
+import { Divider, Menu, MenuProps, SiderProps, Space, theme } from 'antd'
 import SidebarWrapper from './SideBarWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useUserContext } from '~/context/UserContext'
-import { CSSProperties } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import ImagesBox from '../Image'
 import logo from '~/assets/images/logo.svg'
 import { LogoutOutlined } from '@ant-design/icons'
@@ -32,13 +32,35 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { logoutUser } = useUserContext()
   const { useToken } = theme
   const { token } = useToken()
-  const { colorBgContainer, colorPrimary, colorText, fontSizeHeading1, fontSizeHeading3 } = token
+  const { colorBgContainer, colorPrimary, colorText } = token
+  const [isOpenMenu, setOpenMenu] = useState<string[] | []>([])
 
   const logoutMenuItem: MenuItem[] = [
     getMenuItem('Logout', 'logout', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
       logoutUser()
     })
   ]
+
+  // check on refresh if menu is already opened
+  useEffect(() => {
+    if (pathname.includes('/forms-hub')) {
+      setOpenMenu([`/${pathname.split('/')[1]}`])
+    } else {
+      setOpenMenu([])
+    }
+  }, [pathname])
+
+  // submenu keys of first level
+  const rootSubmenuKeys = ['/forms-hub']
+
+  const onOpenChange: MenuProps['onOpenChange'] = (keys: string[]) => {
+    const latestOpenKey = keys.find((key) => isOpenMenu.indexOf(key) === -1)
+    if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+      setOpenMenu(keys)
+    } else {
+      setOpenMenu(latestOpenKey ? [latestOpenKey] : [])
+    }
+  }
 
   return (
     <SidebarWrapper
@@ -64,20 +86,19 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
       {...rest}
     >
       <div style={sidebarContentWrapperStyles} className='sidebarContentWrapper'>
-        <Link to='/' className='logo center'>
-          <ImagesBox src={logo} className='logoImage' />
-          <Typography.Text
-            style={{ fontSize: collapsed ? fontSizeHeading3 : fontSizeHeading1 }}
-            className='logoText'
-          >
-            {collapsed ? 'Back' : 'APSONE'}
-          </Typography.Text>
+        <Link to='/dashboard' className='logo center'>
+          <Space direction={collapsed ? 'vertical' : 'horizontal'}>
+            <ImagesBox src={logo} className='logoImage' />
+            <span className='logoText'>{collapsed ? '' : 'APSONE'}</span>
+          </Space>
         </Link>
         <Divider />
         <PerfectScrollbar>
           <div style={childrenWrapperStyles}>
             <Menu
               selectedKeys={[pathname]}
+              openKeys={isOpenMenu}
+              onOpenChange={onOpenChange}
               items={navigationMenuItems}
               mode='inline'
               className='sidebarMenu'
