@@ -1,15 +1,13 @@
-import BellOutlined from '@ant-design/icons/BellOutlined'
-import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined'
-import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined'
 import { Col, Grid, Layout, Row } from 'antd'
 import React, { CSSProperties, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUserContext } from '~/context/UserContext'
-import { getInitials } from '~/utils/helper'
-import Avatar from '../Avatar'
 import Button from '../Button'
 import SearchField from '../Inputs/SearchField'
+import menuIcon from '~/assets/icons/menu.svg'
+import bellIcon from '~/assets/icons/bell.svg'
 import './style.scss'
+import UserPopup from '../UserPopup'
 
 interface HeaderProps {
   isCollapsed?: boolean
@@ -18,9 +16,8 @@ interface HeaderProps {
 }
 
 const searchFieldStyles: CSSProperties = { height: 48 }
-const settingsIconStyles: CSSProperties = { fontSize: 30 }
 
-const Header = ({ isCollapsed, toggleSidebar, style }: HeaderProps) => {
+const Header = ({ toggleSidebar, style }: HeaderProps) => {
   const { state } = useUserContext()
   const { user } = state
   const [search, setSearch] = useState('')
@@ -51,7 +48,7 @@ const Header = ({ isCollapsed, toggleSidebar, style }: HeaderProps) => {
         <Col span={isSearchVisible ? 24 : 10} sm={12} md={15} lg={18}>
           <div style={{ display: 'flex' }}>
             <Button type='default' className='toggleMenuBtn' onClick={toggleSidebar}>
-              {isCollapsed ? <MenuUnfoldOutlined rev='rev' /> : <MenuFoldOutlined rev='rev' />}
+              <img src={menuIcon} alt='' />
             </Button>
 
             <SearchField
@@ -80,14 +77,11 @@ const Header = ({ isCollapsed, toggleSidebar, style }: HeaderProps) => {
                 className='toggleSettingsBtn'
                 onClick={() => navigate('/admin/my-account')}
               >
-                <BellOutlined rev='rev' style={settingsIconStyles} />
+                <img src={bellIcon} alt='' width={22} />
               </Button>
             </div>
             <div className='userContainer'>
-              <Avatar src={user?.avatarUrl as string} shape='circle'>
-                {getInitials(user?.name as string)}
-              </Avatar>
-              <span className='userName'>{sm ? user?.name : user?.name.split(' ')[0]}</span>
+              <UserPopup user={user} sm={sm} />
             </div>
           </div>
         </Col>
