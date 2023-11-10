@@ -5,7 +5,9 @@
 
     .blue-box {
         flex: 1;
-        background-color: $primary-color;
+        background-image: url('./src/assets/images/apsone-bg.png');
+        background-repeat: no-repeat;
+        object-fit: cover;
         transition: flex 0.5s ease;
 
         @include responsive(lg) {
