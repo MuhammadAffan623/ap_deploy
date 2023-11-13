@@ -1,4 +1,3 @@
-import { Typography } from 'antd'
 import { Outlet } from 'react-router-dom'
 import Logo from '~/assets/images/logo.svg'
 import { ImagesBox } from '~/components'
