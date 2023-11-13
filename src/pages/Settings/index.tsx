@@ -2,7 +2,7 @@ import { Col, Form, Row, Typography, theme } from 'antd'
 import { Avatar, Button, Card, ImagesBox, PageHeader, SelectField, TextField } from '~/components'
 import './style.scss'
 import { getCountries } from 'country-state-picker'
-import { CSSProperties } from 'react'
+import { CSSProperties, useState } from 'react'
 import userImg from '~/assets/images/user.png'
 import editIcon from '~/assets/icons/edit.svg'
 
@@ -29,8 +29,25 @@ const Settings = () => {
     token: { colorTextTertiary }
   } = useToken()
 
+  const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(userImg)
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0]
+
+    if (file) {
+      // You can use FileReader to read the selected image and set it in state
+      const reader = new FileReader()
+
+      reader.onloadend = () => {
+        setSelectedImage(reader.result)
+      }
+
+      reader.readAsDataURL(file)
+    }
+  }
+
   const handleFormSubmit = (values: any) => {
-    console.log(values)
+    console.log({ ...values, selectedImage })
   }
   return (
     <div>
@@ -136,11 +153,17 @@ const Settings = () => {
           </Col>
           <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
             <div className='profile-image-container'>
-              <div className='edit-circle'>
+              <label className='edit-circle'>
                 <ImagesBox src={editIcon} width={60} height={60} />
-              </div>
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageChange}
+                  style={{ display: 'none' }}
+                />
+              </label>
               <Avatar
-                src={userImg}
+                src={selectedImage as string}
                 name='+'
                 shape='square'
                 style={getAvatarContainerStyle(colorTextTertiary)}
