@@ -9,6 +9,7 @@ import { getGroupsAsync } from '~/store/features/groups'
 import { FaPlus } from 'react-icons/fa6'
 import { Loader } from '~/components'
 import { useNavigate } from 'react-router-dom'
+import UserTable from './UserTable'
 
 const UserAndGroups = () => {
   const { groups, loading } = useGroupsSelector()
@@ -113,6 +114,8 @@ const UserAndGroups = () => {
         groups={groups ?? []}
         user={editingUser}
       />
+
+      <UserTable />
     </>
   )
 }
