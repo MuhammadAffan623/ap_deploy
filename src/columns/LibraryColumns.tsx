@@ -22,7 +22,7 @@ const items: MenuProps['items'] = [
   }
 ]
 
-export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
+export const libraryColumns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
   return [
     {
       title: 'Title',

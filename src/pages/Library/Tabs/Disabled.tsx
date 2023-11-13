@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { columns } from '../columns'
+import { libraryColumns } from '../../../columns/LibraryColumns'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockLibraryForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
@@ -68,7 +68,7 @@ const Disabled = () => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns(handleResolve, handleDelete)}
+            columns={libraryColumns(handleResolve, handleDelete)}
             isLoading={loadingData}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
