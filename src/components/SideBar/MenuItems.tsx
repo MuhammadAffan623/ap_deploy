@@ -12,21 +12,7 @@ export const navigationMenuItems: MenuItem[] = [
     <RxFileText size={20} />,
     [
       getMenuItem('Templates', '/forms-hub/templates', <RxDotFilled size={20} />, null, 'menuItem'),
-      getMenuItem('Forms', '/forms-hub/forms', <RxDotFilled size={20} />, null, 'menuItem'),
-      getMenuItem(
-        'Public Forms',
-        '/forms-hub/public-forms',
-        <RxDotFilled size={20} />,
-        null,
-        'menuItem'
-      ),
-      getMenuItem(
-        'Delivery Activity',
-        '/forms-hub/delivery-activity',
-        <RxDotFilled size={20} />,
-        null,
-        'menuItem'
-      )
+      getMenuItem('Forms', '/forms-hub/forms', <RxDotFilled size={20} />, null, 'menuItem')
     ],
     'menuItem'
   ),
