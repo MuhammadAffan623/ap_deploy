@@ -1,0 +1,18 @@
+.profile-form{
+    width: 80%;
+    @include responsive(md) {
+        width: 100%;
+    }
+}
+
+.profile-image-container{
+    width: 100%;
+    max-width: 300px;
+    position: relative;
+    .edit-circle{
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 10;
+    }
+}
