@@ -17,7 +17,8 @@ export const getMockUsers = (
       isActive: isActive !== 'random' ? faker.datatype.boolean() : !!isActive,
       isBlocked: isBlocked !== 'random' ? faker.datatype.boolean() : !!isBlocked,
       phoneNumber: faker.phone.number(),
-      username: faker.internet.userName()
+      username: faker.internet.userName(),
+
     }
   })
 }
@@ -43,6 +44,21 @@ export const getMockForms = (count: number, isCompleted: boolean | 'random'): Pa
       createdAt: faker.date.past().toString(),
       updatedAt: faker.date.recent().toString(),
       version: `v${faker.datatype.float({ max: 50, precision: 0.01 })}`,
+      status: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted
+    }
+  })
+}
+export const getMockLibraryForms = (
+  count: number,
+  isCompleted: boolean | 'random'
+): Partial<IForm>[] => {
+  return Array.from({ length: count }, () => {
+    return {
+      _id: faker.datatype.uuid(),
+      title: faker.name.firstName(),
+      category: faker.animal.type(),
+      createdAt: faker.date.past().toString(),
+      updatedAt: faker.date.recent().toString(),
       status: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted
     }
   })

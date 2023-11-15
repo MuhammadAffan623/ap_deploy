@@ -14,20 +14,17 @@
             flex: 0
         }
 
-        .img-container {
+        .logo-container {
             margin-left: 58px;
             margin-top: 63px;
-            width: 90px;
-            height: 98px;
+            width: 282px;
+            height: 133px;
             text-align: center;
 
             @include responsive(lg) {
                 display: none;
             }
 
-            .logo-text{
-                color: white;
-            }
         }
     }
 

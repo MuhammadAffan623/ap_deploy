@@ -23,7 +23,7 @@ const MainLayout = () => {
             setCollapsed(false)
           }
         }}
-        width={300}
+        width={270}
         collapsible
         collapsed={collapsed}
         setCollapsed={setCollapsed}

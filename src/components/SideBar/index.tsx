@@ -89,7 +89,6 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
         <Link to='/dashboard' className='logo center'>
           <Space direction={collapsed ? 'vertical' : 'horizontal'}>
             <ImagesBox src={logo} className='logoImage' />
-            <span className='logoText'>{collapsed ? '' : 'APSONE'}</span>
           </Space>
         </Link>
         <Divider />

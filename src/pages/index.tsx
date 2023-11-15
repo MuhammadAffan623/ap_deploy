@@ -1,9 +1,7 @@
 //Protected
 import Dashboard from './Dashboard'
 import Forms from './FormsHub/Forms'
-import PublicForms from './FormsHub/PublicForms'
 import Templates from './FormsHub/Templates'
-import DeliveryActivity from './FormsHub/DeliveryActivity'
 import Calender from './Calender'
 import Contacts from './Contacts'
 import Library from './Library'
@@ -25,9 +23,7 @@ export {
   Login,
   ResetPassword,
   Forms,
-  PublicForms,
   Templates,
-  DeliveryActivity,
   Calender,
   Contacts,
   Library,

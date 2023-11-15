@@ -6,13 +6,11 @@ import {
   Calender,
   Contacts,
   Dashboard,
-  DeliveryActivity,
   DeviceManagement,
   Forms,
   Library,
   Login,
   NotFound,
-  PublicForms,
   ResetPassword,
   Settings,
   Templates,
@@ -48,9 +46,7 @@ const Routes = () => {
         { path: 'add-group', element: <AddGroup /> },
         { path: 'settings', element: <Settings /> },
         { path: 'forms-hub/templates', element: <Templates /> },
-        { path: 'forms-hub/forms', element: <Forms /> },
-        { path: 'forms-hub/public-forms', element: <PublicForms /> },
-        { path: 'forms-hub/delivery-activity', element: <DeliveryActivity /> }
+        { path: 'forms-hub/forms', element: <Forms /> }
       ]
     },
 
