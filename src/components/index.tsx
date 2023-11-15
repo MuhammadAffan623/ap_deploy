@@ -11,6 +11,7 @@ import SearchField from './Inputs/SearchField'
 import SelectField from './Inputs/SelectField'
 import TextArea from './Inputs/TextArea'
 import TextField from './Inputs/TextField'
+import DatePicker from './Inputs/DatePicker'
 import SideBar from './SideBar'
 import SummaryCard from './SummaryCard'
 import SummaryCardAlt from './SummaryCardAlt'
@@ -21,6 +22,7 @@ import DropDown from './DropDown'
 import Pill from './Pill/Pill'
 import DynamicTable from './DynamicTable/DynamicTable'
 import PageHeader from './PageHeader'
+import Dragger from './Dragger'
 
 export {
   PageHeader,
@@ -43,7 +45,9 @@ export {
   SummaryCardAlt,
   TextArea,
   TextField,
+  DatePicker,
   UserGroupCard,
   PermissionSwitch,
-  Loader
+  Loader,
+  Dragger
 }

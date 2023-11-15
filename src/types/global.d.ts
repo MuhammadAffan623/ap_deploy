@@ -43,6 +43,13 @@ declare global {
     confirmPassword: string
     activeDevices?: IDevice[]
   }
+  interface ILibrary extends IBase {
+    title: string
+    category: string
+    status: string
+    url: string
+    file: any
+  }
 
   interface IUserGroup extends IBase {
     name: string
