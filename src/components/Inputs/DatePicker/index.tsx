@@ -1,7 +1,5 @@
-import { CSSProperties, ForwardedRef, forwardRef } from 'react'
+import { CSSProperties, forwardRef } from 'react'
 import { ColProps, Form, DatePicker as AntDatePicker, DatePickerProps, theme } from 'antd'
-import { RuleObject } from 'antd/es/form'
-import { emailRegex, passwordRegex, usernameRegex } from '~/utils/helper'
 
 type IProps = {
   message?: string
