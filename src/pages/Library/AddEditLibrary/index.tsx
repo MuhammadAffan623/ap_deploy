@@ -6,7 +6,7 @@ import LibraryFileDropper from './LibraryFileDropper'
 
 interface IAddEditLibraryProps {
   open: boolean
-  handleClose: (status: boolean) => void
+  handleClose: (status?: boolean) => void
   isEdit?: boolean
   library?: Partial<ILibrary>
 }
@@ -20,6 +20,7 @@ const AddEditLibrary = ({ library, handleClose, open, isEdit = false }: IAddEdit
     } else {
       console.log(values)
     }
+    handleClose()
   }
 
   useEffect(() => {
@@ -63,14 +64,21 @@ const AddEditLibrary = ({ library, handleClose, open, isEdit = false }: IAddEdit
               placeholder='category'
               defaultActiveFirstOption
               formItemClass='category-select-field'
-              style={{ border: 'none', width: '100%' }}
+              style={{ marginTop: '3px', background: 'none' }}
             />
           </Col>
           <Col span={24} md={12}>
             <TextField name='url' label='Direct URL' placeholder='Enter url' required />
           </Col>
           <Col span={24} md={12}>
-            <DatePicker name='date' label=' ' placeholder='Select Date' required />
+            <DatePicker
+              name='date'
+              label=' '
+              placeholder='Select Date'
+              style={{ marginTop: '3px' }}
+              fullWidth
+              required
+            />
           </Col>
           <Col span={24}>
             <Divider style={{ border: '1px solid rgba(151, 151, 151, 1)' }} />
