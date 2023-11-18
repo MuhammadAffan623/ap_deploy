@@ -17,8 +17,7 @@ export const getMockUsers = (
       isActive: isActive !== 'random' ? faker.datatype.boolean() : !!isActive,
       isBlocked: isBlocked !== 'random' ? faker.datatype.boolean() : !!isBlocked,
       phoneNumber: faker.phone.number(),
-      username: faker.internet.userName(),
-
+      username: faker.internet.userName()
     }
   })
 }
@@ -62,4 +61,8 @@ export const getMockLibraryForms = (
       status: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted
     }
   })
+}
+export const getMocksLibraryView = (length?: number) => {
+  const arr = new Array(length ?? 1)
+  return [...arr].map(() => faker.lorem.words(4))
 }
