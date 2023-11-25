@@ -5,6 +5,7 @@ import Templates from './FormsHub/Templates'
 import Calender from './Calender'
 import Contacts from './Contacts'
 import Library from './Library'
+import LibraryView from './LibraryView'
 import DeviceManagement from './DeviceManagement'
 import BlueprintsHub from './BlueprintsHub'
 import UserAndGroups from './UserAndGroups'
@@ -27,6 +28,7 @@ export {
   Calender,
   Contacts,
   Library,
+  LibraryView,
   DeviceManagement,
   BlueprintsHub,
   UserAndGroups,

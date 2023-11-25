@@ -1,0 +1,17 @@
+.library-view-cart-container {
+  width: 100%;
+  background: white;
+  padding: 1rem;
+  border-radius: 5px;
+
+  .library-view-cart-link-text {
+    color: inherit;
+    font-size: 1rem;
+    display: block;
+    cursor: pointer;
+  }
+  .library-view-cart-show-more {
+    color: inherit;
+    cursor: pointer;
+  }
+}

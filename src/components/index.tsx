@@ -23,6 +23,7 @@ import Pill from './Pill/Pill'
 import DynamicTable from './DynamicTable/DynamicTable'
 import PageHeader from './PageHeader'
 import Dragger from './Dragger'
+import LibraryViewCart from './LibraryViewCart'
 
 export {
   PageHeader,
@@ -49,5 +50,6 @@ export {
   UserGroupCard,
   PermissionSwitch,
   Loader,
-  Dragger
+  Dragger,
+  LibraryViewCart
 }
