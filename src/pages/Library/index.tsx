@@ -5,6 +5,7 @@ import { PageHeader } from '~/components'
 import { useState } from 'react'
 import Available from './Tabs/Available'
 import Disabled from './Tabs/Disabled'
+import AddEditLibrary from './AddEditLibrary'
 
 const tabsItems = [
   {
@@ -38,9 +39,11 @@ const tabsItems = [
 
 const Library = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
+  const [addEditLibraryModal, setaddEditLibraryModal] = useState(false)
 
   const handleAdd = () => {
     // console.log('')
+    setaddEditLibraryModal(true)
   }
   const handleSelectChange = (value: string) => {
     setSelectedFilter(value)
@@ -60,6 +63,12 @@ const Library = () => {
         onSelectChange={handleSelectChange}
       />
       <Tabs defaultActiveKey='1' type='card' size='large' items={tabsItems} />
+      <AddEditLibrary
+        open={addEditLibraryModal}
+        handleClose={() => {
+          setaddEditLibraryModal(false)
+        }}
+      />
     </div>
   )
 }
