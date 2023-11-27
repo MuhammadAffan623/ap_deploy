@@ -103,3 +103,98 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
     }
   ]
 }
+
+export const Bluecolumns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
+  return [
+    {
+      title: 'PROJECT NAME',
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortDirections: ['descend']
+    },
+    {
+      title: 'TAGS',
+      dataIndex: 'tags',
+      key: 'tags',
+      sorter: (a, b) => a.tags.length - b.tags.length,
+      sortDirections: ['descend'],
+      render: (_, { status }) => {
+        const text = status ? 'ORL' : 'WPB'
+        const textColor = status ? '#14C25A' : '#FC8229'
+        const bgColor = status ? '#14C25A1A' : '#FC82291A'
+        return <Pill text={text} textColor={textColor} bgColor={bgColor} />
+      }
+    },
+    {
+      title: 'SHEET',
+      dataIndex: 'sheet',
+      key: 'sheet',
+      sorter: (a, b) => a.sheet.length - b.sheet.length,
+      sortDirections: ['descend'],
+    },
+    {
+      title: 'UPDATED',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
+      sortDirections: ['descend'],
+      render: ({ updatedAt }) => formatDate(updatedAt)
+    },
+    {
+      title: 'VERSION',
+      dataIndex: 'version',
+      key: 'version',
+      sorter: (a, b) => a.version.length - b.version.length,
+      sortDirections: ['descend']
+    },
+    {
+      title: 'STATUS',
+      dataIndex: 'status',
+      key: 'status',
+      sorter: (a, b) => a.status.length - b.status.length,
+      sortDirections: ['descend'],
+      render: (_, { status }) => {
+        const text = status ? 'Completed' : 'Draft'
+        const textColor = status ? '#14C25A' : '#FC8229'
+        const bgColor = status ? '#14C25A1A' : '#FC82291A'
+        return <Pill text={text} textColor={textColor} bgColor={bgColor} />
+      }
+    },
+    {
+      title: '',
+      align: 'left',
+      key: '',
+      dataIndex: '',
+      render: (_, { id }) => (
+        <Space size='small'>
+          <Dropdown
+            menu={{
+              items,
+              onClick: (params) => {
+                const { key, domEvent } = params
+                domEvent.stopPropagation()
+                if (key === '1') {
+                  handleResolve(id)
+                } else {
+                  handleDelete(id)
+                }
+              }
+            }}
+            placement='bottomRight'
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+              }}
+              style={btnStyle}
+            >
+              <EllipsisOutlined rev />
+            </button>
+          </Dropdown>
+        </Space>
+      )
+    }
+  ]
+}
