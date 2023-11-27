@@ -10,6 +10,7 @@ import BlueprintsHub from './BlueprintsHub'
 import UserAndGroups from './UserAndGroups'
 import Settings from './Settings'
 import AddGroup from './AddGroup'
+import PDFEditor from './PDFEditor/PDFEditor'
 
 // Public
 import NotFound from './NotFound'
@@ -30,5 +31,6 @@ export {
   DeviceManagement,
   BlueprintsHub,
   UserAndGroups,
-  AddGroup
+  AddGroup,
+  PDFEditor
 }
