@@ -68,6 +68,15 @@ declare global {
     status?: boolean
   }
 
+  interface IBlueForm extends IBase {
+    name: string
+    tags: string
+    updated: string
+    version: string
+    status?: boolean
+  }
+
+
   interface IOption {
     label: string
     value: string
