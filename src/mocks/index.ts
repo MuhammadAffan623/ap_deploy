@@ -47,6 +47,21 @@ export const getMockForms = (count: number, isCompleted: boolean | 'random'): Pa
     }
   })
 }
+
+export const getMockBlueForms = (count: number, isCompleted: boolean | 'random'): Partial<IForm>[] => {
+  return Array.from({ length: count }, () => {
+    return {
+      _id: faker.datatype.uuid(),
+      name: faker.name.firstName(),
+      tags: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted,
+      sheet:  faker.datatype.number(),
+      updatedAt: faker.date.recent().toString(),
+      version: `v${faker.datatype.float({ max: 50, precision: 0.01 })}`,
+      status: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted
+    }
+  })
+}
+
 export const getMockLibraryForms = (
   count: number,
   isCompleted: boolean | 'random'
