@@ -1,4 +1,4 @@
-import { Divider, Space, Typography, theme as antTheme } from 'antd'
+import { Divider, Typography, theme as antTheme } from 'antd'
 import { useState } from 'react'
 import './style.scss'
 import { HiPaperClip } from 'react-icons/hi2'

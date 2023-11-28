@@ -1,6 +1,5 @@
 import React from 'react'
 import type { UploadProps } from 'antd'
-import { message } from 'antd'
 import { Button, Dragger } from '~/components'
 import { FaCloudUploadAlt } from 'react-icons/fa'
 
