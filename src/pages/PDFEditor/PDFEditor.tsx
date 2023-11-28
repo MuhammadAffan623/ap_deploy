@@ -7,7 +7,6 @@ const PDFEditor = () => {
   const [downloadLink, setDownloadLink] = useState<any>('')
   const pathToFiles = '/webviewer/lib'
   const filePath = new URLSearchParams(window.location.search).get('file') ?? ''
-  console.log('render')
   useEffect(() => {
     setLoading(true)
     WebViewer(
@@ -44,7 +43,7 @@ const PDFEditor = () => {
           console.log(layers)
 
           // Set all layers to not visible
-          layers.forEach((layer, index) => {
+          layers.forEach((_layer, index) => {
             layers[index].visible = false
           })
           doc.setLayersArray(layers)
