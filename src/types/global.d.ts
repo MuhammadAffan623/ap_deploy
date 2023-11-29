@@ -43,6 +43,12 @@ declare global {
     confirmPassword: string
     activeDevices?: IDevice[]
   }
+
+  interface IProject extends IBase {
+    address: string
+    name: string
+  }
+
   interface ILibrary extends IBase {
     title: string
     category: string
@@ -75,7 +81,6 @@ declare global {
     version: string
     status?: boolean
   }
-
 
   interface IOption {
     label: string
