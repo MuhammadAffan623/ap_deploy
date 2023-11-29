@@ -1,0 +1,65 @@
+.add-edit-contact-form {
+    .phone-number-combined-field {
+      border: 1px solid #e8e9eb;
+      border-radius: 16px;
+      overflow: hidden;
+  
+      .phone-number-form-item {
+        flex-grow: 1;
+  
+        input {
+          border: none;
+          border-radius: 0px;
+  
+          &:focus,
+          &:active,
+          &:hover {
+            border: none;
+            border-radius: 0px;
+          }
+        }
+      }
+  
+      .country-code-select-field {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 100px;
+  
+        .ant-select {
+          border: none;
+          border-radius: 0px;
+  
+          .ant-select-selector {
+            border: none;
+            border-radius: 0px;
+          }
+  
+          &:focus,
+          &:active,
+          &:hover {
+            border: none;
+            border-radius: 0px;
+          }
+        }
+  
+        select {
+          border: none;
+          border-radius: 0px;
+  
+          &:focus,
+          &:active,
+          &:hover {
+            border: none;
+            border-radius: 0px;
+          }
+        }
+      }
+    }
+  }
+  .Text {
+    font-size: 20px;
+    font-weight: 400 !important;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 20px !important;
+  }
