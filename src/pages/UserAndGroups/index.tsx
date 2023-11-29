@@ -10,6 +10,7 @@ import { FaPlus } from 'react-icons/fa6'
 import { Loader } from '~/components'
 import { useNavigate } from 'react-router-dom'
 import UserTable from './UserTable'
+import './style.scss'
 
 const UserAndGroups = () => {
   const { groups, loading } = useGroupsSelector()
@@ -81,6 +82,7 @@ const UserAndGroups = () => {
                       onClick={() => {
                         navigate('/add-group')
                       }}
+                      className='add-group-button'
                     >
                       Add New Group
                     </Button>

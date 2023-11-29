@@ -1,5 +1,7 @@
+import Project from './Project'
+
 const BlueprintsHub = () => {
-  return <div>BlueprintsHub</div>
+  return <Project />
 }
 
 export default BlueprintsHub

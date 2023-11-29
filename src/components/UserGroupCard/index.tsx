@@ -19,7 +19,7 @@ const UserGroupCard = ({ _id, name, users = [] }: IUserGroup) => {
   }
 
   return (
-    <Card>
+    <Card style={{ height: '100%' }}>
       <Row gutter={[10, 4]}>
         <Col span={24}>
           <Row justify='space-between' align='middle'>

@@ -1,0 +1,39 @@
+.border-style{
+    margin-top: 30px;
+}
+
+.button-upload{
+    cursor:pointer;
+    background: none;
+    padding: 0;
+    display: block;
+    border: none;
+    display: contents;
+    font-size: 100px;
+}
+.Upload{
+    background-color: #EB3428;
+    color: #fff;
+    width: 124px;
+    height: 45px;
+    align-items: center;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    font-size: 17px;
+
+    &:hover{
+        color: #EB3428 !important;
+        background-color: #fff;
+        border: 1px solid #fff !important;
+    }
+}
+
+.Title {
+    font-weight: 500 !important;
+}
+
+.Title1 {
+    font-weight: 500 !important;
+    padding-top: 10px;
+}
