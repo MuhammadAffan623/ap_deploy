@@ -16,7 +16,8 @@ import {
   Settings,
   Templates,
   UserAndGroups,
-  AddGroup
+  AddGroup,
+  PDFEditor
 } from '~/pages'
 
 const Routes = () => {
@@ -51,7 +52,7 @@ const Routes = () => {
         { path: 'forms-hub/forms', element: <Forms /> }
       ]
     },
-
+    { path: 'editor', element: <PDFEditor /> },
     { path: '404', element: <NotFound /> },
     {
       path: '*',
