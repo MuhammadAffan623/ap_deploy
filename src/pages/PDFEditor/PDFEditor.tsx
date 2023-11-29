@@ -13,8 +13,8 @@ const PDFEditor = () => {
       {
         path: pathToFiles,
         initialDoc: filePath,
-        disableLogs: true,
-        // licenseKey: 'this is a license key',
+        // disableLogs: true,
+        licenseKey: 'HFDPE8hSA29DWNektuPB',
         enableFilePicker: true,
         enableOptimizedWorkers: true,
         isAdminUser: true,
