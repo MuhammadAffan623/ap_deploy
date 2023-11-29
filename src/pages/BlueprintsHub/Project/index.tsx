@@ -1,11 +1,11 @@
 import { Tabs } from 'antd'
 import All from './Tabs/All'
-import './style.scss'
 import { PageHeader } from '~/components'
 import { useState } from 'react'
 import Archived from './Tabs/Archived'
 import Active from './Tabs/Active'
 import Completed from './Tabs/Completed'
+import AddProject from './AddProject'
 
 const tabsItems = [
   {
@@ -48,23 +48,35 @@ const tabsItems = [
 
 const Project = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
+  const [addEditContactModalOpen, setAddEditContactModalOpen] = useState(false)
+  const [contact, setContact] = useState<Partial<IProject>>({})
 
-  const handleAdd = () => {
-    // console.log('')
-  }
   const handleSelectChange = (value: string) => {
     setSelectedFilter(value)
+  }
+  console.log(setContact)
+
+  const handleCloseAddEditContactModal = (status: boolean) => {
+    setAddEditContactModalOpen(status)
   }
   return (
     <div>
       <PageHeader
         title='Project'
         buttonText='Add'
-        onButtonClick={handleAdd}
+        onButtonClick={() => {
+          handleCloseAddEditContactModal(true)
+        }}
         selectValue={selectedFilter}
         onSelectChange={handleSelectChange}
       />
       <Tabs defaultActiveKey='1' type='card' size='large' items={tabsItems} />
+
+      <AddProject
+        open={addEditContactModalOpen}
+        handleClose={handleCloseAddEditContactModal}
+        contact={contact}
+      />
     </div>
   )
 }
