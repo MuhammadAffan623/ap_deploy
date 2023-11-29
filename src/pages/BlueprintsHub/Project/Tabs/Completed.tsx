@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockBlueForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
-import '../style.scss'
 import { Bluecolumns } from '~/columns/FormsColumns'
 
 const Completed = () => {

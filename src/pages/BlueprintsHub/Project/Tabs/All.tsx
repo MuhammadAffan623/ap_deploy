@@ -3,7 +3,6 @@ import { Bluecolumns } from '~/columns/FormsColumns'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockBlueForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
-import '../style.scss'
 
 const All = () => {
   const [data, setData] = useState<Partial<IBlueForm>[] | []>([])
