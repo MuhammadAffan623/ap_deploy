@@ -15,6 +15,11 @@
     "postinstall": "node tools/copy-webviewer-files.js"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/react": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10",
     "@pdftron/webviewer": "^10.5.1",
     "@reduxjs/toolkit": "^1.9.7",
     "antd": "^5.10.2",
