@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react'
 const PDFEditor = () => {
   const viewer = useRef<HTMLElement>(null)
   const [loading, setLoading] = useState<boolean>(true)
-  const [downloadLink, setDownloadLink] = useState<any>('')
   const pathToFiles = '/webviewer/lib'
   const filePath = new URLSearchParams(window.location.search).get('file') ?? ''
   useEffect(() => {
@@ -13,53 +12,15 @@ const PDFEditor = () => {
       {
         path: pathToFiles,
         initialDoc: filePath,
-        // disableLogs: true,
-        licenseKey: 'HFDPE8hSA29DWNektuPB',
         enableFilePicker: true,
-        enableOptimizedWorkers: true,
-        isAdminUser: true,
-        notesInLeftPanel: true,
-        useDownloader:false,
+        backendType: 'asm',
+        notesInLeftPanel: true
       },
       viewer.current as HTMLElement
-    ).then((instance) => {
-      const { documentViewer } = instance.Core
-
-      documentViewer.addEventListener('documentLoaded', () => {
-        const doc = documentViewer.getDocument()
-
-        doc
-          .getDownloadLink({ filename: 'hello' })
-          ?.then((link) => {
-
-            setDownloadLink(link)
-            console.log('LINK ===================>', link)
-          })
-          .catch((err: any) => {
-            console.error('err =====================>', err)
-          })
-
-        doc.getLayersArray().then((layers) => {
-          console.log(layers)
-
-          // Set all layers to not visible
-          layers.forEach((_layer, index) => {
-            layers[index].visible = false
-          })
-          doc.setLayersArray(layers)
-          // clears page cache
-          documentViewer.refreshAll()
-          // redraws
-          documentViewer.updateView()
-        })
-        setLoading(false)
-      })
+    ).then(() => {
+      setLoading(false)
     })
   }, [])
-
-  useEffect(() => {
-    console.log(downloadLink)
-  }, [downloadLink])
 
   return (
     <div>

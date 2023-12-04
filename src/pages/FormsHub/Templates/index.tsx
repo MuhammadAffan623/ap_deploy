@@ -6,6 +6,7 @@ import { useState } from 'react'
 import Available from './Tabs/Available'
 import Disabled from './Tabs/Disabled'
 import Archived from './Tabs/Archived'
+import { useNavigate } from 'react-router-dom'
 
 const tabsItems = [
   {
@@ -48,8 +49,10 @@ const tabsItems = [
 
 const Templates = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
+  const navigate = useNavigate()
 
   const handleAdd = () => {
+    navigate("/editor?file=/files/empty.pdf")
     // console.log('')
   }
   const handleSelectChange = (value: string) => {
