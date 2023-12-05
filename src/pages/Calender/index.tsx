@@ -1,36 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   EventApi,
   DateSelectArg,
   EventClickArg,
   EventContentArg,
-  formatDate,
-} from '@fullcalendar/core';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
-import './styles.scss';
-
-interface DemoAppState {
-  weekendsVisible: boolean;
-  currentEvents: EventApi[];
-}
+  formatDate
+} from '@fullcalendar/core'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import { INITIAL_EVENTS, createEventId } from './event-utils'
+import './styles.scss'
 
 const DemoApp: React.FC = () => {
-  const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true);
-  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
+  const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true)
+  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
 
   const handleWeekendsToggle = () => {
-    setWeekendsVisible(!weekendsVisible);
-  };
+    setWeekendsVisible(!weekendsVisible)
+  }
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
+    const title = prompt('Please enter a new title for your event')
+    const calendarApi = selectInfo.view.calendar
 
-    calendarApi.unselect(); // clear date selection
+    calendarApi.unselect() // clear date selection
 
     if (title) {
       calendarApi.addEvent({
@@ -38,34 +33,34 @@ const DemoApp: React.FC = () => {
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
+        allDay: selectInfo.allDay
+      })
     }
-  };
+  }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
+      clickInfo.event.remove()
     }
-  };
+  }
 
   const handleEvents = (events: EventApi[]) => {
-    setCurrentEvents(events);
-  };
+    setCurrentEvents(events)
+  }
 
   const renderEventContent = (eventContent: EventContentArg) => (
     <>
       <b>{eventContent.timeText}</b>
       <i>{eventContent.event.title}</i>
     </>
-  );
+  )
 
   const renderSidebarEvent = (event: EventApi) => (
     <li key={event.id}>
       <b>{formatDate(event.start!, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
       <i>{event.title}</i>
     </li>
-  );
+  )
 
   return (
     <div className='demo-app'>
@@ -76,7 +71,7 @@ const DemoApp: React.FC = () => {
           headerToolbar={{
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }}
           initialView='dayGridMonth'
           editable={true}
@@ -97,7 +92,7 @@ const DemoApp: React.FC = () => {
         />
       </div>
     </div>
-  );
+  )
 
   function renderSidebar() {
     return (
@@ -125,8 +120,8 @@ const DemoApp: React.FC = () => {
           <ul>{currentEvents.map(renderSidebarEvent)}</ul>
         </div>
       </div>
-    );
+    )
   }
-};
+}
 
-export default DemoApp;
+export default DemoApp
