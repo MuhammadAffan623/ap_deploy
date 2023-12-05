@@ -1,12 +1,3 @@
-
-html,
-body,
-body > div { /* the react root */
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
 h2 {
   margin: 0;
   font-size: 16px;
@@ -22,13 +13,14 @@ li {
   padding: 0;
 }
 
-b { /* used for event dates/times */
+b {
+  /* used for event dates/times */
   margin-right: 3px;
 }
 
 .demo-app {
   display: flex;
-  min-height: 100%;
+  height: 100%;
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   font-size: 14px;
 }
@@ -46,10 +38,105 @@ b { /* used for event dates/times */
 
 .demo-app-main {
   flex-grow: 1;
-  padding: 3em;
-}
+  padding: 2em;
+  background-color: #fff;
 
-.fc { /* the calendar root */
-  max-width: 1100px;
-  margin: 0 auto;
+  .fc {
+    /* the calendar root */
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .fc-theme-standard td,
+  .fc-theme-standard th {
+    border: 1px solid #E8E9EB;
+  }
+
+  .fc .fc-daygrid-day.fc-day-today {
+    background-color: #FAFAFA;
+
+    .fc-daygrid-day-number {
+      background-color: $primary-color;
+      color: $white;
+      padding: 4px 12px;
+      border-radius: 8px;
+    }
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.75em;
+    margin: 0px;
+    font-weight: 400;
+    color: #3F434A;
+  }
+
+  .fc .fc-daygrid-day-number {
+    color: #3F434A;
+    font-size: 20px;
+  }
+
+  .fc .fc-daygrid-day-top {
+    padding-right: 12px;
+    padding-top: 12px;
+  }
+
+  .fc .fc-button-group {
+    border: 1px solid $borderColor;
+    border-radius: 10px;
+  }
+
+  .fc .fc-button-primary {
+    background-color: $white;
+    border-color: $white;
+    color: $black;
+    border-radius: 10px;
+  }
+
+  .fc .fc-today-button {
+    background-color: #F8F8F8;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .fc .fc-button-primary:not(:disabled).fc-button-active,
+  .fc .fc-button-primary:not(:disabled):active {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    border-radius: 10px;
+
+  }
+
+  .fc .fc-button-primary:not(:disabled).fc-button-active:focus,
+  .fc .fc-button-primary:not(:disabled):active:focus {
+    box-shadow: none;
+  }
+
+  .fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 12px 4px;
+    color: #8A9099;
+    font-weight: 400;
+  }
+
+  .fc .fc-scrollgrid table {
+    border-left-style: hidden;
+    border-right-style: hidden;
+    border-top-style: hidden;
+    border-bottom-style: hidden;
+  }
+
+  .fc-theme-standard .fc-scrollgrid {
+    border: none
+  }
+
+  .fc-h-event .fc-event-main {
+    padding: 2px;
+    font-size: 12px;
+    color: #3F434A;
+    position: relative;
+  }
+
+  // .event {
+  //   padding: 5px;
+  // }
 }
