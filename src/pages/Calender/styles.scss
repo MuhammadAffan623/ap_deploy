@@ -105,9 +105,8 @@ b {
     border-radius: 10px;
 
   }
-
-  .fc .fc-button-primary:not(:disabled).fc-button-active:focus,
-  .fc .fc-button-primary:not(:disabled):active:focus {
+  
+  .fc .fc-button-group>.fc-button:focus {
     box-shadow: none;
   }
 

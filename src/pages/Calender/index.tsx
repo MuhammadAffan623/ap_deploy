@@ -10,32 +10,36 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+import { INITIAL_EVENTS } from './event-utils'
 import './styles.scss'
+import AddEditEvent from './AddEditEvent'
 
 const DemoApp: React.FC = () => {
   const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true)
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
+  const [open, setOpen] = useState<boolean>(false)
+  const [event, setEvent] = useState(null)
 
   const handleWeekendsToggle = () => {
     setWeekendsVisible(!weekendsVisible)
   }
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    const title = prompt('Please enter a new title for your event')
-    const calendarApi = selectInfo.view.calendar
+    // const title = prompt('Please enter a new title for your event')
+    setOpen(true)
+    // const calendarApi = selectInfo.view.calendar
 
-    calendarApi.unselect() // clear date selection
+    // calendarApi.unselect() // clear date selection
 
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      })
-    }
+    // if (title) {
+    //   calendarApi.addEvent({
+    //     id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay
+    //   })
+    // }
   }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
@@ -120,6 +124,8 @@ const DemoApp: React.FC = () => {
           */
         />
       </div>
+
+      <AddEditEvent open={open} handleClose={() => setOpen(false)} event={event} />
     </div>
   )
 }
