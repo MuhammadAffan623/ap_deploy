@@ -1,3 +1,5 @@
+import { EventInput } from '@fullcalendar/core'
+
 declare global {
   type ReactNode =
     | React.ReactElement<unknown>
@@ -21,7 +23,6 @@ declare global {
     createdAt?: string
     updatedAt?: string
   }
-
   interface IDevice {
     deviceType: string
     name: string
@@ -80,6 +81,19 @@ declare global {
     updated: string
     version: string
     status?: boolean
+  }
+
+  interface IEvent extends EventInput {
+    _id: string
+    title: string
+    description: string
+    color: string
+    start: string
+    end: string
+    className: string
+    // users: IUser
+    createdAt: string
+    updatedAt: string
   }
 
   interface IOption {

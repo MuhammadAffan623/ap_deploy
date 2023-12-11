@@ -34,6 +34,23 @@ export const getMockUserGroups = (count: number): IUserGroup[] => {
   })
 }
 
+export const getMockEvents = (count: number): IEvent[] => {
+  return Array.from({ length: count }, () => {
+    return {
+      _id: faker.datatype.uuid(),
+      title: faker.lorem.word(),
+      description: faker.lorem.words(5),
+      color: faker.color.human(),
+      start: faker.date.recent().toISOString().replace(/T.*$/, ''),
+      end: faker.date.recent().toISOString().replace(/T.*$/, ''),
+      className: 'event',
+      // users: getMockUsers(faker.datatype.number({ min: 1, max: 11 }), false, false),
+      createdAt: faker.date.past().toString(),
+      updatedAt: faker.date.recent().toString()
+    }
+  })
+}
+
 export const getMockForms = (count: number, isCompleted: boolean | 'random'): Partial<IForm>[] => {
   return Array.from({ length: count }, () => {
     return {
@@ -48,13 +65,16 @@ export const getMockForms = (count: number, isCompleted: boolean | 'random'): Pa
   })
 }
 
-export const getMockBlueForms = (count: number, isCompleted: boolean | 'random'): Partial<IForm>[] => {
+export const getMockBlueForms = (
+  count: number,
+  isCompleted: boolean | 'random'
+): Partial<IForm>[] => {
   return Array.from({ length: count }, () => {
     return {
       _id: faker.datatype.uuid(),
       name: faker.name.firstName(),
       tags: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted,
-      sheet:  faker.datatype.number(),
+      sheet: faker.datatype.number(),
       updatedAt: faker.date.recent().toString(),
       version: `v${faker.datatype.float({ max: 50, precision: 0.01 })}`,
       status: isCompleted !== 'random' ? faker.datatype.boolean() : !!isCompleted
@@ -77,6 +97,7 @@ export const getMockLibraryForms = (
     }
   })
 }
+
 export const getMocksLibraryView = (length?: number) => {
   const arr = new Array(length ?? 1)
   return [...arr].map(() => faker.lorem.words(4))

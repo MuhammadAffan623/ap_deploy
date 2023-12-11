@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   EventApi,
   DateSelectArg,
@@ -13,12 +13,30 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS } from './event-utils'
 import './styles.scss'
 import AddEditEvent from './AddEditEvent'
+import { getEventsAsync } from '~/store/features/events'
+import { useAppDispatch } from '~/store/hooks'
+import { useSelector } from 'react-redux'
+import { RootState } from '~/store/reducers'
+import EventDetail from './EventDetail'
 
 const DemoApp: React.FC = () => {
   const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true)
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
   const [open, setOpen] = useState<boolean>(false)
-  const [event, setEvent] = useState(null)
+  const [isEventModal, setIsEventModal] = useState<boolean>(false)
+  const [event, setEvent] = useState<any>(null)
+
+  const dispatch = useAppDispatch()
+  const { events } = useSelector((state: RootState) => state.events)
+
+  useEffect(() => {
+    dispatch(getEventsAsync(11))
+  }, [dispatch])
+
+  useEffect(() => {
+    console.log('events', events)
+    setCurrentEvents(events as any)
+  }, [events])
 
   const handleWeekendsToggle = () => {
     setWeekendsVisible(!weekendsVisible)
@@ -27,9 +45,9 @@ const DemoApp: React.FC = () => {
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     // const title = prompt('Please enter a new title for your event')
     setOpen(true)
-    // const calendarApi = selectInfo.view.calendar
-
-    // calendarApi.unselect() // clear date selection
+    const calendarApi = selectInfo.view.calendar
+    console.log('handleDateSelect', selectInfo)
+    calendarApi.unselect() // clear date selection
 
     // if (title) {
     //   calendarApi.addEvent({
@@ -43,12 +61,33 @@ const DemoApp: React.FC = () => {
   }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove()
+    setEvent({
+      title: clickInfo.event.title,
+      start: clickInfo.event.start,
+      end: clickInfo.event.end,
+      color: clickInfo.event.backgroundColor,
+      clickInfo
+    })
+    setIsEventModal(true)
+
+    // console.log('title:', clickInfo.event.title)
+    // console.log('start:', clickInfo.event.start)
+    // console.log('end:', clickInfo.event.end)
+    // console.log('id:', clickInfo.event.backgroundColor)
+    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    //   clickInfo.event.remove()
+    // }
+  }
+
+  const handleDeleteEvent = () => {
+    if (event.clickInfo) {
+      event.clickInfo.event.remove()
+      setEvent(null), setIsEventModal(false)
     }
   }
 
   const handleEvents = (events: EventApi[]) => {
+    console.log('events', events)
     setCurrentEvents(events)
   }
 
@@ -95,37 +134,58 @@ const DemoApp: React.FC = () => {
     )
   }
 
+  console.log('envets', events)
+
   return (
     <div className='demo-app'>
       {/* {renderSidebar()} */}
-      <div className='demo-app-main'>
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-          }}
-          initialView='dayGridMonth'
-          editable={true}
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={true}
-          weekends={weekendsVisible}
-          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
-          select={handleDateSelect}
-          eventContent={renderEventContent} // custom render function
-          eventClick={handleEventClick}
-          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-          /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}
-            eventRemove={function(){}}
-          */
-        />
-      </div>
 
-      <AddEditEvent open={open} handleClose={() => setOpen(false)} event={event} />
+      {useMemo(
+        () => (
+          <div className='demo-app-main'>
+            <FullCalendar
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              headerToolbar={{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              }}
+              initialView='dayGridMonth'
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+              weekends={weekendsVisible}
+              // initialEvents={events} // alternatively, use the `events` setting to fetch from a feed
+              events={events}
+              select={handleDateSelect}
+              eventContent={renderEventContent} // custom render function
+              eventClick={handleEventClick}
+              eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+              /* you can update a remote database when these fire:
+              eventAdd={function(){}}
+              eventChange={function(){}}
+              eventRemove={function(){}}
+              */
+            />
+          </div>
+        ),
+        [events]
+      )}
+
+      <AddEditEvent
+        open={open}
+        handleClose={() => setOpen(false)}
+        event={event}
+        // calendarApi={calendarApi}
+      />
+
+      <EventDetail
+        open={isEventModal}
+        handleClose={() => setIsEventModal(false)}
+        onDelete={handleDeleteEvent}
+        event={event}
+      />
     </div>
   )
 }
