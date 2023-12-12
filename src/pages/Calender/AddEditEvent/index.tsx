@@ -59,20 +59,6 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false }: IProps) => {
         startAt: dayjs(values.range[0]).format('YYYY-MM-DD HH:mm'),
         endAt: dayjs(values.range[1]).format('YYYY-MM-DD HH:mm')
       }
-
-      // const calendarApi = selectInfo.view.calendar
-
-      // calendarApi.unselect() // clear date selection
-
-      // if (title) {
-      //   calendarApi.addEvent({
-      //     id: createEventId(),
-      //     title,
-      //     start: selectInfo.startStr,
-      //     end: selectInfo.endStr,
-      //     allDay: selectInfo.allDay
-      //   })
-      // }
       console.log(modifiedObj)
     }
   }

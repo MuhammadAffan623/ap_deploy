@@ -1,29 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-  EventApi,
-  DateSelectArg,
-  EventClickArg,
-  EventContentArg,
-  formatDate
-} from '@fullcalendar/core'
+import { EventApi, DateSelectArg, EventClickArg, EventContentArg } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS } from './event-utils'
-import './styles.scss'
 import AddEditEvent from './AddEditEvent'
 import { getEventsAsync } from '~/store/features/events'
 import { useAppDispatch } from '~/store/hooks'
 import { useSelector } from 'react-redux'
 import { RootState } from '~/store/reducers'
 import EventDetail from './EventDetail'
+import AddNewCalender from './AddNewCalender'
+import './styles.scss'
 
-const DemoApp: React.FC = () => {
-  const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true)
+const Calender: React.FC = () => {
+  const [weekendsVisible] = useState<boolean>(true)
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [isEventModal, setIsEventModal] = useState<boolean>(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true)
   const [event, setEvent] = useState<any>(null)
 
   const dispatch = useAppDispatch()
@@ -34,30 +29,13 @@ const DemoApp: React.FC = () => {
   }, [dispatch])
 
   useEffect(() => {
-    console.log('events', events)
     setCurrentEvents(events as any)
   }, [events])
 
-  const handleWeekendsToggle = () => {
-    setWeekendsVisible(!weekendsVisible)
-  }
-
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    // const title = prompt('Please enter a new title for your event')
     setOpen(true)
     const calendarApi = selectInfo.view.calendar
-    console.log('handleDateSelect', selectInfo)
-    calendarApi.unselect() // clear date selection
-
-    // if (title) {
-    //   calendarApi.addEvent({
-    //     id: createEventId(),
-    //     title,
-    //     start: selectInfo.startStr,
-    //     end: selectInfo.endStr,
-    //     allDay: selectInfo.allDay
-    //   })
-    // }
+    calendarApi.unselect()
   }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
@@ -69,76 +47,44 @@ const DemoApp: React.FC = () => {
       clickInfo
     })
     setIsEventModal(true)
-
-    // console.log('title:', clickInfo.event.title)
-    // console.log('start:', clickInfo.event.start)
-    // console.log('end:', clickInfo.event.end)
-    // console.log('id:', clickInfo.event.backgroundColor)
-    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-    //   clickInfo.event.remove()
-    // }
   }
 
   const handleDeleteEvent = () => {
     if (event.clickInfo) {
       event.clickInfo.event.remove()
-      setEvent(null), setIsEventModal(false)
+      setEvent(null)
+      setIsEventModal(false)
     }
   }
 
   const handleEvents = (events: EventApi[]) => {
-    console.log('events', events)
+    console.log('currentEvents', currentEvents)
     setCurrentEvents(events)
   }
 
+  const handleEventMouseEnter = (mouseEnterInfo: any) => {
+    const eventDetail = mouseEnterInfo.event
+    console.log(eventDetail)
+  }
+
   const renderEventContent = (eventContent: EventContentArg) => (
-    <>
+    <div>
       <b>{eventContent.timeText}</b>
       <span>{eventContent.event.title}</span>
-    </>
-  )
-
-  const renderSidebarEvent = (event: EventApi) => (
-    <li key={event.id}>
-      <b>{formatDate(event.start!, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
-      <span>{event.title}</span>
-    </li>
+    </div>
   )
 
   const renderSidebar = () => {
     return (
       <div className='demo-app-sidebar'>
-        <div className='demo-app-sidebar-section'>
-          <h2>Instructions</h2>
-          <ul>
-            <li>Select dates and you will be prompted to create a new event</li>
-            <li>Drag, drop, and resize events</li>
-            <li>Click an event to delete it</li>
-          </ul>
-        </div>
-        <div className='demo-app-sidebar-section'>
-          <label>
-            <input
-              type='checkbox'
-              checked={weekendsVisible}
-              onChange={handleWeekendsToggle}
-            ></input>
-            toggle weekends
-          </label>
-        </div>
-        <div className='demo-app-sidebar-section'>
-          <h2>All Events ({currentEvents.length})</h2>
-          <ul>{currentEvents.map(renderSidebarEvent)}</ul>
-        </div>
+        <AddNewCalender handleClose={() => setIsSidebarOpen(false)} />
       </div>
     )
   }
 
-  console.log('envets', events)
-
   return (
     <div className='demo-app'>
-      {/* {renderSidebar()} */}
+      {isSidebarOpen && renderSidebar()}
 
       {useMemo(
         () => (
@@ -156,16 +102,17 @@ const DemoApp: React.FC = () => {
               selectMirror={true}
               dayMaxEvents={true}
               weekends={weekendsVisible}
-              // initialEvents={events} // alternatively, use the `events` setting to fetch from a feed
               events={events}
               select={handleDateSelect}
-              eventContent={renderEventContent} // custom render function
+              eventContent={renderEventContent}
               eventClick={handleEventClick}
+              eventMouseEnter={handleEventMouseEnter}
               eventsSet={handleEvents} // called after events are initialized/added/changed/removed
               /* you can update a remote database when these fire:
               eventAdd={function(){}}
               eventChange={function(){}}
               eventRemove={function(){}}
+              
               */
             />
           </div>
@@ -173,12 +120,7 @@ const DemoApp: React.FC = () => {
         [events]
       )}
 
-      <AddEditEvent
-        open={open}
-        handleClose={() => setOpen(false)}
-        event={event}
-        // calendarApi={calendarApi}
-      />
+      <AddEditEvent open={open} handleClose={() => setOpen(false)} event={event} />
 
       <EventDetail
         open={isEventModal}
@@ -190,4 +132,4 @@ const DemoApp: React.FC = () => {
   )
 }
 
-export default DemoApp
+export default Calender

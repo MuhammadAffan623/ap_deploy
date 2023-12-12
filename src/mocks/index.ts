@@ -40,7 +40,7 @@ export const getMockEvents = (count: number): IEvent[] => {
       _id: faker.datatype.uuid(),
       title: faker.lorem.word(),
       description: faker.lorem.words(5),
-      color: faker.color.human(),
+      color: faker.color.rgb() + '70',
       start: faker.date.recent().toISOString().replace(/T.*$/, ''),
       end: faker.date.recent().toISOString().replace(/T.*$/, ''),
       className: 'event',

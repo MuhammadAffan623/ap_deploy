@@ -1,0 +1,29 @@
+.new-calender-modal {
+  padding: $padding;
+
+  .new-calender-close {
+    margin-left: auto;
+    display: flex;
+    justify-content: end;
+  }
+
+  .new-calender-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .new-calender-color-box {
+      width: 62px;
+      height: 32px;
+      border-radius: 0 0 4px 4px;
+      position: relative;
+      cursor: pointer;
+
+      .color-check {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
