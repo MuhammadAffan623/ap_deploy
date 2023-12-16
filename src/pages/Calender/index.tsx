@@ -12,6 +12,7 @@ import { RootState } from '~/store/reducers'
 import EventDetail from './EventDetail'
 import AddNewCalender from './AddNewCalender'
 import './styles.scss'
+import { PageHeader } from '~/components'
 
 const Calender: React.FC = () => {
   const [weekendsVisible] = useState<boolean>(true)
@@ -83,52 +84,62 @@ const Calender: React.FC = () => {
   }
 
   return (
-    <div className='demo-app'>
-      {isSidebarOpen && renderSidebar()}
+    <>
+      <PageHeader
+        title='Calender'
+        buttonText='Add Event'
+        onButtonClick={() => {
+          setOpen(true)
+        }}
+      />
 
-      {useMemo(
-        () => (
-          <div className='demo-app-main'>
-            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              headerToolbar={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-              }}
-              initialView='dayGridMonth'
-              editable={true}
-              selectable={true}
-              selectMirror={true}
-              dayMaxEvents={true}
-              weekends={weekendsVisible}
-              events={events}
-              select={handleDateSelect}
-              eventContent={renderEventContent}
-              eventClick={handleEventClick}
-              eventMouseEnter={handleEventMouseEnter}
-              eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-              /* you can update a remote database when these fire:
+      <div className='demo-app'>
+        {isSidebarOpen && renderSidebar()}
+
+        {useMemo(
+          () => (
+            <div className='demo-app-main'>
+              <FullCalendar
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                headerToolbar={{
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                }}
+                initialView='dayGridMonth'
+                editable={true}
+                selectable={true}
+                selectMirror={true}
+                dayMaxEvents={true}
+                weekends={weekendsVisible}
+                events={events}
+                select={handleDateSelect}
+                eventContent={renderEventContent}
+                eventClick={handleEventClick}
+                eventMouseEnter={handleEventMouseEnter}
+                eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+                /* you can update a remote database when these fire:
               eventAdd={function(){}}
               eventChange={function(){}}
               eventRemove={function(){}}
               
               */
-            />
-          </div>
-        ),
-        [events]
-      )}
+              />
+            </div>
+          ),
+          [events]
+        )}
 
-      <AddEditEvent open={open} handleClose={() => setOpen(false)} event={event} />
+        <AddEditEvent open={open} handleClose={() => setOpen(false)} event={event} />
 
-      <EventDetail
-        open={isEventModal}
-        handleClose={() => setIsEventModal(false)}
-        onDelete={handleDeleteEvent}
-        event={event}
-      />
-    </div>
+        <EventDetail
+          open={isEventModal}
+          handleClose={() => setIsEventModal(false)}
+          onDelete={handleDeleteEvent}
+          event={event}
+        />
+      </div>
+    </>
   )
 }
 

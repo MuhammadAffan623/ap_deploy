@@ -13,9 +13,10 @@
   border-right: 1px solid #d3e2e8;
   height: 100vh;
   position: absolute;
-  top: -24px;
+  top: -86px;
   left: -24px;
   z-index: 10;
+  height: 107vh;
 }
 
 .demo-app-sidebar-section {
@@ -46,7 +47,7 @@
     .fc-daygrid-day-number {
       background-color: $primary-color;
       color: $white;
-      padding: 4px 12px;
+      padding: 2px 8px;
       border-radius: 8px;
     }
   }
@@ -138,7 +139,4 @@
     color: #000;
   }
 
-  // .event {
-  //   padding: 5px;
-  // }
 }
