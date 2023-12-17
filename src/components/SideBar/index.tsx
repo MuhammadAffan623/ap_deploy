@@ -1,4 +1,4 @@
-import { Divider, Menu, MenuProps, SiderProps, Space, theme } from 'antd'
+import { Checkbox, Divider, Menu, MenuProps, SiderProps, Space, Typography, theme } from 'antd'
 import SidebarWrapper from './SideBarWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -11,6 +11,8 @@ import { LogoutOutlined } from '@ant-design/icons'
 import './style.scss'
 import { MenuItem, getMenuItem } from '~/utils/helper'
 import { navigationMenuItems } from './MenuItems'
+import Button from '../Button'
+import { BsPlus, BsThreeDots } from 'react-icons/bs'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -34,6 +36,8 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { token } = useToken()
   const { colorBgContainer, colorPrimary, colorText } = token
   const [isOpenMenu, setOpenMenu] = useState<string[] | []>([])
+
+  const isCalendarPage = pathname.includes('calender')
 
   const logoutMenuItem: MenuItem[] = [
     getMenuItem('Logout', 'logout', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
@@ -105,6 +109,25 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
             />
           </div>
         </PerfectScrollbar>
+
+        {isCalendarPage && (
+          <div style={{ height: '340px', overflow: 'auto' }} className='scrollbar-hidden'>
+            <div className='schedule-wrapper'>
+              <Typography.Text className='sidebar-schedules'>SCHEDULES</Typography.Text>
+              <Button type='text'>
+                <BsPlus color='white' fontSize={18} />
+              </Button>
+            </div>
+            <div className='sidebar-checkbox'>
+              <Checkbox name='eventType' style={{ color: 'white' }}>
+                Calender 1
+              </Checkbox>
+              <Button type='text'>
+                <BsThreeDots color='white' fontSize={18} />
+              </Button>
+            </div>
+          </div>
+        )}
 
         <Divider style={{ margin: 0 }} />
         <div className='logoutSidebarMenuWrapper'>
