@@ -1,6 +1,6 @@
 import { Col, Form, Row, Typography } from 'antd'
 import { useEffect, useState } from 'react'
-import { Avatar, BasicModal, TextField } from '~/components'
+import { Avatar, BasicModal, Button, TextField } from '~/components'
 import './styles.scss'
 import { CloudUploadOutlined } from '@ant-design/icons'
 import Upload from '~/components/Upload'
@@ -79,6 +79,9 @@ const AddProject = ({ contact, handleClose, open, isEdit = false }: IAddProjectP
         Best Quality to Upload Your Brand for PDF'S Multipage PDF'S are also supported and will
         automatically name and hyperlink them
       </Typography.Title>
+      <Button type='primary' className='save-button'>
+        Save
+      </Button>
     </BasicModal>
   )
 }
