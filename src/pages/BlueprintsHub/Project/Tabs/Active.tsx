@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Bluecolumns } from '~/columns/FormsColumns'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockBlueForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
 
 const Active = () => {
+  const navigate = useNavigate()
   const [data, setData] = useState<Partial<IBlueForm>[] | []>([])
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [loadingData, setLoadingData] = useState<boolean>(false)
@@ -46,6 +48,10 @@ const Active = () => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys)
     setSelectedRowKeys(newSelectedRowKeys)
   }
+  const handleRowChange = (project: any) => {
+    navigate('/blueprints-hub/detail-project')
+    console.log(project, 'hello')
+  }
 
   const rowSelection = {
     selectedRowKeys,
@@ -72,6 +78,7 @@ const Active = () => {
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
+            onRowClick={handleRowChange}
           />
         )
       }, [data, selectedRowKeys])}
