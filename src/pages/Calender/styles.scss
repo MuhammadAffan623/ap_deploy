@@ -17,6 +17,40 @@
   left: -24px;
   z-index: 10;
   height: 107vh;
+  display: inline-block;
+  overflow: hidden;
+  /* Hide content that overflows the sidebar */
+  animation: sidebarTransitionIn 0.2s ease-in-out forwards;
+  /* Animation for opening */
+}
+
+.display-hidden {
+  animation: sidebarTransitionOut 0.2s ease-in-out forwards;
+  /* Animation for closing */
+}
+
+@keyframes sidebarTransitionIn {
+  from {
+    visibility: hidden;
+    width: 0;
+  }
+
+  to {
+    visibility: visible;
+    width: 400px;
+  }
+}
+
+@keyframes sidebarTransitionOut {
+  from {
+    visibility: visible;
+    width: 400px;
+  }
+
+  to {
+    visibility: hidden;
+    width: 0;
+  }
 }
 
 .demo-app-sidebar-section {

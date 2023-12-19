@@ -5,10 +5,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import AddEditEvent from './AddEditEvent'
-import { getEventsAsync } from '~/store/features/events'
-import { useAppDispatch } from '~/store/hooks'
-import { useSelector } from 'react-redux'
-import { RootState } from '~/store/reducers'
+import { getEventsAsync, setCalenderModalClose } from '~/store/features/events'
+import { useAppDispatch, useEventSelector } from '~/store/hooks'
+
 import EventDetail from './EventDetail'
 import AddNewCalender from './AddNewCalender'
 import './styles.scss'
@@ -19,11 +18,10 @@ const Calender: React.FC = () => {
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [isEventModal, setIsEventModal] = useState<boolean>(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true)
   const [event, setEvent] = useState<any>(null)
 
+  const { events, calenderSideBarOpen } = useEventSelector()
   const dispatch = useAppDispatch()
-  const { events } = useSelector((state: RootState) => state.events)
 
   useEffect(() => {
     dispatch(getEventsAsync(11))
@@ -77,8 +75,8 @@ const Calender: React.FC = () => {
 
   const renderSidebar = () => {
     return (
-      <div className='demo-app-sidebar'>
-        <AddNewCalender handleClose={() => setIsSidebarOpen(false)} />
+      <div className={`demo-app-sidebar ${calenderSideBarOpen ? '' : 'display-hidden'}`}>
+        <AddNewCalender handleClose={() => dispatch(setCalenderModalClose())} />
       </div>
     )
   }
@@ -94,7 +92,7 @@ const Calender: React.FC = () => {
       />
 
       <div className='demo-app'>
-        {isSidebarOpen && renderSidebar()}
+        {calenderSideBarOpen && renderSidebar()}
 
         {useMemo(
           () => (

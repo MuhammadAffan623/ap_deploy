@@ -5,11 +5,13 @@ import { message } from '~/store/toast'
 interface IInitialState {
   events: IEvent[]
   loading: boolean
+  calenderSideBarOpen: boolean
 }
 
 const initialState: IInitialState = {
   events: [],
-  loading: false
+  loading: false,
+  calenderSideBarOpen: false
 }
 
 export const getEventsAsync = createAsyncThunk(
@@ -32,7 +34,13 @@ export const eventsSlice = createSlice({
       state.events = payload
     },
     addEvent: (state, { payload }: PayloadAction<IEvent[]>) => {
-      state.events = [...state.events, ...payload]
+      state.events = [...payload, ...state.events]
+    },
+    setCalenderModalOpen: (state) => {
+      state.calenderSideBarOpen = true
+    },
+    setCalenderModalClose: (state) => {
+      state.calenderSideBarOpen = false
     }
   },
 
@@ -52,4 +60,5 @@ export const eventsSlice = createSlice({
   }
 })
 
-export const { setEvents } = eventsSlice.actions
+export const { setEvents, addEvent, setCalenderModalClose, setCalenderModalOpen } =
+  eventsSlice.actions

@@ -39,8 +39,6 @@ input:-webkit-autofill:focus {
   width: 20px;
   height: 20px;
   direction: ltr;
-  background-color: white;
-  border: 1px solid #E8E9EB;
   border-radius: 4px;
   border-collapse: separate;
   transition: all 0.3s;
@@ -129,7 +127,8 @@ input:-webkit-autofill:focus {
 /* Hide scrollbar for IE, Edge add Firefox */
 .scrollbar-hidden {
   -ms-overflow-style: none;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .ps__rail-y {
@@ -137,13 +136,11 @@ input:-webkit-autofill:focus {
   width: 0px !important;
 }
 
-.ant-skeleton.ant-skeleton-active.light > span {
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.1) 25%,
-    rgba(255, 255, 255, 0.2) 37%,
-    rgba(255, 255, 255, 0.1) 63%
-  );
+.ant-skeleton.ant-skeleton-active.light>span {
+  background-image: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.1) 25%,
+      rgba(255, 255, 255, 0.2) 37%,
+      rgba(255, 255, 255, 0.1) 63%);
 }
 
 .ant-spin-nested-loading {
@@ -159,6 +156,7 @@ input:-webkit-autofill:focus {
 }
 
 @keyframes loader-functionAnimation {
+
   0%,
   80%,
   100% {

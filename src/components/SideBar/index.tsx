@@ -13,6 +13,8 @@ import { MenuItem, getMenuItem } from '~/utils/helper'
 import { navigationMenuItems } from './MenuItems'
 import Button from '../Button'
 import { BsPlus, BsThreeDots } from 'react-icons/bs'
+import { useDispatch } from 'react-redux'
+import { setCalenderModalOpen } from '~/store/features/events'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -36,7 +38,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { token } = useToken()
   const { colorBgContainer, colorPrimary, colorText } = token
   const [isOpenMenu, setOpenMenu] = useState<string[] | []>([])
-
+  const dispatch = useDispatch()
   const isCalendarPage = pathname.includes('calender')
 
   const logoutMenuItem: MenuItem[] = [
@@ -64,6 +66,10 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
     } else {
       setOpenMenu(latestOpenKey ? [latestOpenKey] : [])
     }
+  }
+
+  const handleOpenModal = () => {
+    dispatch(setCalenderModalOpen())
   }
 
   return (
@@ -114,18 +120,24 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
           <div style={{ height: '340px', overflow: 'auto' }} className='scrollbar-hidden'>
             <div className='schedule-wrapper'>
               <Typography.Text className='sidebar-schedules'>SCHEDULES</Typography.Text>
-              <Button type='text'>
+              <Button type='text' onClick={handleOpenModal}>
                 <BsPlus color='white' fontSize={18} />
               </Button>
             </div>
-            <div className='sidebar-checkbox'>
-              <Checkbox name='eventType' style={{ color: 'white' }}>
-                Calender 1
-              </Checkbox>
-              <Button type='text'>
-                <BsThreeDots color='white' fontSize={18} />
-              </Button>
-            </div>
+            {[1, 2, 3].map((item, index) => (
+              <div className='sidebar-checkbox' key={index}>
+                <Checkbox
+                  name={`calendar-${item}`}
+                  // onChange={(e) => console.log({ checked: e.target.checked, name: e.target.name })}
+                  style={{ color: 'white' }}
+                >
+                  Calender {item}
+                </Checkbox>
+                <Button type='text'>
+                  <BsThreeDots color='white' fontSize={18} />
+                </Button>
+              </div>
+            ))}
           </div>
         )}
 
