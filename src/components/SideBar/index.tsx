@@ -12,9 +12,11 @@ import './style.scss'
 import { MenuItem, getMenuItem } from '~/utils/helper'
 import { navigationMenuItems } from './MenuItems'
 import Button from '../Button'
-import { BsPlus, BsThreeDots } from 'react-icons/bs'
+import { BsPlus } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 import { setCalenderModalOpen } from '~/store/features/events'
+import DropDown from '../DropDown'
+import { calenderActionItems } from '~/utils/options'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -72,6 +74,10 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
     dispatch(setCalenderModalOpen())
   }
 
+  const handleClickItem = (key: string) => {
+    console.log('handleClickItem key: ', key)
+  }
+
   return (
     <SidebarWrapper
       setCollapsed={setCollapsed}
@@ -126,16 +132,16 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
             </div>
             {[1, 2, 3].map((item, index) => (
               <div className='sidebar-checkbox' key={index}>
-                <Checkbox
-                  name={`calendar-${item}`}
-                  // onChange={(e) => console.log({ checked: e.target.checked, name: e.target.name })}
-                  style={{ color: 'white' }}
-                >
+                <Checkbox name={`calendar-${item}`} style={{ color: 'white' }}>
                   Calender {item}
                 </Checkbox>
-                <Button type='text'>
-                  <BsThreeDots color='white' fontSize={18} />
-                </Button>
+
+                <DropDown
+                  dot
+                  items={calenderActionItems}
+                  handleClickItem={handleClickItem}
+                  color='white'
+                />
               </div>
             ))}
           </div>
