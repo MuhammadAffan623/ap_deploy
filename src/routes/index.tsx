@@ -19,6 +19,7 @@ import {
   AddGroup,
   PDFEditor
 } from '~/pages'
+import DetailProject from '~/pages/BlueprintsHub/DetailProject'
 
 const Routes = () => {
   const element = useRoutes([
@@ -43,7 +44,13 @@ const Routes = () => {
         { path: 'contacts', element: <Contacts /> },
         { path: 'library', element: <Library /> },
         { path: 'library-view', element: <LibraryView /> },
-        { path: 'blueprints-hub', element: <BlueprintsHub /> },
+        {
+          path: 'blueprints-hub',
+          children: [
+            { path: 'detail-project', element: <DetailProject /> },
+            { path: '', element: <BlueprintsHub /> }
+          ]
+        },
         { path: 'device-management', element: <DeviceManagement /> },
         { path: 'user-and-groups', element: <UserAndGroups /> },
         { path: 'add-group', element: <AddGroup /> },
