@@ -1,0 +1,18 @@
+.action-buttons {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  margin-right: 24px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .list-item {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+}

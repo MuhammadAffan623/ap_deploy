@@ -228,8 +228,24 @@ export const calendarPermissions: IPermission[] = [
   }
 ]
 
-
 export const formatDate = (date: string) => {
   const d = dayjs(date).format('MM-DD-YY')
   return d
+}
+
+export const colorsToHex = (colorNames: string[]): string[] => {
+  const colorMap: Record<any, string> = {
+    red: '#FD7972',
+    green: '#00FF00',
+    blue: '#304FFD',
+    yellow: '#FFD240',
+    purple: '#800080',
+    gray: '#808080',
+    orange: '#FF965D',
+    pink: '#FFC0CB',
+    indigo: '#4B0082'
+    // Add more colors as needed
+  }
+
+  return colorNames.map((color) => colorMap[color.toLowerCase()] || '')
 }

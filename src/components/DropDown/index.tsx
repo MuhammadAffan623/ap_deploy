@@ -6,12 +6,14 @@ const DropDown = ({
   items,
   handleClickItem,
   dot,
+  color = 'black',
   title = 'Actions'
 }: {
   items: MenuProps['items']
   handleClickItem: (e: string) => void
   dot?: boolean
   title?: string
+  color?: string
 }) => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     handleClickItem(e.key)
@@ -23,16 +25,18 @@ const DropDown = ({
   }
   return (
     <AntDropDown menu={menuProps}>
-      <Button size='large' style={{ boxShadow: 'none' }}>
-        {dot ? (
+      {dot ? (
+        <Button type='text' style={{ color: color }}>
           <EllipsisOutlined rev={false} />
-        ) : (
+        </Button>
+      ) : (
+        <Button size='large' style={{ boxShadow: 'none' }}>
           <Space>
             {title}
             <DownOutlined rev={false} />
           </Space>
-        )}
-      </Button>
+        </Button>
+      )}
     </AntDropDown>
   )
 }

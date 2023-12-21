@@ -41,6 +41,26 @@
       }
     }
 
+    .schedule-wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px 0px 24px;
+      align-items: center;
+    }
+
+    .sidebar-schedules {
+      color: white;
+    }
+
+    .sidebar-checkbox {
+      color: white;
+      padding: 0px 12px 0px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+    }
+
     .logoutSidebarMenuWrapper {
       padding-bottom: 5px;
       padding-top: 5px;

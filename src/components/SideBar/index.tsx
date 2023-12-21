@@ -1,4 +1,4 @@
-import { Divider, Menu, MenuProps, SiderProps, Space, theme } from 'antd'
+import { Checkbox, Divider, Menu, MenuProps, SiderProps, Space, Typography, theme } from 'antd'
 import SidebarWrapper from './SideBarWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -11,6 +11,12 @@ import { LogoutOutlined } from '@ant-design/icons'
 import './style.scss'
 import { MenuItem, getMenuItem } from '~/utils/helper'
 import { navigationMenuItems } from './MenuItems'
+import Button from '../Button'
+import { BsPlus } from 'react-icons/bs'
+import { useDispatch } from 'react-redux'
+import { setCalenderModalOpen } from '~/store/features/events'
+import DropDown from '../DropDown'
+import { calenderActionItems } from '~/utils/options'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -34,6 +40,8 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { token } = useToken()
   const { colorBgContainer, colorPrimary, colorText } = token
   const [isOpenMenu, setOpenMenu] = useState<string[] | []>([])
+  const dispatch = useDispatch()
+  const isCalendarPage = pathname.includes('calender')
 
   const logoutMenuItem: MenuItem[] = [
     getMenuItem('Logout', 'logout', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
@@ -60,6 +68,14 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
     } else {
       setOpenMenu(latestOpenKey ? [latestOpenKey] : [])
     }
+  }
+
+  const handleOpenModal = () => {
+    dispatch(setCalenderModalOpen())
+  }
+
+  const handleClickItem = (key: string) => {
+    console.log('handleClickItem key: ', key)
   }
 
   return (
@@ -105,6 +121,31 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
             />
           </div>
         </PerfectScrollbar>
+
+        {isCalendarPage && (
+          <div style={{ height: '340px', overflow: 'auto' }} className='scrollbar-hidden'>
+            <div className='schedule-wrapper'>
+              <Typography.Text className='sidebar-schedules'>SCHEDULES</Typography.Text>
+              <Button type='text' onClick={handleOpenModal}>
+                <BsPlus color='white' fontSize={18} />
+              </Button>
+            </div>
+            {[1, 2, 3].map((item, index) => (
+              <div className='sidebar-checkbox' key={index}>
+                <Checkbox name={`calendar-${item}`} style={{ color: 'white' }}>
+                  Calender {item}
+                </Checkbox>
+
+                <DropDown
+                  dot
+                  items={calenderActionItems}
+                  handleClickItem={handleClickItem}
+                  color='white'
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
         <Divider style={{ margin: 0 }} />
         <div className='logoutSidebarMenuWrapper'>

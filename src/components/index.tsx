@@ -24,6 +24,8 @@ import DynamicTable from './DynamicTable/DynamicTable'
 import PageHeader from './PageHeader'
 import Dragger from './Dragger'
 import LibraryViewCart from './LibraryViewCart'
+import CustomSelect from './Inputs/CustomSelect'
+import ColorIcon from './ColorIcon'
 
 export {
   PageHeader,
@@ -51,5 +53,7 @@ export {
   PermissionSwitch,
   Loader,
   Dragger,
-  LibraryViewCart
+  LibraryViewCart,
+  CustomSelect,
+  ColorIcon
 }
