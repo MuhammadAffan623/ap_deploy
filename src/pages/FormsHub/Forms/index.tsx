@@ -6,6 +6,7 @@ import { useState } from 'react'
 import Available from './Tabs/Available'
 import Disabled from './Tabs/Disabled'
 import Archived from './Tabs/Archived'
+import AddEditForm from './AddEditForm'
 
 const tabsItems = [
   {
@@ -48,9 +49,10 @@ const tabsItems = [
 
 const Forms = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
+  const [showModal, setShowModal] = useState<boolean>(false)
 
   const handleAdd = () => {
-    // console.log('')
+    setShowModal(true)
   }
   const handleSelectChange = (value: string) => {
     setSelectedFilter(value)
@@ -70,6 +72,12 @@ const Forms = () => {
         onSelectChange={handleSelectChange}
       />
       <Tabs defaultActiveKey='1' type='card' size='large' items={tabsItems} />
+      <AddEditForm
+        open={showModal}
+        handleClose={() => {
+          setShowModal(false)
+        }}
+      />
     </div>
   )
 }
