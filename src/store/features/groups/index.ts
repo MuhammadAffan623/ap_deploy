@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getUserGroups } from '~/services/userGroups.services'
-import { message } from '~/store/toast'
+import { message } from 'antd'
 
 interface IGroupsState {
   groups: IUserGroup[]

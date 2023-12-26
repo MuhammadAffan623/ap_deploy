@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getEventsApi } from '~/services/events.services'
-import { message } from '~/store/toast'
-
+import { message } from 'antd'
 interface IInitialState {
   events: IEvent[]
   loading: boolean
