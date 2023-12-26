@@ -20,6 +20,8 @@ import {
   PDFEditor
 } from '~/pages'
 import DetailProject from '~/pages/BlueprintsHub/DetailProject'
+import PublicRoutes from './PublicRoutes'
+import ProtectedRoute from './ProtectedRoutes'
 
 const Routes = () => {
   const element = useRoutes([
@@ -29,7 +31,7 @@ const Routes = () => {
     },
     {
       path: '/',
-      element: <AuthLayout />,
+      element: <PublicRoutes navLink='/dashboard' component={AuthLayout} />,
       children: [
         { path: 'login', element: <Login /> },
         { path: 'reset-password', element: <ResetPassword /> }
@@ -37,7 +39,7 @@ const Routes = () => {
     },
     {
       path: '/',
-      element: <MainLayout />,
+      element: <ProtectedRoute navLink='/login' component={MainLayout} />,
       children: [
         { path: 'dashboard', element: <Dashboard /> },
         { path: 'calender', element: <Calender /> },
