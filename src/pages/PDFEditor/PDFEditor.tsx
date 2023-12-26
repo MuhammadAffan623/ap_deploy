@@ -1,4 +1,4 @@
-import WebViewer from '@pdftron/webviewer'
+import WebViewer, { WebViewerInstance } from '@pdftron/webviewer'
 import React, { useEffect, useRef, useState } from 'react'
 
 const PDFEditor = () => {
@@ -6,6 +6,7 @@ const PDFEditor = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const pathToFiles = '/webviewer/lib'
   const filePath = new URLSearchParams(window.location.search).get('file') ?? ''
+
   useEffect(() => {
     setLoading(true)
     WebViewer(
@@ -14,10 +15,11 @@ const PDFEditor = () => {
         initialDoc: filePath,
         enableFilePicker: true,
         backendType: 'asm',
-        notesInLeftPanel: true
+        enableMeasurement: true
       },
       viewer.current as HTMLElement
-    ).then(() => {
+    ).then(async (_instance: WebViewerInstance) => {
+      // Get the WebViewer instance
       setLoading(false)
     })
   }, [])
