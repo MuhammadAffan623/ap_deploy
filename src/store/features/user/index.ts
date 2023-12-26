@@ -1,5 +1,5 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getUserByToken } from '~/services/user.services'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { authApi } from '~/store/services/auth.services'
 
 interface IUserState {
   user: IUser | null
@@ -12,19 +12,6 @@ const initialState: IUserState = {
   token: null,
   user: null
 }
-
-const getUserAsync = createAsyncThunk(
-  'user/get',
-  async (token: string, { fulfillWithValue, rejectWithValue }) => {
-    try {
-      const { data } = await getUserByToken(token)
-      return fulfillWithValue(data?.data as Partial<IUserState>)
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data)
-    }
-  },
-  {}
-)
 
 export const userSlice = createSlice({
   name: 'user',
@@ -40,20 +27,15 @@ export const userSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder
-      .addCase(getUserAsync.rejected, (state) => {
-        state.loading = false
-        state.user = null
-        state.token = null
-      })
-      .addCase(getUserAsync.fulfilled, (state, { payload }) => {
-        state.user = payload?.user as IUser
-        state.token = payload.token as string
-        state.loading = false
-      })
-      .addCase(getUserAsync.pending, (state) => {
-        state.loading = true
-      })
+    const loginUser = (state: IUserState, user: IUser, token: string) => {
+      state.user = user
+      state.token = token
+      localStorage.setItem('token', token)
+    }
+
+    builder.addMatcher(authApi?.endpoints?.login?.matchFulfilled, (state, { payload }) => {
+      loginUser(state, payload?.data, payload?.token)
+    })
   }
 })
 

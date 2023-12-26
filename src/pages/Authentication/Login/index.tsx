@@ -1,19 +1,22 @@
-import { Divider, Form, Typography } from 'antd'
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Divider, Form, Typography, message } from 'antd'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Button, TextField } from '~/components'
+import { useLoginMutation } from '~/store/services/auth.services'
 import './style.scss'
 
 const Login = () => {
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [login, { isLoading, isError, error }]: any = useLoginMutation()
 
   const handleSubmit = (values: KeyValuePair) => {
-    setLoading(true)
-    console.log(values)
-    setLoading(false)
-    navigate('/dashboard')
+    login(values)
   }
+
+  useEffect(() => {
+    if (isError) {
+      message?.error(error?.data?.error)
+    }
+  }, [error])
 
   return (
     <div>
@@ -52,7 +55,7 @@ const Login = () => {
           Forgot password?
         </Link>
 
-        <Button loading={loading} type='primary' htmlType='submit' className='auth-button'>
+        <Button loading={isLoading} type='primary' htmlType='submit' className='auth-button'>
           Sign in
         </Button>
       </Form>
