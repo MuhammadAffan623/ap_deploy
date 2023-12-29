@@ -1,10 +1,13 @@
-import { Col, Form, Row, Typography, theme } from 'antd'
+import { Col, Divider, Form, Row, Typography, message, theme } from 'antd'
 import { Avatar, Button, Card, ImagesBox, PageHeader, SelectField, TextField } from '~/components'
 import './style.scss'
 import { getCountries } from 'country-state-picker'
-import { CSSProperties, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import userImg from '~/assets/images/user.png'
 import editIcon from '~/assets/icons/edit.svg'
+import { useSelector } from 'react-redux'
+import { RootState } from '~/store/reducers'
+import { useUpdatePasswordMutation } from '~/store/services/auth.services'
 
 const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
   return {
@@ -23,13 +26,28 @@ const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
 
 const Settings = () => {
   const [form] = Form.useForm()
+  const [form2] = Form.useForm()
   const { useToken } = theme
 
   const {
     token: { colorTextTertiary }
   } = useToken()
 
+  const { user } = useSelector((state: RootState) => state.user)
   const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(userImg)
+  // const [profile, setProfile] = useState({ ...user })
+
+  const [updatePassword, { isLoading: isPasswordLoading }] = useUpdatePasswordMutation()
+
+  useEffect(() => {
+    // console.log('user', user)
+    form.setFieldsValue({
+      email: user?.email,
+      firstName: user?.name,
+      lastName: user?.name,
+      phoneNo: user?.phoneNo
+    })
+  }, [user])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0]
@@ -49,6 +67,18 @@ const Settings = () => {
   const handleFormSubmit = (values: any) => {
     console.log({ ...values, selectedImage })
   }
+
+  const handleUpdatePassword = (values: any) => {
+    updatePassword(values)
+      .unwrap()
+      .then((res) => {
+        message.success(res.message)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   return (
     <div>
       <PageHeader title='Profile Setting' />
@@ -86,7 +116,13 @@ const Settings = () => {
                   </Col>
 
                   <Col span={24}>
-                    <TextField name='email' label='Email' placeholder='Enter email' required />
+                    <TextField
+                      name='email'
+                      type='email'
+                      label='Email'
+                      placeholder='Enter email'
+                      required
+                    />
                   </Col>
 
                   <Col span={24}>
@@ -113,7 +149,7 @@ const Settings = () => {
                             style={{ border: 'none', width: '100%' }}
                           />
                           <TextField
-                            name='phone'
+                            name='phoneNo'
                             placeholder='Enter phone'
                             required
                             formItemClass='phone-number-form-item'
@@ -123,11 +159,29 @@ const Settings = () => {
                     </Row>
                   </Col>
 
+                  <Col span={24} style={{ textAlign: 'right' }}>
+                    <Button type='primary' htmlType='submit'>
+                      Update Profile
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+
+            <Divider />
+            <div className='profile-form'>
+              <Form
+                form={form2}
+                layout='vertical'
+                onFinish={handleUpdatePassword}
+                className='add-edit-contact-form'
+              >
+                <Row gutter={[16, 16]}>
                   <Col span={24}>
                     <TextField
-                      name='oldPassword'
+                      name='currentPassword'
                       label='Change Password'
-                      placeholder='Old Password'
+                      placeholder='Current Password'
                       type='password'
                       required
                     />
@@ -143,8 +197,8 @@ const Settings = () => {
                   </Col>
 
                   <Col span={24} style={{ textAlign: 'right' }}>
-                    <Button type='primary' htmlType='submit'>
-                      Save changes
+                    <Button type='primary' htmlType='submit' loading={isPasswordLoading}>
+                      Update Password
                     </Button>
                   </Col>
                 </Row>

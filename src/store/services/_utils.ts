@@ -4,7 +4,6 @@ export const baseUrl =
     : import.meta.env.VITE_PRODUCTION_BASE_URL
 
 export const prepareHeaders = (headers: Headers, { getState }: any) => {
-  console.log('getState', getState())
   const token = getState()?.user?.token ?? ''
   if (token) {
     headers.set('Authorization', `Bearer ${token}`)
