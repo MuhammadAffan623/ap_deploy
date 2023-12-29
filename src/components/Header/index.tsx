@@ -1,13 +1,14 @@
 import { Col, Grid, Layout, Row } from 'antd'
 import React, { CSSProperties, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserContext } from '~/context/UserContext'
 import Button from '../Button'
 import SearchField from '../Inputs/SearchField'
 import menuIcon from '~/assets/icons/menu.svg'
 import bellIcon from '~/assets/icons/bell.svg'
 import './style.scss'
 import UserPopup from '../UserPopup'
+import { useSelector } from 'react-redux'
+import { RootState } from '~/store/reducers'
 
 interface HeaderProps {
   isCollapsed?: boolean
@@ -18,8 +19,7 @@ interface HeaderProps {
 const searchFieldStyles: CSSProperties = { height: 48 }
 
 const Header = ({ toggleSidebar, style }: HeaderProps) => {
-  const { state } = useUserContext()
-  const { user } = state
+  const { user } = useSelector((state: RootState) => state.user)
   const [search, setSearch] = useState('')
   const { useBreakpoint } = Grid
   const { sm } = useBreakpoint()
