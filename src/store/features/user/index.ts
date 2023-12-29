@@ -23,6 +23,12 @@ export const userSlice = createSlice({
     },
     updateUser: (state, { payload }: PayloadAction<IUser>) => {
       state.user = payload
+    },
+    logout: (state) => {
+      state.user = null
+      state.token = null
+      localStorage.removeItem('token')
+      window.location.reload()
     }
   },
 
@@ -39,4 +45,4 @@ export const userSlice = createSlice({
   }
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, logout } = userSlice.actions
