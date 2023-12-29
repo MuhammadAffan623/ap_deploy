@@ -1,25 +1,23 @@
 import { Divider, Form, Typography, message } from 'antd'
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, TextField } from '~/components'
 import { useLoginMutation } from '~/store/services/auth.services'
 import './style.scss'
 
 const Login = () => {
-  const [login, { isLoading, isError, error }]: any = useLoginMutation()
+  const [login, { isLoading }]: any = useLoginMutation()
 
   const handleSubmit = (values: KeyValuePair) => {
     login(values)
+      .unwrap()
+      .then(() => message.success('Login successfully'))
+      .catch((error: any) => {
+        message?.error(error?.data?.error)
+      })
   }
 
-  useEffect(() => {
-    if (isError) {
-      message?.error(error?.data?.error)
-    }
-  }, [error])
-
   return (
-    <div>
+    <div style={{ padding: '40px' }}>
       <Typography.Title level={1} style={{ fontWeight: 500 }}>
         Sign in to your account
       </Typography.Title>
