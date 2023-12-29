@@ -249,3 +249,128 @@ export const colorsToHex = (colorNames: string[]): string[] => {
 
   return colorNames.map((color) => colorMap[color.toLowerCase()] || '')
 }
+
+type RuleObject = {
+  // Define the RuleObject type as needed
+}
+
+type RulesArray = Array<
+  | {
+      required: boolean
+      message: string
+    }
+  | {
+      validator: (_: RuleObject, val: any, context?: any) => Promise<void>
+    }
+>
+
+export function getRules(
+  name: string,
+  type: string,
+  required: boolean | undefined,
+  message: string | undefined
+): RulesArray {
+  const commonRules = {
+    required: required ?? false,
+    message: message ?? ''
+  }
+
+  switch (name) {
+    case 'email':
+      if (type !== 'text') {
+        return [
+          { ...commonRules },
+          {
+            validator(_: RuleObject, val: any) {
+              if (!val || emailRegex.test(val)) {
+                return Promise.resolve()
+              }
+              return Promise.reject(new Error('Please enter a valid email'))
+            }
+          }
+        ]
+      }
+      break
+
+    case 'confirmPassword':
+      return [
+        { required: true, message: 'Please confirm your password' },
+        {
+          validator(_: RuleObject, val: any, { getFieldValue }: any) {
+            if (!val || getFieldValue('password') === val) {
+              return Promise.resolve()
+            }
+            return Promise.reject(new Error('The two passwords that you entered do not match'))
+          }
+        }
+      ]
+
+    case 'oldPassword':
+    case 'newPassword':
+      return [
+        {
+          required: true,
+          message: `Please enter your ${name === 'oldPassword' ? 'current' : 'new'} password`
+        },
+        {
+          validator(_: RuleObject, val: any, { getFieldValue }: any) {
+            if (!val || getFieldValue('old') !== val) {
+              return Promise.resolve()
+            }
+            return Promise.reject(new Error('Old password and new password cannot be the same'))
+          }
+        }
+      ]
+
+    case 'username':
+      return [
+        { ...commonRules },
+        {
+          validator(_: RuleObject, val: any) {
+            if (!val || !usernameRegex.test(val)) {
+              return Promise.resolve()
+            }
+            return Promise.reject(new Error('No spaces allowed in username'))
+          }
+        }
+      ]
+
+    case 'phoneNumber':
+      return [{ ...commonRules }]
+
+    case 'password':
+      return [
+        { ...commonRules },
+        {
+          validator(_: RuleObject, val: any) {
+            if (!val || val.length >= 8) {
+              return Promise.resolve()
+            }
+            return Promise.reject(new Error('Password must be 8 characters long or more'))
+          }
+        },
+
+        {
+          validator(_: RuleObject, val: any) {
+            if (passwordRegex.test(val)) {
+              return Promise.resolve()
+            }
+            return Promise.reject(
+              new Error(
+                'Password must contain at least one uppercase, one lowercase, one number, and one special character'
+              )
+            )
+          }
+        }
+      ]
+
+    default:
+      return [{ ...commonRules }]
+  }
+  // Default return statement
+  return [{ ...commonRules }]
+}
+
+// Example usage:
+const rules = getRules('email', 'input', true, 'Custom error message')
+console.log(rules)
