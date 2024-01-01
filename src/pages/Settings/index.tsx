@@ -8,6 +8,7 @@ import editIcon from '~/assets/icons/edit.svg'
 import { useSelector } from 'react-redux'
 import { RootState } from '~/store/reducers'
 import { useUpdatePasswordMutation } from '~/store/services/auth.services'
+import toast from '~/store/toast'
 
 const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
   return {
@@ -72,10 +73,11 @@ const Settings = () => {
     updatePassword(values)
       .unwrap()
       .then((res) => {
+        form2.resetFields()
         message.success(res.message)
       })
-      .catch((err) => {
-        console.log(err)
+      .catch(() => {
+        message.error('Failed to reset password')
       })
   }
 
@@ -198,7 +200,7 @@ const Settings = () => {
 
                   <Col span={24} style={{ textAlign: 'right' }}>
                     <Button type='primary' htmlType='submit' loading={isPasswordLoading}>
-                      Update Password
+                      Change Password
                     </Button>
                   </Col>
                 </Row>
