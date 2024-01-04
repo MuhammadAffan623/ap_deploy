@@ -15,10 +15,10 @@ export const fileApi = createApi({
       })
     }),
     uploadFile: builder.mutation({
-      query: ({ type, folderName, ...body }) => ({
+      query: ({ type, folderName, formData }) => ({
         url: `/file?type=${type}&folderName=${folderName}`,
-        method: 'GET',
-        body: body
+        method: 'POST',
+        body: formData
       })
     })
   })

@@ -22,8 +22,13 @@ import {
 import DetailProject from '~/pages/BlueprintsHub/DetailProject'
 import PublicRoutes from './PublicRoutes'
 import ProtectedRoute from './ProtectedRoutes'
+import { useEffect } from 'react'
 
 const Routes = () => {
+  useEffect(() => {
+    console.log('hello')
+  }, [])
+
   const element = useRoutes([
     {
       path: '/',
