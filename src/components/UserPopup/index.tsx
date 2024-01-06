@@ -30,7 +30,7 @@ const UserPopup = ({ user, sm }: { user: IUser | null; sm: boolean | undefined }
     <Dropdown menu={{ items }}>
       <Space className='userPopupWrapper'>
         <div className='userPopup'>
-          <Avatar src={user?.avatarUrl as string} shape='circle'>
+          <Avatar src={user?.avatar as string} shape='circle'>
             {getInitials(user?.name as string)}
           </Avatar>
           <span className='userName'>{sm ? user?.name : user?.name?.split(' ')[0]}</span>

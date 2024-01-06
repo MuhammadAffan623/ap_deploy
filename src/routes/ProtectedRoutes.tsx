@@ -1,5 +1,4 @@
 import { Navigate } from 'react-router-dom'
-import { useUserSelector } from '~/store/hooks'
 
 interface IProtectedRouteProps {
   component: ReactNode
@@ -7,9 +6,7 @@ interface IProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ component: Component, navLink, ...rest }: IProtectedRouteProps) => {
-  const { user, token } = useUserSelector()
-
-  if (!(user?._id && token)) {
+  if (!localStorage.getItem('token')) {
     return <Navigate to={navLink} replace />
   }
 

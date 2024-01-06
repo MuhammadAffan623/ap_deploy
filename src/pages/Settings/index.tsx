@@ -13,6 +13,7 @@ const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
   return {
     width: '100%',
     height: '100%',
+    minHeight: '200px',
     border: `2px dashed ${borderColor}`,
     background: 'transparent',
     color: borderColor,
@@ -46,7 +47,7 @@ const Settings = () => {
       const namesArray = user.name.split(' ')
       const firstName = namesArray[0] || ''
       const lastName = namesArray.slice(1).join(' ') || ''
-
+      setUploadedImgUrl(user.avatar as string)
       form.setFieldsValue({
         email: user.email,
         firstName: firstName,
@@ -253,11 +254,11 @@ const Settings = () => {
           <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
             <div className='profile-image-container'>
               {uploading ? (
-                <Skeleton.Image active={uploading} />
+                <Skeleton.Image active={uploading} className='img-placeholder' />
               ) : (
                 <>
                   <label className='edit-circle'>
-                    <ImagesBox src={editIcon} width={60} height={60} />
+                    <ImagesBox src={editIcon} width={40} height={40} />
                     <input
                       type='file'
                       accept='image/*'
@@ -271,6 +272,7 @@ const Settings = () => {
                     name=''
                     shape='square'
                     style={getAvatarContainerStyle(colorTextTertiary)}
+                    rootClassName='profile-avatar'
                   />
                 </>
               )}

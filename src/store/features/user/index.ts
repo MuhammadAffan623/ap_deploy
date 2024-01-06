@@ -44,9 +44,15 @@ export const userSlice = createSlice({
     })
 
     builder.addMatcher(authApi?.endpoints?.updateProfile?.matchFulfilled, (state, { payload }) => {
-      console.log("payload", payload)
       state.user = payload.data
     })
+
+    builder.addMatcher(
+      authApi?.endpoints?.getUserFromToken?.matchFulfilled,
+      (state, { payload }) => {
+        state.user = payload.data
+      }
+    )
   }
 })
 
