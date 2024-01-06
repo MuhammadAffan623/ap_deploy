@@ -23,6 +23,12 @@ export const userSlice = createSlice({
     },
     updateUser: (state, { payload }: PayloadAction<IUser>) => {
       state.user = payload
+    },
+    logout: (state) => {
+      state.user = null
+      state.token = null
+      localStorage.removeItem('token')
+      window.location.reload()
     }
   },
 
@@ -36,7 +42,18 @@ export const userSlice = createSlice({
     builder.addMatcher(authApi?.endpoints?.login?.matchFulfilled, (state, { payload }) => {
       loginUser(state, payload?.data, payload?.token)
     })
+
+    builder.addMatcher(authApi?.endpoints?.updateProfile?.matchFulfilled, (state, { payload }) => {
+      state.user = payload.data
+    })
+
+    builder.addMatcher(
+      authApi?.endpoints?.getUserFromToken?.matchFulfilled,
+      (state, { payload }) => {
+        state.user = payload.data
+      }
+    )
   }
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, logout } = userSlice.actions

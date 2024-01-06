@@ -1,15 +1,19 @@
-import { Col, Form, Row, Typography, theme } from 'antd'
+import { Col, Divider, Form, Row, Skeleton, Typography, message, theme } from 'antd'
 import { Avatar, Button, Card, ImagesBox, PageHeader, SelectField, TextField } from '~/components'
 import './style.scss'
 import { getCountries } from 'country-state-picker'
-import { CSSProperties, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import userImg from '~/assets/images/user.png'
 import editIcon from '~/assets/icons/edit.svg'
+import { useUpdatePasswordMutation, useUpdateProfileMutation } from '~/store/services/auth.services'
+import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
+import { useUserSelector } from '~/store/hooks'
 
 const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
   return {
     width: '100%',
     height: '100%',
+    minHeight: '200px',
     border: `2px dashed ${borderColor}`,
     background: 'transparent',
     color: borderColor,
@@ -23,32 +27,104 @@ const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
 
 const Settings = () => {
   const [form] = Form.useForm()
+  const [form2] = Form.useForm()
   const { useToken } = theme
 
   const {
     token: { colorTextTertiary }
   } = useToken()
+  const { user } = useUserSelector()
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | ArrayBuffer | null>(userImg)
+  const [uploading, setUploading] = useState<boolean>(false)
 
-  const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(userImg)
+  const [updatePassword, { isLoading: isPasswordLoading }] = useUpdatePasswordMutation()
+  const [updateProfile, { isLoading: isProfileLoading }]: any = useUpdateProfileMutation()
+  const [uploadFile]: any = useUploadFileMutation()
+  const [getFile]: any = useGetFileMutation()
+
+  useEffect(() => {
+    if (user) {
+      const namesArray = user.name.split(' ')
+      const firstName = namesArray[0] || ''
+      const lastName = namesArray.slice(1).join(' ') || ''
+      setUploadedImgUrl(user.avatar as string)
+      form.setFieldsValue({
+        email: user.email,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNo: user.phoneNo
+      })
+    }
+  }, [user])
+
+  const handleUpload = (formData: FormData) => {
+    setUploading(true)
+    message.info('Please wait, file is being uploaded')
+    uploadFile({ type: 'profile', folderName: 'setting', formData })
+      .unwrap()
+      .then((res: any) => {
+        const params = {
+          key: res.data.uploadedFile.key,
+          versionId: res.data.uploadedFile.s3VersionId
+        }
+        getFile(params)
+          .unwrap()
+          .then((response: any) => {
+            setUploading(false)
+            setUploadedImgUrl(response.data)
+            message.success('File uploaded successfully')
+          })
+          .catch((error: any) => {
+            setUploading(false)
+            message.error(error?.data?.error)
+          })
+      })
+      .catch((err: any) => {
+        setUploading(false)
+        message.error(err?.data?.error)
+      })
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0]
 
     if (file) {
-      // You can use FileReader to read the selected image and set it in state
-      const reader = new FileReader()
-
-      reader.onloadend = () => {
-        setSelectedImage(reader.result)
-      }
-
-      reader.readAsDataURL(file)
+      const formData = new FormData()
+      formData.append('file', file)
+      handleUpload(formData)
     }
   }
-
   const handleFormSubmit = (values: any) => {
-    console.log({ ...values, selectedImage })
+    const body = {
+      id: user?._id,
+      name: `${values.firstName} ${values.lastName}`,
+      email: values.email,
+      phoneNo: values.phoneNo,
+      avatar: uploadedImgUrl
+    }
+
+    updateProfile(body)
+      .unwrap()
+      .then((res: any) => {
+        message.success(res?.message)
+      })
+      .catch((err: any) => {
+        message.error(err?.data?.error)
+      })
   }
+
+  const handleUpdatePassword = (values: any) => {
+    updatePassword(values)
+      .unwrap()
+      .then((res) => {
+        form2.resetFields()
+        message.success(res.message)
+      })
+      .catch(() => {
+        message.error('Failed to reset password')
+      })
+  }
+
   return (
     <div>
       <PageHeader title='Profile Setting' />
@@ -86,7 +162,13 @@ const Settings = () => {
                   </Col>
 
                   <Col span={24}>
-                    <TextField name='email' label='Email' placeholder='Enter email' required />
+                    <TextField
+                      name='email'
+                      type='email'
+                      label='Email'
+                      placeholder='Enter email'
+                      required
+                    />
                   </Col>
 
                   <Col span={24}>
@@ -113,7 +195,7 @@ const Settings = () => {
                             style={{ border: 'none', width: '100%' }}
                           />
                           <TextField
-                            name='phone'
+                            name='phoneNo'
                             placeholder='Enter phone'
                             required
                             formItemClass='phone-number-form-item'
@@ -123,11 +205,29 @@ const Settings = () => {
                     </Row>
                   </Col>
 
+                  <Col span={24} style={{ textAlign: 'right' }}>
+                    <Button type='primary' htmlType='submit' loading={isProfileLoading}>
+                      Update Profile
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+
+            <Divider />
+            <div className='profile-form'>
+              <Form
+                form={form2}
+                layout='vertical'
+                onFinish={handleUpdatePassword}
+                className='add-edit-contact-form'
+              >
+                <Row gutter={[16, 16]}>
                   <Col span={24}>
                     <TextField
-                      name='oldPassword'
+                      name='currentPassword'
                       label='Change Password'
-                      placeholder='Old Password'
+                      placeholder='Current Password'
                       type='password'
                       required
                     />
@@ -143,8 +243,8 @@ const Settings = () => {
                   </Col>
 
                   <Col span={24} style={{ textAlign: 'right' }}>
-                    <Button type='primary' htmlType='submit'>
-                      Save changes
+                    <Button type='primary' htmlType='submit' loading={isPasswordLoading}>
+                      Change Password
                     </Button>
                   </Col>
                 </Row>
@@ -153,21 +253,29 @@ const Settings = () => {
           </Col>
           <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
             <div className='profile-image-container'>
-              <label className='edit-circle'>
-                <ImagesBox src={editIcon} width={60} height={60} />
-                <input
-                  type='file'
-                  accept='image/*'
-                  onChange={handleImageChange}
-                  style={{ display: 'none' }}
-                />
-              </label>
-              <Avatar
-                src={selectedImage as string}
-                name='+'
-                shape='square'
-                style={getAvatarContainerStyle(colorTextTertiary)}
-              />
+              {uploading ? (
+                <Skeleton.Image active={uploading} className='img-placeholder' />
+              ) : (
+                <>
+                  <label className='edit-circle'>
+                    <ImagesBox src={editIcon} width={40} height={40} />
+                    <input
+                      type='file'
+                      accept='image/*'
+                      onChange={handleImageChange}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+
+                  <Avatar
+                    src={uploadedImgUrl as string}
+                    name=''
+                    shape='square'
+                    style={getAvatarContainerStyle(colorTextTertiary)}
+                    rootClassName='profile-avatar'
+                  />
+                </>
+              )}
             </div>
           </Col>
         </Row>

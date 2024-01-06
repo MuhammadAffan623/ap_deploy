@@ -22,8 +22,19 @@ import {
 import DetailProject from '~/pages/BlueprintsHub/DetailProject'
 import PublicRoutes from './PublicRoutes'
 import ProtectedRoute from './ProtectedRoutes'
+import { useEffect } from 'react'
+import { useGetUserFromTokenMutation } from '~/store/services/auth.services'
 
 const Routes = () => {
+  const [fetchUserFromToken] = useGetUserFromTokenMutation()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetchUserFromToken(token)
+    }
+  }, [])
+
   const element = useRoutes([
     {
       path: '/',

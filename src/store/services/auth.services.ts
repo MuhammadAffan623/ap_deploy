@@ -14,8 +14,36 @@ export const authApi = createApi({
         method: 'POST',
         body: credentials
       })
+    }),
+    updateProfile: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/user/${id}`,
+        method: 'PUT',
+        body: body
+      })
+    }),
+    updatePassword: builder.mutation({
+      query: (body) => ({
+        url: `/user/changePassword`,
+        method: 'POST',
+        body: body
+      })
+    }),
+    getUserFromToken: builder.mutation({
+      query: (token) => ({
+        url: `/user/getUserFromToken`,
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
     })
   })
 })
 
-export const { useLoginMutation } = authApi
+export const {
+  useLoginMutation,
+  useUpdateProfileMutation,
+  useUpdatePasswordMutation,
+  useGetUserFromTokenMutation
+} = authApi

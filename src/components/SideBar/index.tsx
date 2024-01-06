@@ -2,7 +2,6 @@ import { Checkbox, Divider, Menu, MenuProps, SiderProps, Space, Typography, them
 import SidebarWrapper from './SideBarWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useUserContext } from '~/context/UserContext'
 import { CSSProperties, useEffect, useState } from 'react'
 import ImagesBox from '../Image'
 import logo from '~/assets/images/logo.svg'
@@ -17,6 +16,7 @@ import { useDispatch } from 'react-redux'
 import { setCalenderModalOpen } from '~/store/features/events'
 import DropDown from '../DropDown'
 import { calenderActionItems } from '~/utils/options'
+import { logout } from '~/store/features/user'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -35,7 +35,6 @@ const childrenWrapperStyles: CSSProperties = {
 const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: SidebarProps) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const { logoutUser } = useUserContext()
   const { useToken } = theme
   const { token } = useToken()
   const { colorBgContainer, colorPrimary, colorText } = token
@@ -45,7 +44,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
 
   const logoutMenuItem: MenuItem[] = [
     getMenuItem('Logout', 'logout', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
-      logoutUser()
+      dispatch(logout())
     })
   ]
 
