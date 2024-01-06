@@ -254,16 +254,6 @@ type RuleObject = {
   // Define the RuleObject type as needed
 }
 
-type RulesArray = Array<
-  | {
-      required: boolean
-      message: string
-    }
-  | {
-      validator: (_: RuleObject, val: any, context?: any) => Promise<void>
-    }
->
-
 export const getRules = (
   name: string,
   type: string,
