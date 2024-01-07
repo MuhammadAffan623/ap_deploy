@@ -16,7 +16,7 @@ import {
   Settings,
   Templates,
   UserAndGroups,
-  AddGroup,
+  AddEditGroup,
   PDFEditor
 } from '~/pages'
 import DetailProject from '~/pages/BlueprintsHub/DetailProject'
@@ -66,7 +66,8 @@ const Routes = () => {
         },
         { path: 'device-management', element: <DeviceManagement /> },
         { path: 'user-and-groups', element: <UserAndGroups /> },
-        { path: 'add-group', element: <AddGroup /> },
+        { path: 'user-and-groups/:id', element: <AddEditGroup /> },
+        { path: 'add-group', element: <AddEditGroup /> },
         { path: 'settings', element: <Settings /> },
         { path: 'forms-hub/templates', element: <Templates /> },
         { path: 'forms-hub/forms', element: <Forms /> }

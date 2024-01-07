@@ -52,8 +52,8 @@ const UserAndGroups = () => {
     }
   }
 
-  const handleEdit = () => {
-    // setAddEditUserInGroupModalOpen(true)
+  const handleEdit = (name: string) => {
+    navigate(`/user-and-groups/${name}`)
   }
 
   return (
@@ -90,7 +90,11 @@ const UserAndGroups = () => {
 
             {groups.map((group) => (
               <Col key={group?._id} span={24} md={12} xl={8}>
-                <UserGroupCard name={group?.name} users={group?.users} handleEdit={handleEdit} />
+                <UserGroupCard
+                  name={group?.name}
+                  users={group?.users}
+                  handleEdit={() => handleEdit(group?.name)}
+                />
               </Col>
             ))}
           </>

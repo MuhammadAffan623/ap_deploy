@@ -1,0 +1,9 @@
+.advanced-user-permission-row {
+  padding: calc($margin - 2px) calc($padding / 1.5);
+  border: 1px solid #dbdade;
+  border-bottom: none;
+
+  &:last-of-type {
+    border-bottom: 1px solid #dbdade;
+  }
+}

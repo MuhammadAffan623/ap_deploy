@@ -10,7 +10,7 @@ import DeviceManagement from './DeviceManagement'
 import BlueprintsHub from './BlueprintsHub'
 import UserAndGroups from './UserAndGroups'
 import Settings from './Settings'
-import AddGroup from './UserAndGroups/AddGroup'
+import AddEditGroup from './UserAndGroups/AddEditGroup'
 import PDFEditor from './PDFEditor/PDFEditor'
 
 // Public
@@ -33,6 +33,6 @@ export {
   DeviceManagement,
   BlueprintsHub,
   UserAndGroups,
-  AddGroup,
+  AddEditGroup,
   PDFEditor
 }
