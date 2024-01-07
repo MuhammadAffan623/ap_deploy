@@ -4,6 +4,7 @@ import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockUsers } from '~/mocks'
 import { itemsActions } from '~/utils/options'
 import '../style.scss'
+import { useUserListSelector } from '~/store/hooks'
 
 const All = () => {
   const [data, setData] = useState<Partial<IForm>[] | []>([])
@@ -16,9 +17,11 @@ const All = () => {
     total: 0
   })
 
+  const { users } = useUserListSelector()
+
   useEffect(() => {
     setLoadingData(true)
-    const fetchData = getMockUsers(20,false, true)
+    const fetchData = getMockUsers(20, false, true)
     setData(fetchData)
     setLoadingData(false)
   }, [pagination])
@@ -67,7 +70,7 @@ const All = () => {
       {useMemo(() => {
         return (
           <DynamicTable
-            dataSource={data}
+            dataSource={users}
             columns={columns(handleResolve, handleDelete)}
             isLoading={loadingData}
             pagination={pagination}
@@ -75,7 +78,7 @@ const All = () => {
             rowSelection={rowSelection}
           />
         )
-      }, [data, selectedRowKeys])}
+      }, [users, selectedRowKeys])}
     </div>
   )
 }

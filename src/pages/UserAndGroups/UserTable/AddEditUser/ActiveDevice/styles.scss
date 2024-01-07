@@ -1,0 +1,10 @@
+.activeDeviceIconCol {
+  text-align: center;
+  .iconAndTypeWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: calc($margin * 1.5);
+    margin: auto;
+  }
+}
