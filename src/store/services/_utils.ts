@@ -1,7 +1,9 @@
-export const baseUrl =
-  import.meta.env.VITE_APPLICATION_STATUS === 'development'
-    ? import.meta.env.VITE_DEVELOPMENT_BASE_URL
-    : import.meta.env.VITE_PRODUCTION_BASE_URL
+// export const baseUrl =
+//   import.meta.env.VITE_APPLICATION_STATUS === 'development'
+//     ? import.meta.env.VITE_DEVELOPMENT_BASE_URL
+//     : import.meta.env.VITE_PRODUCTION_BASE_URL
+
+export const baseUrl = 'http://54.208.249.184/api/v1'
 
 export const prepareHeaders = (headers: Headers) => {
   const token = localStorage.getItem('token') ?? ''
