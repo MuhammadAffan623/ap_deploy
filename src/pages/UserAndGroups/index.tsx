@@ -1,7 +1,6 @@
 import { Button, Col, Row, Typography, theme } from 'antd'
 import { CSSProperties, useEffect, useState } from 'react'
 import { Card, ImagesBox, UserGroupCard } from '~/components'
-import { getMockUsers } from '~/mocks'
 import NewGroupImage from '~/assets/images/new-group.png'
 import AddEditUserInGroup from './AddEditUser'
 import { useGroupsSelector, useAppDispatch } from '~/store/hooks'
@@ -61,15 +60,9 @@ const UserAndGroups = () => {
     <>
       <Row gutter={[30, 30]}>
         {isLoading ? (
-          <Loader />
+          <Loader fullScreen />
         ) : (
           <>
-            {groups.map((group) => (
-              <Col key={group?._id} span={24} md={12} xl={8}>
-                <UserGroupCard name={group?.name} users={group?.users} handleEdit={handleEdit} />
-              </Col>
-            ))}
-
             <Col span={24} md={12} xl={8}>
               <Card>
                 <Row justify='space-between'>
@@ -94,6 +87,12 @@ const UserAndGroups = () => {
                 </Row>
               </Card>
             </Col>
+
+            {groups.map((group) => (
+              <Col key={group?._id} span={24} md={12} xl={8}>
+                <UserGroupCard name={group?.name} users={group?.users} handleEdit={handleEdit} />
+              </Col>
+            ))}
           </>
         )}
 

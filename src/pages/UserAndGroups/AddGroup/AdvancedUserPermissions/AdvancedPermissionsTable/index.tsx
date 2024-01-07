@@ -5,8 +5,8 @@ import './styles.scss'
 interface IAdvancedUserPermissionsTable {
   title: string
   permissions: IPermission[]
-  selectedPermissions: string[]
-  onChange: (value: boolean, name: string) => void
+  selectedPermissions: IGroupPermissionsKeyValue[]
+  onChange: (value: boolean, name: string, label: string) => void
 }
 
 const AdvancedUserPermissionsTable = ({
@@ -26,7 +26,7 @@ const AdvancedUserPermissionsTable = ({
             name={item.value}
             description=''
             boldTitle={false}
-            onChange={onChange}
+            onChange={(value, name) => onChange(value, name, item.label)}
             title={item.label}
             key={item.value}
             permissionRowClass='advanced-user-permission-row'

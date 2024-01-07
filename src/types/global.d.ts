@@ -102,6 +102,11 @@ declare global {
     value: string
   }
 
+  interface IGroupPermissionsKeyValue {
+    name: string
+    key: string
+  }
+
   interface IPagination {
     current: number
     pageSize: number

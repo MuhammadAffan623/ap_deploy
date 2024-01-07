@@ -1,21 +1,30 @@
-import { Col, Form, Row, Typography } from 'antd'
+import { Col, Form, Popover, Row, Typography, message } from 'antd'
 import React, { useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
-import { Button, Card, PermissionSwitch, TextField } from '~/components'
+import { Button, Card, PageHeader, PermissionSwitch, TextField } from '~/components'
 import { managementPermissions, userPermissions } from '~/utils/helper'
 import AdvancedUserPermissions from './AdvancedUserPermissions'
 import { FaInfoCircle } from 'react-icons/fa'
 import './styles.scss'
+import { useCreateGroupsMutation } from '~/store/services/groups.service'
+import { useNavigate } from 'react-router-dom'
 
 interface IGroupPermissions {
-  userPermissions: string[]
-  managementPermissions: string[]
-  formsHubPermissions: string[]
-  blueprintHubPermissions: string[]
-  calendarPermissions: string[]
+  userPermissions: IGroupPermissionsKeyValue[]
+  managementPermissions: IGroupPermissionsKeyValue[]
+  formsHubPermissions: IGroupPermissionsKeyValue[]
+  blueprintHubPermissions: IGroupPermissionsKeyValue[]
+  calendarPermissions: IGroupPermissionsKeyValue[]
 }
 
+const content = (
+  <div>
+    <p>Click to set advance permission</p>
+  </div>
+)
+
 const AddGroup = () => {
+  const navigate = useNavigate()
   const [form] = Form.useForm()
   const [permissions, setPermissions] = React.useState<IGroupPermissions>({
     managementPermissions: [],
@@ -27,9 +36,36 @@ const AddGroup = () => {
 
   const [advancedPermissionsModalOpen, setAdvancedPermissionsModalOpen] = useState(false)
 
+  const [createUserGroup, { isLoading }] = useCreateGroupsMutation()
+
   const handleSubmit = (values: any) => {
-    console.log('Values ===========================>', values)
-    console.log('permissions ======================>', permissions)
+    // console.log('Values ===========================>', values)
+    // console.log('permissions ======================>', permissions)
+
+    const advancedPermissions = [
+      ...permissions.blueprintHubPermissions,
+      ...permissions.calendarPermissions,
+      ...permissions.formsHubPermissions
+    ]
+
+    const body = {
+      name: values.name,
+      permissions: {
+        management: permissions.managementPermissions,
+        user: permissions.userPermissions,
+        advance: advancedPermissions
+      }
+    }
+
+    createUserGroup(body)
+      .unwrap()
+      .then((res) => {
+        navigate('/user-and-groups')
+        message.success(res.message)
+      })
+      .catch((err) => {
+        message.error(err?.data?.error)
+      })
   }
 
   const handleAdvancedPermissionsModalClose = (status: boolean, _data?: any) => {
@@ -40,16 +76,21 @@ const AddGroup = () => {
     }
   }
 
-  const handlePermissionChange = (value: boolean, name: string, permissionType: TPermissions) => {
+  const handlePermissionChange = (
+    value: boolean,
+    name: string,
+    label: string,
+    permissionType: TPermissions
+  ) => {
     if (value) {
       setPermissions({
         ...permissions,
-        [permissionType]: [...permissions[permissionType], name]
+        [permissionType]: [...permissions[permissionType], { name: label, key: name }]
       })
     } else {
       setPermissions({
         ...permissions,
-        [permissionType]: permissions[permissionType].filter((item) => item !== name)
+        [permissionType]: permissions[permissionType].filter((item) => item.key !== name)
       })
     }
   }
@@ -58,7 +99,7 @@ const AddGroup = () => {
     <>
       <Row gutter={[20, 20]} className='add-group-page'>
         <Col span={24}>
-          <Typography.Title level={2}>Add Group</Typography.Title>
+          <PageHeader title='Add Group' />
         </Col>
 
         <Col span={24}>
@@ -66,13 +107,20 @@ const AddGroup = () => {
             <Form
               form={form}
               onFinish={handleSubmit}
-              initialValues={{ managementPermissions: [], name: 'Test' }}
+              initialValues={{ managementPermissions: [], name: '' }}
             >
               <Row gutter={[60, 20]}>
                 <Col span={24}>
+                  <div className='group-save-button'>
+                    <Button type='primary' htmlType='submit' loading={isLoading}>
+                      Save
+                    </Button>
+                  </div>
                   <TextField
                     name='name'
                     label='Group Name'
+                    required
+                    placeholder='Write a Group Name'
                     labelCol={{
                       span: 24,
                       style: {
@@ -96,9 +144,14 @@ const AddGroup = () => {
                           name={permission.value}
                           selectedPermissions={permissions.managementPermissions}
                           childrenPermissions={permission?.children ?? []}
-                          onChange={(value, name) =>
-                            handlePermissionChange(value, name, 'managementPermissions')
-                          }
+                          onChange={(value, name) => {
+                            handlePermissionChange(
+                              value,
+                              name,
+                              permission.label,
+                              'managementPermissions'
+                            )
+                          }}
                           description=''
                         />
                       </Col>
@@ -111,14 +164,16 @@ const AddGroup = () => {
                       <Typography.Title level={4}>User Permissions</Typography.Title>
                     </Col>
                     <Col>
-                      <Button
-                        style={{ fontSize: '1.2rem' }}
-                        icon={<FaGear />}
-                        type='text'
-                        onClick={() => {
-                          setAdvancedPermissionsModalOpen(true)
-                        }}
-                      />
+                      <Popover content={content} title='Advance Permission' placement='topLeft'>
+                        <Button
+                          style={{ fontSize: '1.2rem' }}
+                          icon={<FaGear />}
+                          type='text'
+                          onClick={() => {
+                            setAdvancedPermissionsModalOpen(true)
+                          }}
+                        />
+                      </Popover>
                     </Col>
                   </Row>
 
@@ -136,9 +191,9 @@ const AddGroup = () => {
                           title={permission.label}
                           name={permission.value}
                           selectedPermissions={permissions.userPermissions}
-                          onChange={(value, name) =>
-                            handlePermissionChange(value, name, 'userPermissions')
-                          }
+                          onChange={(value, name, label) => {
+                            handlePermissionChange(value, name, label as string, 'userPermissions')
+                          }}
                           childrenPermissions={permission?.children ?? []}
                           description=''
                         />

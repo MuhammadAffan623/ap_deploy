@@ -9,11 +9,11 @@ import './styles.scss'
 interface IAdvancedUserPermissionsProps {
   open: boolean
   handleClose: (status: boolean) => void
-  onChange: (value: boolean, name: string, permissionType: TPermissions) => void
+  onChange: (value: boolean, name: string, label: string, permissionType: TPermissions) => void
   selectedPermissions: {
-    formsHubPermissions: string[]
-    blueprintHubPermissions: string[]
-    calendarPermissions: string[]
+    formsHubPermissions: IGroupPermissionsKeyValue[]
+    blueprintHubPermissions: IGroupPermissionsKeyValue[]
+    calendarPermissions: IGroupPermissionsKeyValue[]
   }
 }
 interface Tab extends Omit<TabPaneProps, 'tab'> {
@@ -40,7 +40,7 @@ const AdvancedUserPermissions = ({
       children: (
         <AdvancedUserPermissionsTable
           title='Name'
-          onChange={(value, name) => onChange(value, name, 'formsHubPermissions')}
+          onChange={(value, name, label) => onChange(value, name, label, 'formsHubPermissions')}
           permissions={formsHubPermissions}
           selectedPermissions={selectedPermissions.formsHubPermissions}
         />
@@ -58,7 +58,7 @@ const AdvancedUserPermissions = ({
       children: (
         <AdvancedUserPermissionsTable
           title='Name'
-          onChange={(value, name) => onChange(value, name, 'blueprintHubPermissions')}
+          onChange={(value, name, label) => onChange(value, name, label, 'blueprintHubPermissions')}
           permissions={blueprintsHubPermissions}
           selectedPermissions={selectedPermissions.blueprintHubPermissions}
         />
@@ -76,7 +76,7 @@ const AdvancedUserPermissions = ({
       children: (
         <AdvancedUserPermissionsTable
           title='Name'
-          onChange={(value, name) => onChange(value, name, 'calendarPermissions')}
+          onChange={(value, name, label) => onChange(value, name, label, 'calendarPermissions')}
           permissions={calendarPermissions}
           selectedPermissions={selectedPermissions.calendarPermissions}
         />
