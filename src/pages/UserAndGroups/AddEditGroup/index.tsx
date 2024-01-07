@@ -27,7 +27,7 @@ const content = (
   </div>
 )
 
-const AddGroup = () => {
+const AddEditGroup = () => {
   const navigate = useNavigate()
   const param = useParams()
   const [form] = Form.useForm()
@@ -265,4 +265,4 @@ const AddGroup = () => {
   )
 }
 
-export default AddGroup
+export default AddEditGroup
