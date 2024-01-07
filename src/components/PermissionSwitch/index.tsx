@@ -1,5 +1,4 @@
 import { Col, Row, Typography, Switch } from 'antd'
-import React from 'react'
 import './styles.scss'
 
 interface IPermissionProps {
@@ -7,10 +6,10 @@ interface IPermissionProps {
   title: string
   description: string
   boldTitle?: boolean
-  selectedPermissions?: string[]
+  selectedPermissions?: IGroupPermissionsKeyValue[]
   childrenPermissions?: IPermission[]
   permissionRowClass?: string
-  onChange: (value: boolean, name: string) => void
+  onChange: (value: boolean, name: string, lable?: string) => void
 }
 
 const PermissionSwitch = ({
@@ -38,9 +37,9 @@ const PermissionSwitch = ({
       <Col className='switch-col'>
         {childrenPermissions?.length === 0 && (
           <Switch
-            defaultChecked={selectedPermissions.includes(name)}
-            checked={selectedPermissions.includes(name)}
-            onChange={(newValue) => onChange(newValue, name)}
+            defaultChecked={selectedPermissions.some((permission) => permission.key === name)}
+            checked={selectedPermissions.some((permission) => permission.key === name)}
+            onChange={(newValue) => onChange(newValue, name, title)}
           />
         )}
       </Col>
@@ -54,7 +53,9 @@ const PermissionSwitch = ({
                   name={permission.value}
                   boldTitle={boldTitle}
                   selectedPermissions={selectedPermissions}
-                  onChange={onChange}
+                  onChange={(value, name) => {
+                    onChange(value, name, permission.label)
+                  }}
                   description=''
                 />
               </Col>

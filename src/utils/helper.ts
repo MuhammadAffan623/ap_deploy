@@ -2,6 +2,7 @@ import { MenuProps } from 'antd'
 import { DefaultOptionType } from 'antd/es/select'
 import dayjs from 'dayjs'
 import { CSSProperties, Key } from 'react'
+import { PermissionEnums } from '~/enums/permission'
 
 export const monthOptions: DefaultOptionType[] = [
   { label: 'Select Month', value: '' },
@@ -72,80 +73,80 @@ export const getInitials = (str: string) => {
 export const managementPermissions: IPermission[] = [
   {
     label: 'Forms Hub',
-    value: 'formsHub'
+    value: PermissionEnums.MANAGEMENT_FORMS_HUB
   },
   {
     label: 'Calendar',
-    value: 'calendar'
+    value: PermissionEnums.MANAGEMENT_CALENDAR
   },
   {
     label: 'Contacts',
-    value: 'contacts'
+    value: PermissionEnums.MANAGEMENT_CONTACTS
   },
   {
     label: 'Library',
-    value: 'library'
+    value: PermissionEnums.MANAGEMENT_LIBRARY
   },
   {
     label: 'Blueprints Hub',
-    value: 'blueprintsHub'
+    value: PermissionEnums.MANAGEMENT_BLUEPRINTS_HUB
   },
   {
     label: 'Device Management',
-    value: 'deviceManagement'
+    value: PermissionEnums.MANAGEMENT_DEVICE_MANAGEMENT
   },
   {
     label: 'User Groups',
-    value: 'userGroups'
+    value: PermissionEnums.MANAGEMENT_USERS_GROUPS
   },
   {
     label: 'Settings',
-    value: 'settings'
+    value: PermissionEnums.MANAGEMENT_SETTINGS
   }
 ]
 
 export const userPermissions: IPermission[] = [
   {
     label: 'Forms Hub',
-    value: 'formsHub',
+    value: PermissionEnums.USER_FORMS_HUB,
     children: [
       {
         label: 'Form Templates',
-        value: 'formTemplates'
+        value: PermissionEnums.USER_FORM_TEMPLATES
       },
       {
         label: 'Forms',
-        value: 'form'
+        value: PermissionEnums.USER_FORMS
       },
       {
         label: 'Public Forms',
-        value: 'publicForms'
+        value: PermissionEnums.USER_PUBLIC_FORMS
       },
       {
         label: 'Delivery Activity',
-        value: 'deliveryActivity'
+        value: PermissionEnums.USER_DELIVERY_ACTIVITY
       }
     ]
   },
   {
     label: 'Calendar',
-    value: 'calendar'
+    value:  PermissionEnums.USER_CALENDAR
   },
   {
     label: 'Contacts',
-    value: 'contacts'
+    value:  PermissionEnums.USER_CONTACTS
   },
   {
     label: 'Library',
-    value: 'library'
+    value:  PermissionEnums.USER_LIBRARY
   },
   {
     label: 'Blueprints Hub',
-    value: 'blueprintsHub',
+    value:  PermissionEnums.USER_BLUEPRINTS_HUB,
     children: [
       {
         label: 'Projects',
-        value: 'projects'
+        value:  PermissionEnums.USER_PROJECTS
       }
     ]
   }
@@ -154,77 +155,77 @@ export const userPermissions: IPermission[] = [
 export const formsHubPermissions: IPermission[] = [
   {
     label: 'Allow export to PDF',
-    value: 'allowExportToPdf'
+    value: PermissionEnums.ADVANCED_FORMS_HUB_EXPORT_PDF
   },
   {
     label: 'Add Tags to forms',
-    value: 'addTagsToForms'
+    value: PermissionEnums.ADVANCED_FORMS_HUB_ADD_TAGS
   },
   {
     label: 'Rename existing Forms',
-    value: 'renameExistingForms'
+    value: PermissionEnums.ADVANCED_FORMS_HUB_RENAME
   },
   {
     label: 'Delete forms',
-    value: 'deleteForms'
+    value: PermissionEnums.ADVANCED_FORMS_HUB_DELETE
   },
   {
     label: 'Create copies of forms',
-    value: 'createCopiesOfForms'
+    value: PermissionEnums.ADVANCED_FORMS_HUB_CREATE_COPIES
   },
   {
     label: 'Delete Public Form',
-    value: 'deletePublicForms'
+    value: PermissionEnums.ADVANCED_FORMS_HUB_DELETE_PUBLIC
   }
 ]
 
 export const blueprintsHubPermissions: IPermission[] = [
   {
     label: 'Allow export to PDF',
-    value: 'allowExportToPdf'
+    value: PermissionEnums.ADVANCED_BLUEPRINTS_HUB_EXPORT_PDF
   },
   {
     label: 'Add Tags to projects',
-    value: 'addTagsToProjects'
+    value: PermissionEnums.ADVANCED_BLUEPRINTS_HUB_ADD_TAGS_PROJECT
   },
   {
     label: 'Rename existing Projects',
-    value: 'renameExistingProjects'
+    value: PermissionEnums.ADVANCED_BLUEPRINTS_HUB_RENAME_PROJECT
   },
   {
     label: 'Delete Projects',
-    value: 'deleteProjects'
+    value: PermissionEnums.ADVANCED_BLUEPRINTS_HUB_DELETE_PROJECT
   },
   {
     label: 'Email Plans',
-    value: 'emailPlans'
+    value: PermissionEnums.ADVANCED_BLUEPRINTS_HUB_EMAIL_PLANS
   },
   {
     label: 'Delete Annotations',
-    value: 'deleteAnnotations'
+    value: PermissionEnums.ADVANCED_BLUEPRINTS_HUB_DELETE_ANNOTATIONS
   },
   {
     label: 'Change Status',
-    value: 'changeStatus'
+    value: PermissionEnums.ADVANCED_BLUEPRINTS_HUB_CHANGE_STATUS
   }
 ]
 
 export const calendarPermissions: IPermission[] = [
   {
     label: 'Lining Schedule',
-    value: 'liningSchedule'
+    value: 'Lining Schedule'
   },
   {
     label: 'Jax Schedule',
-    value: 'jaxSchedule'
+    value: 'Jax Schedule'
   },
   {
     label: 'TPA Schedule',
-    value: 'tpaSchedule'
+    value: 'TPA Schedule'
   },
   {
     label: 'Orlando Weekly',
-    value: 'orlandoWeekly'
+    value: 'Orlando Weekly'
   }
 ]
 
