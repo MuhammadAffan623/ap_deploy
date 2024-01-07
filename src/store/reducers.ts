@@ -4,6 +4,7 @@ import { groupsSlice } from './features/groups'
 import { eventsSlice } from './features/events'
 import { authApi } from './services/auth.services'
 import { fileApi } from './services/file.services'
+import { groupsApi } from './services/groups.service'
 
 export interface RootState {
   user: ReturnType<typeof userSlice.reducer>
@@ -16,5 +17,6 @@ export const rootReducer = combineReducers({
   groups: groupsSlice.reducer,
   events: eventsSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
-  [fileApi.reducerPath]: fileApi.reducer
+  [fileApi.reducerPath]: fileApi.reducer,
+  [groupsApi.reducerPath]: groupsApi.reducer,
 })

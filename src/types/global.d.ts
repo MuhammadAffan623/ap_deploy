@@ -19,7 +19,7 @@ declare global {
     | 'calendarPermissions'
 
   interface IBase extends Record<string, unknown> {
-    _id: string
+    _id?: string
     createdAt?: string
     updatedAt?: string
   }
@@ -61,6 +61,7 @@ declare global {
   interface IUserGroup extends IBase {
     name: string
     users: Partial<IUser>[]
+    handleEdit?: () => void
   }
 
   interface IPermission {
