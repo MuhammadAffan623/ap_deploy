@@ -75,7 +75,7 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       align: 'left',
       key: '',
       dataIndex: '',
-      render: (_, { id }) => (
+      render: (_, { _id }) => (
         <Space size='small'>
           <Dropdown
             menu={{
@@ -84,9 +84,9 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
                 const { key, domEvent } = params
                 domEvent.stopPropagation()
                 if (key === '1') {
-                  handleResolve(id)
+                  handleResolve(_id)
                 } else {
-                  handleDelete(id)
+                  handleDelete(_id)
                 }
               }
             }}

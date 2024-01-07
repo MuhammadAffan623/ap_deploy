@@ -1,4 +1,4 @@
-import { Avatar as AntAvatar, Badge, AvatarProps as AntAvatarProps } from 'antd'
+import { Avatar as AntAvatar, AvatarProps as AntAvatarProps } from 'antd'
 import './style.scss'
 import { getInitials } from '~/utils/helper'
 

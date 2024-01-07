@@ -1,15 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { columns } from '../columns'
 import { DropDown, DynamicTable, SearchField } from '~/components'
-import { getMockUsers } from '~/mocks'
 import { itemsActions } from '~/utils/options'
 import '../style.scss'
 import { useUserListSelector } from '~/store/hooks'
 
 const All = () => {
-  const [data, setData] = useState<Partial<IForm>[] | []>([])
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const [loadingData, setLoadingData] = useState<boolean>(false)
+  const [loadingData] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
   const [pagination, setPagination] = useState<IPagination>({
     current: 1,
@@ -18,13 +16,6 @@ const All = () => {
   })
 
   const { users } = useUserListSelector()
-
-  useEffect(() => {
-    setLoadingData(true)
-    const fetchData = getMockUsers(20, false, true)
-    setData(fetchData)
-    setLoadingData(false)
-  }, [pagination])
 
   const handlePaginationChange = (pg: IPagination): void => {
     setPagination((prevPagination) => ({
