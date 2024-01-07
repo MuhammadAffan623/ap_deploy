@@ -1,5 +1,4 @@
 import { Col, Row } from 'antd'
-import React from 'react'
 import { PermissionSwitch } from '~/components'
 import './styles.scss'
 

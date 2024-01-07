@@ -5,15 +5,16 @@ import { getMockUsers } from '~/mocks'
 import NewGroupImage from '~/assets/images/new-group.png'
 import AddEditUserInGroup from './AddEditUser'
 import { useGroupsSelector, useAppDispatch } from '~/store/hooks'
-import { getGroupsAsync } from '~/store/features/groups'
 import { FaPlus } from 'react-icons/fa6'
 import { Loader } from '~/components'
 import { useNavigate } from 'react-router-dom'
 import UserTable from './UserTable'
 import './style.scss'
+import { useGetGroupsMutation } from '~/store/services/groups.service'
 
 const UserAndGroups = () => {
-  const { groups, loading } = useGroupsSelector()
+  const [fetchGroups, { isLoading }] = useGetGroupsMutation()
+  const { groups } = useGroupsSelector()
   const [addEditUserInGroupModalOpen, setAddEditUserInGroupModalOpen] = useState<boolean>(false)
   const [isEdit] = useState<boolean>(true)
   const navigate = useNavigate()
@@ -40,6 +41,10 @@ const UserAndGroups = () => {
     color: colorTextTertiary
   }
 
+  useEffect(() => {
+    fetchGroups('')
+  }, [])
+
   const handleCloseAddEditUserInGroupModal = (status: boolean, _data?: any) => {
     if (status) {
       setAddEditUserInGroupModalOpen(false)
@@ -48,24 +53,20 @@ const UserAndGroups = () => {
     }
   }
 
-  useEffect(() => {
-    dispatch(getGroupsAsync(11))
-  }, [dispatch])
+  const handleEdit = () => {
+    // setAddEditUserInGroupModalOpen(true)
+  }
 
   return (
     <>
       <Row gutter={[30, 30]}>
-        {loading ? (
+        {isLoading ? (
           <Loader />
         ) : (
           <>
             {groups.map((group) => (
               <Col key={group?._id} span={24} md={12} xl={8}>
-                <UserGroupCard
-                  _id={group._id}
-                  name={group?.name}
-                  users={getMockUsers(11, true, false)}
-                />
+                <UserGroupCard name={group?.name} users={group?.users} handleEdit={handleEdit} />
               </Col>
             ))}
 

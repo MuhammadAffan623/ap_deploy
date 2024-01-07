@@ -4,7 +4,7 @@ import Avatar from '../Avatar'
 import Card from '../Card'
 import { CSSProperties } from 'react'
 
-const UserGroupCard = ({ _id, name, users = [] }: IUserGroup) => {
+const UserGroupCard = ({ name, users = [], handleEdit }: IUserGroup) => {
   const { useToken } = theme
 
   const {
@@ -51,12 +51,7 @@ const UserGroupCard = ({ _id, name, users = [] }: IUserGroup) => {
 
         <Col span={24}>
           <Row justify='space-between'>
-            <Typography.Link
-              style={{ color: purple }}
-              onClick={() => {
-                console.log(_id, 'Edit Group')
-              }}
-            >
+            <Typography.Link style={{ color: purple }} onClick={handleEdit}>
               Edit Group
             </Typography.Link>
 
