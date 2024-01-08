@@ -23,3 +23,5 @@ dist
 *.sw?
 dist
 tsconfig.tsbuildinfo
+
+.env
