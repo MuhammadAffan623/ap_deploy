@@ -1,50 +1,66 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { columns } from '../columns'
-import { DropDown, DynamicTable, SearchField } from '~/components'
-import { getMockUsers } from '~/mocks'
+import { ConfirmationModal, DropDown, DynamicTable, SearchField } from '~/components'
 import { itemsActions } from '~/utils/options'
+import { useDeleteUserMutation } from '~/store/services/auth.services'
+import { message } from 'antd'
 import '../style.scss'
 
-const Disabled = () => {
-  const [data, setData] = useState<Partial<IForm>[] | []>([])
+const Disabled = ({
+  data = [],
+  pagination,
+  handlePaginationChange,
+  handleEdit,
+  refetch
+}: {
+  data: IUser[]
+  pagination: IPagination
+  handleEdit: (editingItem: IUser) => void
+  handlePaginationChange: (pg: IPagination) => void
+  refetch: () => void
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const [loadingData, setLoadingData] = useState<boolean>(false)
-  const [search, setSearch] = useState<string>('')
-  const [pagination, setPagination] = useState<IPagination>({
-    current: 1,
-    pageSize: 7,
-    total: 0
-  })
+  const [loadingData] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false)
+  const [userId, setUserId] = useState<string[] | null>(null)
 
-  useEffect(() => {
-    setLoadingData(true)
-    const fetchData = getMockUsers(20, false, true)
-    setData(fetchData)
-    setLoadingData(false)
-  }, [pagination])
-
-  const handlePaginationChange = (pg: IPagination): void => {
-    setPagination((prevPagination) => ({
-      ...prevPagination,
-      current: pg.current,
-      pageSize: pg.pageSize
-    }))
-  }
+  const [deleteUsers] = useDeleteUserMutation()
 
   const handleClickItem = (key: string) => {
-    console.log('handleClickItem key: ', key)
+    if (key === '1') {
+      if (selectedRowKeys.length > 0) {
+        setOpen(true)
+        setUserId(selectedRowKeys)
+      } else {
+        message.info('Please select rows to be deleted')
+      }
+    }
   }
 
-  const handleResolve = (id: number | string) => {
-    console.log('resolved', id)
+  const handleResolve = (editingItem: IUser) => {
+    handleEdit(editingItem)
   }
 
   const handleDelete = (id: number | string) => {
-    console.log('deleted', id)
+    setOpen(true)
+    setUserId([id as string])
+  }
+
+  const handleConfirmDelete = () => {
+    if (userId?.length) {
+      deleteUsers({ userIds: [...userId] })
+        .unwrap()
+        .then(() => {
+          setSelectedRowKeys([])
+          setUserId(null)
+          refetch()
+          message.success('User deleted successfully')
+        })
+        .catch((err) => message.error(err?.data?.error))
+    }
   }
 
   const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys)
     setSelectedRowKeys(newSelectedRowKeys)
   }
 
@@ -57,9 +73,10 @@ const Disabled = () => {
       <div className='actions-wrapper'>
         <div className='search-box'>
           <SearchField
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
             placeholder='Search...'
+            handleChange={(value) =>
+              handlePaginationChange({ ...pagination, searchText: value, current: 1 })
+            }
           />
         </div>
         <DropDown items={itemsActions} handleClickItem={handleClickItem} />
@@ -76,6 +93,17 @@ const Disabled = () => {
           />
         )
       }, [data, selectedRowKeys])}
+
+      <ConfirmationModal
+        open={open}
+        onCancel={() => setOpen(false)}
+        onOk={() => {
+          setOpen(false)
+          handleConfirmDelete()
+        }}
+        title='Confirm Delete'
+        message='Are you sure you want to delete this user?'
+      />
     </div>
   )
 }

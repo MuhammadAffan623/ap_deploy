@@ -15,7 +15,7 @@ const btnStyle: CSSProperties = {
 const items: MenuProps['items'] = [
   {
     key: '1',
-    label: 'Mark resolve'
+    label: 'Edit'
   },
   {
     key: '2',
@@ -35,14 +35,14 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
     },
     {
       title: 'GROUP',
-      dataIndex: 'isBlocked',
-      key: 'isBlocked',
+      dataIndex: 'group',
+      key: 'group',
       sorter: (a, b) => a.isBlocked.length - b.isBlocked.length,
       sortDirections: ['descend'],
-      render: (_, { isBlocked }) => {
-        const text = isBlocked ? 'ORLANDO' : 'TEMPA'
-        const textColor = isBlocked ? '#F05C54' : '#304FFD'
-        const bgColor = isBlocked ? '#F05C541A' : '##304FFD1A'
+      render: (_, { group }) => {
+        const text = group?.name
+        const textColor = '#304FFD'
+        const bgColor = '#304FFD1A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
     },
@@ -75,7 +75,7 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       align: 'left',
       key: '',
       dataIndex: '',
-      render: (_, { _id }) => (
+      render: (_, record) => (
         <Space size='small'>
           <Dropdown
             menu={{
@@ -84,9 +84,9 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
                 const { key, domEvent } = params
                 domEvent.stopPropagation()
                 if (key === '1') {
-                  handleResolve(_id)
+                  handleResolve(record)
                 } else {
-                  handleDelete(_id)
+                  handleDelete(record?._id)
                 }
               }
             }}

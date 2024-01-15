@@ -13,9 +13,9 @@ const Pill = ({
   return (
     <Tag
       style={{
-        padding: '5px 5px',
+        padding: '5px 8px',
         borderRadius: '47px',
-        width: '100px',
+        minWidth: '100px',
         textAlign: 'center',
         cursor: 'pointer',
         color: textColor,

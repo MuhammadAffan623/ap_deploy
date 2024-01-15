@@ -39,7 +39,7 @@ declare global {
     isActive?: boolean
     isBlocked?: boolean
     role: string
-    groups?: Partial<IUserGroup>[] | string[]
+    group?: Partial<IUserGroup>
     password?: string
     confirmPassword: string
     activeDevices?: IDevice[]
@@ -111,6 +111,8 @@ declare global {
     current: number
     pageSize: number
     total: number
+    searchText?: string
+    isActive?: boolean | string
   }
 }
 

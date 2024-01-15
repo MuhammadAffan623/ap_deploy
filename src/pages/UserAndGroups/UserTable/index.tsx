@@ -1,4 +1,4 @@
-import { Col, Row, Tabs } from 'antd'
+import { Col, Row, Tabs, message } from 'antd'
 import All from './Tabs/All'
 import './style.scss'
 
@@ -11,40 +11,13 @@ import AddEditUserInGroup from './AddEditUser'
 import { useGroupsSelector } from '~/store/hooks'
 import { useGetAllUserMutation } from '~/store/services/auth.services'
 
-const tabsItems = [
-  {
-    label: (
-      <span>
-        All <span className='tab-count'>10</span>
-      </span>
-    ),
-    key: '1',
-    children: <All />
-  },
-  {
-    label: (
-      <span>
-        Active <span className='tab-count'>10</span>
-      </span>
-    ),
-    key: '2',
-    children: <Active />
-  },
-  {
-    label: (
-      <span>
-        Disabled <span className='tab-count'>10</span>
-      </span>
-    ),
-    key: '3',
-    children: <Disabled />
-  }
-]
-
 const UserTable = () => {
+  const [allData, setAllData] = useState([])
+  // const [disableData, setDisableData] = useState([])
+  // const [activeData, setActiveData] = useState([])
   const [open, setOpen] = useState<boolean>(false)
-  const [isEdit] = useState<boolean>(false)
-  const [editingUser] = useState<IUser>({
+  const [isEdit, setEdit] = useState<boolean>(false)
+  const [editingUser, setEditingUser] = useState<IUser | null>({
     activeDevices: [
       {
         appVersion: '2.3.0',
@@ -55,19 +28,117 @@ const UserTable = () => {
       }
     ]
   } as IUser)
+  const [pagination, setPagination] = useState<IPagination>({
+    current: 1,
+    pageSize: 7,
+    total: 0,
+    searchText: '',
+    isActive: ''
+  })
 
   const { groups } = useGroupsSelector()
   const [getAllUsers] = useGetAllUserMutation()
 
   useEffect(() => {
-    getAllUsers('')
-  }, [])
+    fetchUsers()
+  }, [pagination.current, pagination.searchText, pagination.isActive])
+
+  const fetchUsers = () => {
+    getAllUsers(pagination)
+      .unwrap()
+      .then((res) => {
+        setAllData(res.data.users)
+        setPagination({ ...pagination, total: res.data.meta.totalUsers })
+      })
+      .catch((err) => message.error(err?.data?.error))
+  }
 
   const handleClose = (status: boolean, _data?: any) => {
     if (status) {
       setOpen(false)
     } else {
       setOpen(false)
+    }
+  }
+
+  const handlePaginationChange = (pg: IPagination): void => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      current: pg.current,
+      pageSize: pg.pageSize
+    }))
+  }
+
+  const handleEdit = (editingItem: IUser) => {
+    setOpen(true)
+    setEdit(true)
+    setEditingUser({ ...editingUser, ...editingItem })
+  }
+
+  const tabsItems = [
+    {
+      label: (
+        <span>
+          All <span className='tab-count'>{pagination.total}</span>
+        </span>
+      ),
+      key: '1',
+      children: (
+        <All
+          data={allData}
+          pagination={pagination}
+          handlePaginationChange={handlePaginationChange}
+          handleEdit={handleEdit}
+          refetch={fetchUsers}
+        />
+      )
+    },
+    {
+      label: (
+        <span>
+          Active <span className='tab-count'>{pagination.total}</span>
+        </span>
+      ),
+      key: '2',
+      children: (
+        <Active
+          data={allData}
+          pagination={pagination}
+          handlePaginationChange={handlePaginationChange}
+          handleEdit={handleEdit}
+          refetch={fetchUsers}
+        />
+      )
+    },
+    {
+      label: (
+        <span>
+          Disabled <span className='tab-count'>{pagination.total}</span>
+        </span>
+      ),
+      key: '3',
+      children: (
+        <Disabled
+          data={allData}
+          pagination={pagination}
+          handlePaginationChange={handlePaginationChange}
+          handleEdit={handleEdit}
+          refetch={fetchUsers}
+        />
+      )
+    }
+  ]
+
+  const onTabClick = (key: string) => {
+    switch (key) {
+      case '2':
+        setPagination({ ...pagination, current: 1, isActive: true })
+        break
+      case '3':
+        setPagination({ ...pagination, current: 1, isActive: false })
+        break
+      default:
+        setPagination({ ...pagination, current: 1, isActive: '' })
     }
   }
 
@@ -79,13 +150,21 @@ const UserTable = () => {
           icon={<FaPlus />}
           onClick={() => {
             setOpen(true)
+            setEdit(false)
+            setEditingUser(null)
           }}
         >
-          Add
+          Add User
         </Button>
       </Col>
       <Col span={24}>
-        <Tabs defaultActiveKey='1' type='card' size='large' items={tabsItems} />
+        <Tabs
+          defaultActiveKey='1'
+          type='card'
+          size='large'
+          items={tabsItems}
+          onTabClick={onTabClick}
+        />
       </Col>
 
       <AddEditUserInGroup
@@ -94,6 +173,7 @@ const UserTable = () => {
         isEdit={isEdit}
         groups={groups ?? []}
         user={editingUser}
+        refetch={fetchUsers}
       />
     </Row>
   )

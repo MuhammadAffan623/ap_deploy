@@ -26,9 +26,11 @@ import Dragger from './Dragger'
 import LibraryViewCart from './LibraryViewCart'
 import CustomSelect from './Inputs/CustomSelect'
 import ColorIcon from './ColorIcon'
+import ConfirmationModal from './ConfirmationModal'
 
 export {
   PageHeader,
+  ConfirmationModal,
   Pill,
   DynamicTable,
   DropDown,

@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import { Form, Input, InputProps, theme } from 'antd'
 import './style.scss'
 import SearchOutlined from '@ant-design/icons/SearchOutlined'
@@ -9,13 +9,13 @@ interface IProps extends InputProps {
   formItemClass?: string
   inputClass?: string
   inverseBg?: boolean
+  handleChange?: (value: string) => void
 }
 
 const searchFieldPrefixIconStyles: CSSProperties = { fontSize: 20, marginRight: 10 }
 
 const SearchField = ({
   value,
-  placeholder,
   label,
   name,
   suffix,
@@ -24,9 +24,11 @@ const SearchField = ({
   disabled,
   formItemClass,
   inputClass,
+  handleChange,
   inverseBg = false,
   ...rest
 }: IProps): ReactNode => {
+  const [searchValue, setSearchValue] = useState('')
   const { useToken } = theme
   const {
     token: { colorTextHeading, colorBgLayout }
@@ -39,6 +41,16 @@ const SearchField = ({
   if (!inverseBg) {
     searchInverseStyles = {}
   }
+
+  useEffect(() => {
+    // Define the debouncing function
+    const debounceSearch = setTimeout(() => {
+      handleChange && handleChange(searchValue)
+    }, 300)
+
+    // Clean up the timeout on component unmount and when searchValue changes
+    return () => clearTimeout(debounceSearch)
+  }, [searchValue])
 
   return (
     <Form.Item
@@ -54,7 +66,7 @@ const SearchField = ({
         name={name}
         size='large'
         className={[inputClass].join(' ')}
-        placeholder={placeholder}
+        onChange={(e) => setSearchValue(e.target.value)}
         style={{
           color: colorTextHeading,
           border: 'none',

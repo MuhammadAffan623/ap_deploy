@@ -1,17 +1,19 @@
-import { Checkbox, Col, Form, Row, Tag, Typography, theme } from 'antd'
+import { Checkbox, Col, Form, Row, Tag, Typography, message, theme } from 'antd'
 import { getCountries } from 'country-state-picker'
 import { CSSProperties, useEffect } from 'react'
 import { FaCrown } from 'react-icons/fa6'
 import { Avatar, BasicModal, Button, SelectField, TextField } from '~/components'
 import ActiveDevice from './ActiveDevice'
 import './styles.scss'
+import { useRegisterMutation, useUpdateProfileMutation } from '~/store/services/auth.services'
 
 interface IAddEditUserInGroupProps {
   open: boolean
   handleClose: (status: boolean) => void
   isEdit?: boolean
-  user: IUser
+  user: IUser | null
   groups: Partial<IUserGroup>[]
+  refetch: () => void
 }
 
 const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
@@ -32,7 +34,8 @@ const AddEditUserInGroup = ({
   groups = [],
   handleClose,
   open,
-  isEdit = false
+  isEdit = false,
+  refetch
 }: IAddEditUserInGroupProps) => {
   const [form] = Form.useForm()
   const { useToken } = theme
@@ -41,11 +44,36 @@ const AddEditUserInGroup = ({
     token: { colorTextTertiary }
   } = useToken()
 
+  const [registerUser, { isLoading: isAddLoading }] = useRegisterMutation()
+  const [updateProfile, { isLoading: isUpdateLoading }]: any = useUpdateProfileMutation()
+
   const handleFormSubmit = (values: any) => {
+    const body = {
+      ...values,
+      name: values.firstName + ' ' + values.lastName
+    }
     if (isEdit) {
-      console.log(values)
+      updateProfile({ id: user?._id, ...body })
+        .unwrap()
+        .then((res: any) => {
+          message.success(res?.message)
+          handleClose(false)
+          refetch()
+        })
+        .catch((err: any) => {
+          message.error(err?.data?.error)
+        })
     } else {
-      console.log(values)
+      registerUser(body)
+        .unwrap()
+        .then((res) => {
+          handleClose(false)
+          refetch()
+          message.success(res.message)
+        })
+        .catch((err) => {
+          message.error(err?.data?.error)
+        })
     }
   }
 
@@ -55,11 +83,12 @@ const AddEditUserInGroup = ({
       lastName: user?.name?.split(' ')[1],
       email: user?.email,
       countryCode: '+92',
-      phoneNumber: user.phoneNumber,
-      role: user.role,
-      groups: user.groups ?? [],
-      avatarUrl: user?.avatarUrl,
-      activeDevices: user?.activeDevices ?? []
+      phoneNo: user?.phoneNo,
+      role: user?.role,
+      group: user?.group?._id ?? null,
+      avatar: user?.avatar,
+      activeDevices: user?.activeDevices ?? [],
+      enableSuperAdmin: user?.userType === 'Admin' ? true : false
     })
   }, [user])
 
@@ -70,7 +99,7 @@ const AddEditUserInGroup = ({
         handleClose(false)
       }}
     >
-      <Typography.Title level={3}>{isEdit ? 'Edit' : 'New'} Contact</Typography.Title>
+      <Typography.Title level={3}> {isEdit ? 'Edit' : 'Add New'} User</Typography.Title>
 
       <Form
         form={form}
@@ -81,7 +110,7 @@ const AddEditUserInGroup = ({
         <Row gutter={[16, 16]}>
           <Col span={24} className='center'>
             <Avatar
-              src={(user?.avatarUrl as string) ?? '#'}
+              src={(user?.avatar as string) ?? '#'}
               name='+'
               shape='square'
               style={getAvatarContainerStyle(colorTextTertiary)}
@@ -126,7 +155,7 @@ const AddEditUserInGroup = ({
                     style={{ border: 'none', width: '100%' }}
                   />
                   <TextField
-                    name='phone'
+                    name='phoneNo'
                     placeholder='Enter phone'
                     required
                     formItemClass='phone-number-form-item'
@@ -139,9 +168,9 @@ const AddEditUserInGroup = ({
           <Col span={24}>
             <SelectField
               label='Add Group(s)'
-              name='groups'
+              name='group'
               className='groups-multiple-select'
-              mode='multiple'
+              // mode='multiple'
               options={groups.map((item) => ({
                 label: item?.name,
                 value: item._id
@@ -188,11 +217,11 @@ const AddEditUserInGroup = ({
             </>
           ) : (
             <>
-              <Col span={24}>
+              <Col span={24} md={12}>
                 <TextField name='password' label='Password' placeholder='Password' required />
               </Col>
 
-              <Col span={24}>
+              <Col span={24} md={12}>
                 <TextField
                   name='confirmPassword'
                   label='Confirm Password'
@@ -226,14 +255,16 @@ const AddEditUserInGroup = ({
                     <FaCrown style={{ fontSize: '2rem' }} />{' '}
                   </Col>
                   <Col>
-                    <Checkbox name='superAdmin'>Enable Super Admin</Checkbox>
+                    <Form.Item name='enableSuperAdmin' valuePropName='checked'>
+                      <Checkbox>Enable Super Admin</Checkbox>
+                    </Form.Item>
                   </Col>
                 </Row>
               </Col>
 
               <Col>
-                <Button type='primary' htmlType='submit'>
-                  {isEdit ? 'Update' : 'Add'} Contact
+                <Button type='primary' htmlType='submit' loading={isAddLoading || isUpdateLoading}>
+                  {isEdit ? 'Update' : 'Add'} User
                 </Button>
               </Col>
             </Row>
