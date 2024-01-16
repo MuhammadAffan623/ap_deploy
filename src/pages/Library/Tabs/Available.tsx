@@ -1,50 +1,69 @@
-import { useEffect, useMemo, useState } from 'react'
-import { libraryColumns } from '../../../columns/LibraryColumns'
-import { DropDown, DynamicTable, SearchField } from '~/components'
-import { getMockLibraryForms } from '~/mocks'
+import { useMemo, useState } from 'react'
+import { columns } from '../columns'
+import { ConfirmationModal, DropDown, DynamicTable, SearchField } from '~/components'
 import { itemsActions } from '~/utils/options'
+import { message } from 'antd'
 import '../style.scss'
+import { useDeleteLibraryMutation } from '~/store/services/library.service'
 
-const Available = () => {
-  const [data, setData] = useState<Partial<IForm>[] | []>([])
+const Available = ({
+  isLoading,
+  data = [],
+  pagination,
+  handlePaginationChange,
+  onSearch,
+  handleEdit,
+  refetch
+}: {
+  isLoading: boolean
+  data: ILibrary[]
+  pagination: IPagination
+  handleEdit: (editingItem: ILibrary) => void
+  handlePaginationChange: (pg: IPagination) => void
+  onSearch: (text: string) => void
+  refetch: () => void
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const [loadingData, setLoadingData] = useState<boolean>(false)
-  const [search, setSearch] = useState<string>('')
-  const [pagination, setPagination] = useState<IPagination>({
-    current: 1,
-    pageSize: 7,
-    total: 0
-  })
+  const [open, setOpen] = useState<boolean>(false)
+  const [libraryId, setLibraryId] = useState<string[] | null>(null)
 
-  useEffect(() => {
-    setLoadingData(true)
-    const fetchData = getMockLibraryForms(20, true)
-    setData(fetchData)
-    setLoadingData(false)
-  }, [pagination])
-
-  const handlePaginationChange = (pg: IPagination): void => {
-    setPagination((prevPagination) => ({
-      ...prevPagination,
-      current: pg.current,
-      pageSize: pg.pageSize
-    }))
-  }
+  const [deleteLibrary] = useDeleteLibraryMutation()
 
   const handleClickItem = (key: string) => {
-    console.log('handleClickItem key: ', key)
+    if (key === '1') {
+      if (selectedRowKeys.length > 0) {
+        setOpen(true)
+        setLibraryId(selectedRowKeys)
+      } else {
+        message.info('Please select rows to be deleted')
+      }
+    }
   }
 
-  const handleResolve = (id: number | string) => {
-    console.log('resolved', id)
+  const handleResolve = (editingItem: ILibrary) => {
+    handleEdit(editingItem)
   }
 
   const handleDelete = (id: number | string) => {
-    console.log('deleted', id)
+    setOpen(true)
+    setLibraryId([id as string])
+  }
+
+  const handleConfirmDelete = () => {
+    if (libraryId?.length) {
+      deleteLibrary({ libraryIds: [...libraryId] })
+        .unwrap()
+        .then(() => {
+          setSelectedRowKeys([])
+          setLibraryId(null)
+          refetch()
+          message.success('Library deleted successfully')
+        })
+        .catch((err) => message.error(err?.data?.error))
+    }
   }
 
   const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys)
     setSelectedRowKeys(newSelectedRowKeys)
   }
 
@@ -56,11 +75,7 @@ const Available = () => {
     <div className='table-container'>
       <div className='actions-wrapper'>
         <div className='search-box'>
-          <SearchField
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder='Search...'
-          />
+          <SearchField placeholder='Search...' handleChange={(value) => onSearch(value)} />
         </div>
         <DropDown items={itemsActions} handleClickItem={handleClickItem} />
       </div>
@@ -68,14 +83,25 @@ const Available = () => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={libraryColumns(handleResolve, handleDelete)}
-            isLoading={loadingData}
+            columns={columns(handleResolve, handleDelete)}
+            isLoading={isLoading}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
           />
         )
-      }, [data, selectedRowKeys])}
+      }, [data, selectedRowKeys,isLoading])}
+
+      <ConfirmationModal
+        open={open}
+        onCancel={() => setOpen(false)}
+        onOk={() => {
+          setOpen(false)
+          handleConfirmDelete()
+        }}
+        title='Confirm Delete'
+        message='Are you sure you want to delete this library?'
+      />
     </div>
   )
 }

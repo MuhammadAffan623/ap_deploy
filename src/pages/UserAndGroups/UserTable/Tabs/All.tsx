@@ -10,6 +10,7 @@ const All = ({
   data = [],
   pagination,
   handlePaginationChange,
+  onSearch,
   handleEdit,
   refetch
 }: {
@@ -17,6 +18,7 @@ const All = ({
   pagination: IPagination
   handleEdit: (editingItem: IUser) => void
   handlePaginationChange: (pg: IPagination) => void
+  onSearch: (text: string) => void
   refetch: () => void
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
@@ -72,12 +74,7 @@ const All = ({
     <div className='table-container'>
       <div className='actions-wrapper'>
         <div className='search-box'>
-          <SearchField
-            placeholder='Search...'
-            handleChange={(value) =>
-              handlePaginationChange({ ...pagination, searchText: value, current: 1 })
-            }
-          />
+          <SearchField placeholder='Search...' handleChange={(value) => onSearch(value)} />
         </div>
         <DropDown items={itemsActions} handleClickItem={handleClickItem} />
       </div>

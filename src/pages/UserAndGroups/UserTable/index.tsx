@@ -13,8 +13,6 @@ import { useGetAllUserMutation } from '~/store/services/auth.services'
 
 const UserTable = () => {
   const [allData, setAllData] = useState([])
-  // const [disableData, setDisableData] = useState([])
-  // const [activeData, setActiveData] = useState([])
   const [open, setOpen] = useState<boolean>(false)
   const [isEdit, setEdit] = useState<boolean>(false)
   const [editingUser, setEditingUser] = useState<IUser | null>({
@@ -69,6 +67,14 @@ const UserTable = () => {
     }))
   }
 
+  const onSearch = (text: string) => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      current: 1,
+      searchText: text
+    }))
+  }
+
   const handleEdit = (editingItem: IUser) => {
     setOpen(true)
     setEdit(true)
@@ -90,6 +96,7 @@ const UserTable = () => {
           handlePaginationChange={handlePaginationChange}
           handleEdit={handleEdit}
           refetch={fetchUsers}
+          onSearch={onSearch}
         />
       )
     },
@@ -107,6 +114,7 @@ const UserTable = () => {
           handlePaginationChange={handlePaginationChange}
           handleEdit={handleEdit}
           refetch={fetchUsers}
+          onSearch={onSearch}
         />
       )
     },
@@ -124,6 +132,7 @@ const UserTable = () => {
           handlePaginationChange={handlePaginationChange}
           handleEdit={handleEdit}
           refetch={fetchUsers}
+          onSearch={onSearch}
         />
       )
     }

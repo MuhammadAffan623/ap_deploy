@@ -7,4 +7,5 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector<RootS
 export const useUserSelector = () => useAppSelector((state) => state.user)
 export const useUserListSelector = () => useAppSelector((state) => state.userList)
 export const useGroupsSelector = () => useAppSelector((state) => state.groups)
+export const useLibrarySelector = () => useAppSelector((state) => state.library)
 export const useEventSelector = () => useAppSelector((state) => state.events)

@@ -53,9 +53,9 @@ declare global {
   interface ILibrary extends IBase {
     title: string
     category: string
-    status: string
-    url: string
-    file: any
+    isActive: boolean | string
+    fileUrl: string
+    selectedDate: any
   }
 
   interface IUserGroup extends IBase {
