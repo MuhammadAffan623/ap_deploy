@@ -29,16 +29,16 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       title: 'NAME',
       dataIndex: 'name',
       key: 'name',
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ['descend'],
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      // sortDirections: ['descend'],
       width: '40%'
     },
     {
       title: 'GROUP',
       dataIndex: 'group',
       key: 'group',
-      sorter: (a, b) => a.isBlocked.length - b.isBlocked.length,
-      sortDirections: ['descend'],
+      sorter: (a, b) => a.group?.name.length - b.group?.name.length,
+      // sortDirections: ['descend'],
       render: (_, { group }) => {
         const text = group?.name
         const textColor = '#304FFD'
@@ -50,8 +50,8 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       title: 'SSO',
       dataIndex: 'isBlocked',
       key: 'isBlocked',
-      sorter: (a, b) => a.isBlocked.length - b.isBlocked.length,
-      sortDirections: ['descend'],
+      // sorter: (a, b) => a.isBlocked.length - b.isBlocked.length,
+      // sortDirections: ['descend'],
       render: (_, { isBlocked }) => {
         const img = isBlocked ? tickIcon : crossIcon
         return <ImagesBox src={img} width={20} height={20} />
@@ -61,8 +61,8 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       title: 'STATUS',
       dataIndex: 'isActive',
       key: 'isActive',
-      sorter: (a, b) => a.isActive.length - b.isActive.length,
-      sortDirections: ['descend'],
+      sorter: (a, b) => Number(a.isActive) - Number(b.isActive),
+      // sortDirections: ['descend'],
       render: (_, { isActive }) => {
         const text = isActive ? 'Active' : 'Disabled'
         const textColor = isActive ? '#14C25A' : '#FC8229'

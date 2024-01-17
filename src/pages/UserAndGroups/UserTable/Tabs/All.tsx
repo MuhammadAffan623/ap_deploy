@@ -7,6 +7,7 @@ import { message } from 'antd'
 import '../style.scss'
 
 const All = ({
+  isLoading,
   data = [],
   pagination,
   handlePaginationChange,
@@ -14,6 +15,7 @@ const All = ({
   handleEdit,
   refetch
 }: {
+  isLoading: boolean
   data: IUser[]
   pagination: IPagination
   handleEdit: (editingItem: IUser) => void
@@ -22,7 +24,6 @@ const All = ({
   refetch: () => void
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const [loadingData] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const [userId, setUserId] = useState<string[] | null>(null)
 
@@ -83,13 +84,13 @@ const All = ({
           <DynamicTable
             dataSource={data}
             columns={columns(handleResolve, handleDelete)}
-            isLoading={loadingData}
+            isLoading={isLoading}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
           />
         )
-      }, [data, selectedRowKeys])}
+      }, [data, selectedRowKeys, isLoading])}
 
       <ConfirmationModal
         open={open}

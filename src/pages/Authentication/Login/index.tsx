@@ -12,7 +12,7 @@ const Login = () => {
       .unwrap()
       .then(() => message.success('Login successfully'))
       .catch((error: any) => {
-        message?.error(error?.data?.error)
+        message.error(error?.data?.error || "Login failed")
       })
   }
 

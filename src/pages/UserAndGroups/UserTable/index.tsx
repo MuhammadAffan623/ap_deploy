@@ -10,9 +10,15 @@ import { useEffect, useState } from 'react'
 import AddEditUserInGroup from './AddEditUser'
 import { useGroupsSelector } from '~/store/hooks'
 import { useGetAllUserMutation } from '~/store/services/auth.services'
+import { defautlPagination } from '~/utils/constant'
 
 const UserTable = () => {
   const [allData, setAllData] = useState([])
+  const [activeData, setActiveData] = useState([])
+  const [disabledData, setDisabledData] = useState([])
+  const [pagination, setPagination] = useState<IPagination>(defautlPagination)
+  const [activePagination, setActivePagination] = useState<IPagination>(defautlPagination)
+  const [disabledPagination, setDisabledPagination] = useState<IPagination>(defautlPagination)
   const [open, setOpen] = useState<boolean>(false)
   const [isEdit, setEdit] = useState<boolean>(false)
   const [editingUser, setEditingUser] = useState<IUser | null>({
@@ -26,20 +32,19 @@ const UserTable = () => {
       }
     ]
   } as IUser)
-  const [pagination, setPagination] = useState<IPagination>({
-    current: 1,
-    pageSize: 7,
-    total: 0,
-    searchText: '',
-    isActive: ''
-  })
 
   const { groups } = useGroupsSelector()
-  const [getAllUsers] = useGetAllUserMutation()
+  const [getAllUsers, { isLoading }] = useGetAllUserMutation()
 
   useEffect(() => {
     fetchUsers()
   }, [pagination.current, pagination.searchText, pagination.isActive])
+  useEffect(() => {
+    fetchActiveUsers()
+  }, [activePagination.current, activePagination.searchText, activePagination.isActive])
+  useEffect(() => {
+    fetchDisabledUsers()
+  }, [disabledPagination.current, disabledPagination.searchText, disabledPagination.isActive])
 
   const fetchUsers = () => {
     getAllUsers(pagination)
@@ -50,6 +55,52 @@ const UserTable = () => {
       })
       .catch((err) => message.error(err?.data?.error))
   }
+  const fetchActiveUsers = () => {
+    getAllUsers({ ...activePagination, isActive: true })
+      .unwrap()
+      .then((res) => {
+        setActiveData(res.data.users)
+        setActivePagination({ ...activePagination, total: res.data.meta.totalUsers })
+      })
+      .catch((err) => message.error(err?.data?.error))
+  }
+  const fetchDisabledUsers = () => {
+    getAllUsers({ ...disabledPagination, isActive: false })
+      .unwrap()
+      .then((res) => {
+        setDisabledData(res.data.users)
+        setDisabledPagination({ ...disabledPagination, total: res.data.meta.totalUsers })
+      })
+      .catch((err) => message.error(err?.data?.error))
+  }
+
+  const handlePaginationChange = (pg: IPagination, type: string): void => {
+    const setPaginationFunction =
+      type === 'active'
+        ? setActivePagination
+        : type === 'disabled'
+        ? setDisabledPagination
+        : setPagination
+    setPaginationFunction((prevPagination) => ({
+      ...prevPagination,
+      current: pg.current,
+      pageSize: pg.pageSize
+    }))
+  }
+
+  const onSearch = (text: string, type: string) => {
+    const setPaginationFunction =
+      type === 'active'
+        ? setActivePagination
+        : type === 'disabled'
+        ? setDisabledPagination
+        : setPagination
+    setPaginationFunction((prevPagination) => ({
+      ...prevPagination,
+      current: 1,
+      searchText: text
+    }))
+  }
 
   const handleClose = (status: boolean, _data?: any) => {
     if (status) {
@@ -57,22 +108,6 @@ const UserTable = () => {
     } else {
       setOpen(false)
     }
-  }
-
-  const handlePaginationChange = (pg: IPagination): void => {
-    setPagination((prevPagination) => ({
-      ...prevPagination,
-      current: pg.current,
-      pageSize: pg.pageSize
-    }))
-  }
-
-  const onSearch = (text: string) => {
-    setPagination((prevPagination) => ({
-      ...prevPagination,
-      current: 1,
-      searchText: text
-    }))
   }
 
   const handleEdit = (editingItem: IUser) => {
@@ -93,63 +128,53 @@ const UserTable = () => {
         <All
           data={allData}
           pagination={pagination}
-          handlePaginationChange={handlePaginationChange}
+          handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
           handleEdit={handleEdit}
           refetch={fetchUsers}
-          onSearch={onSearch}
+          onSearch={(text) => onSearch(text, 'all')}
+          isLoading={isLoading}
         />
       )
     },
     {
       label: (
         <span>
-          Active <span className='tab-count'>{pagination.total}</span>
+          Active <span className='tab-count'>{activePagination.total}</span>
         </span>
       ),
       key: '2',
       children: (
         <Active
-          data={allData}
-          pagination={pagination}
-          handlePaginationChange={handlePaginationChange}
+          data={activeData}
+          pagination={activePagination}
+          handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
           handleEdit={handleEdit}
-          refetch={fetchUsers}
-          onSearch={onSearch}
+          refetch={fetchActiveUsers}
+          onSearch={(text) => onSearch(text, 'active')}
+          isLoading={isLoading}
         />
       )
     },
     {
       label: (
         <span>
-          Disabled <span className='tab-count'>{pagination.total}</span>
+          Disabled <span className='tab-count'>{disabledPagination.total}</span>
         </span>
       ),
       key: '3',
       children: (
         <Disabled
-          data={allData}
-          pagination={pagination}
-          handlePaginationChange={handlePaginationChange}
+          data={disabledData}
+          pagination={disabledPagination}
+          handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
           handleEdit={handleEdit}
-          refetch={fetchUsers}
-          onSearch={onSearch}
+          refetch={fetchDisabledUsers}
+          onSearch={(text) => onSearch(text, 'disabled')}
+          isLoading={isLoading}
         />
       )
     }
   ]
-
-  const onTabClick = (key: string) => {
-    switch (key) {
-      case '2':
-        setPagination({ ...pagination, current: 1, isActive: true })
-        break
-      case '3':
-        setPagination({ ...pagination, current: 1, isActive: false })
-        break
-      default:
-        setPagination({ ...pagination, current: 1, isActive: '' })
-    }
-  }
 
   return (
     <Row gutter={[10, 10]} style={{ marginTop: 40 }}>
@@ -167,13 +192,7 @@ const UserTable = () => {
         </Button>
       </Col>
       <Col span={24}>
-        <Tabs
-          defaultActiveKey='1'
-          type='card'
-          size='large'
-          items={tabsItems}
-          onTabClick={onTabClick}
-        />
+        <Tabs defaultActiveKey='1' type='card' size='large' items={tabsItems} />
       </Col>
 
       <AddEditUserInGroup
