@@ -180,19 +180,6 @@ const Library = () => {
     }
   ]
 
-  const onTabClick = (key: string) => {
-    switch (key) {
-      case '2':
-        setPagination({ ...pagination, current: 1, isActive: true })
-        break
-      case '3':
-        setPagination({ ...pagination, current: 1, isActive: false })
-        break
-      default:
-        setPagination({ ...pagination, current: 1, isActive: '' })
-    }
-  }
-
   return (
     <Row gutter={[10, 10]} style={{ marginTop: 40 }}>
       <Col span={24} style={{ textAlign: 'right' }}>
@@ -210,13 +197,7 @@ const Library = () => {
         />
       </Col>
       <Col span={24}>
-        <Tabs
-          defaultActiveKey='1'
-          type='card'
-          size='large'
-          items={tabsItems}
-          onTabClick={onTabClick}
-        />
+        <Tabs defaultActiveKey='1' type='card' size='large' items={tabsItems} />
       </Col>
 
       <AddEditLibrary
