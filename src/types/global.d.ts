@@ -35,10 +35,14 @@ declare global {
     name: string
     email: string
     username: string
-    phoneNumber: string
+    phone: string
     isActive?: boolean
     isBlocked?: boolean
     role: string
+    address?: string
+    jobTitle?: string
+    division?:string
+    notes?: string
     group?: Partial<IUserGroup>
     password?: string
     confirmPassword: string

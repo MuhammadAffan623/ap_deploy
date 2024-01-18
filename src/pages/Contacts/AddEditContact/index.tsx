@@ -1,8 +1,13 @@
-import { Col, Form, Row, Typography, theme } from 'antd'
-import { getCountries } from 'country-state-picker'
+import { Col, Form, Row, Typography, message, theme } from 'antd'
 import { CSSProperties, useEffect } from 'react'
 import { Avatar, BasicModal, Button, SelectField, TextArea, TextField } from '~/components'
 import './styles.scss'
+import {
+  useCreateUserByIdMutation,
+  useUpdateUserByIdMutation
+} from '~/store/services/contact.services'
+import toast from '~/store/toast'
+import { getCountries } from 'country-state-picker'
 
 interface IAddEditContactProps {
   open: boolean
@@ -32,23 +37,49 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
     token: { colorTextTertiary }
   } = useToken()
 
-  const handleFormSubmit = (values: any) => {
+  const handleFormSubmit = (body: any) => {
+    console.log(body)
+    const newObj = { ...body, phone: body.countryCode + body.phone }
+    console.log(newObj)
     if (isEdit) {
-      console.log(values)
+      updateUserById({
+        id: contact?._id,
+        body: newObj
+      })
+        .unwrap()
+        .then((res) => {
+          message.success(res?.data?.message ?? 'Contact updated successfully')
+          handleClose(true)
+        })
+        .catch((err) => {
+          message.error(err?.data?.error ?? 'Something went wrong')
+        })
     } else {
-      console.log(values)
+      createUserById({ ...body, phone: body.countryCode + body.phone })
+        .unwrap()
+        .then((res) => {
+          message?.success(res?.data?.message ?? 'Contact created successfully')
+          handleClose(true)
+        })
+        .catch((err) => {
+          message.error(err?.data?.error ?? 'Something went wrong')
+        })
     }
   }
 
+  const [updateUserById, { isLoading: updateUserLoading }] = useUpdateUserByIdMutation()
+  const [createUserById, { isLoading: createUserLoading }] = useCreateUserByIdMutation()
+
   useEffect(() => {
     form.setFieldsValue({
-      firstName: contact.name?.split(' ')[0],
-      lastName: contact.name?.split(' ')[1],
-      email: contact.email,
-      countryCode: '',
-      phoneNumber: contact.phoneNumber,
-      role: contact.role,
-      phone: contact.phoneNumber
+      name: contact?.name ?? '',
+      email: contact?.email,
+      phone: contact?.phone,
+      role: contact?.role,
+      address: contact?.address,
+      jobTitle: contact?.jobTitle,
+      division: contact?.division,
+      notes: contact?.notes
     })
   }, [contact])
 
@@ -59,7 +90,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
         handleClose(false)
       }}
     >
-      <Typography.Title level={3}>New Contact</Typography.Title>
+      <Typography.Title level={3}>{isEdit ? 'Edit' : 'Add'} Contact</Typography.Title>
       <Form
         form={form}
         layout='vertical'
@@ -76,72 +107,60 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
             />
           </Col>
 
-          <Col span={24} md={12}>
-            <TextField
-              name='firstName'
-              label='First Name'
-              placeholder='Enter first name'
-              required
-            />
-          </Col>
-          <Col span={24} md={12}>
-            <TextField name='lastName' label='Last Name' placeholder='Enter last name' required />
+          <Col span={12}>
+            <TextField name='name' label='Full Name *' placeholder='Enter full name' required />
           </Col>
 
-          <Col span={24}>
-            <TextField name='email' label='Email' placeholder='Enter email' required />
+          <Col span={12}>
+            <TextField name='email' label='Email *' placeholder='Enter email' required />
           </Col>
-
           <Col span={24}>
-            <Row gutter={[20, 10]}>
-              <Col span={24}>
-                <Typography.Text style={{ color: colorTextTertiary }}>Phone</Typography.Text>
-              </Col>
-              <Col span={24}>
-                <Row className='phone-number-combined-field'>
-                  <SelectField
-                    name='countryCode'
-                    options={getCountries().map(
-                      ({ code, dial_code }: { dial_code: string; code: string }) => ({
-                        label: `${dial_code} - ${code.toUpperCase()}`,
-                        value: dial_code
-                      })
-                    )}
-                    inverseBg
-                    placeholder='code'
-                    defaultActiveFirstOption
-                    formItemClass='country-code-select-field'
-                    style={{ border: 'none', width: '100%' }}
-                  />
-                  <TextField
-                    name='phone'
-                    placeholder='Enter phone'
-                    required
-                    formItemClass='phone-number-form-item'
-                  />
-                </Row>
-              </Col>
+            <Row className='phone-number-combined-field'>
+              <SelectField
+                name='countryCode'
+                options={getCountries().map(
+                  ({ code, dial_code }: { dial_code: string; code: string }) => ({
+                    label: `${dial_code} - ${code.toUpperCase()}`,
+                    value: dial_code
+                  })
+                )}
+                inverseBg
+                placeholder='code'
+                defaultActiveFirstOption
+                formItemClass='country-code-select-field'
+                style={{ border: 'none', width: '100%' }}
+              />
+              <TextField
+                name='phone'
+                placeholder='Enter phone'
+                required
+                formItemClass='phone-number-form-item'
+              />
             </Row>
           </Col>
 
           <Col span={24}>
-            <TextField name='jobTitle' label='Job Title' placeholder='Enter job title' required />
+            <TextField name='jobTitle' label='Job Title *' placeholder='Enter job title' required />
           </Col>
 
           <Col span={24}>
-            <TextField name='address' label='Address' placeholder='Address' required />
+            <TextField name='address' label='Address *' placeholder='Address' required />
           </Col>
 
           <Col span={24}>
-            <TextField name='division' label='Division' placeholder='Division' required />
+            <TextField name='division' label='Division *' placeholder='Division' required />
           </Col>
 
           <Col span={24}>
-            <TextArea name='notes' label='Notes' placeholder='Notes' />
+            <TextArea name='notes' label='Notes *' placeholder='Notes' />
           </Col>
 
           <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type='primary' htmlType='submit'>
+            <Button
+              type='primary'
+              htmlType='submit'
+              loading={createUserLoading || updateUserLoading}
+            >
               {isEdit ? 'Update' : 'Add'} Contact
             </Button>
           </Col>

@@ -4,11 +4,11 @@ import { groupsSlice } from './features/groups'
 import { eventsSlice } from './features/events'
 import { userListSlice } from './features/userList'
 import { librarySlice } from './features/library'
-
-
 import { authApi } from './services/auth.services'
 import { fileApi } from './services/file.services'
 import { groupsApi } from './services/groups.service'
+import { contactsSlice } from './features/contact'
+import { contactApi } from './services/contact.services'
 import { libraryApi } from './services/library.service'
 
 export interface RootState {
@@ -25,8 +25,10 @@ export const rootReducer = combineReducers({
   groups: groupsSlice.reducer,
   events: eventsSlice.reducer,
   library: librarySlice.reducer,
+  contacts: contactsSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [fileApi.reducerPath]: fileApi.reducer,
   [groupsApi.reducerPath]: groupsApi.reducer,
+  [contactApi.reducerPath]: contactApi.reducer,
   [libraryApi.reducerPath]: libraryApi.reducer
 })

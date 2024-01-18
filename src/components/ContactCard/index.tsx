@@ -34,7 +34,12 @@ const ContactCard = ({ user, onClick }: IContactCardProps) => {
                 />
               </Col>
               <Col>
-                <Typography.Title onClick={onClick} level={5} className='mb-0 contact-card-name'>
+                <Typography.Title
+                  onClick={onClick}
+                  level={5}
+                  className='mb-0 contact-card-name'
+                  style={{ cursor: 'pointer' }}
+                >
                   {user?.name}
                 </Typography.Title>
                 <Typography.Text style={colorTextTertiaryStyles}>{user?.role}</Typography.Text>
@@ -44,13 +49,13 @@ const ContactCard = ({ user, onClick }: IContactCardProps) => {
 
           <Divider style={{ margin: 0 }} />
           <Col span={24}>
-            <Detail label='Location' value={user?.location as string} />
+            <Detail label='Location' value={user?.address as string} />
           </Col>
           <Col span={24}>
             <Detail label='Email' value={user?.email as string} />
           </Col>
           <Col span={24}>
-            <Detail label='Phone' value={user?.phoneNumber as string} />
+            <Detail label='Phone' value={user?.phone as string} />
           </Col>
         </Row>
       </Card>
