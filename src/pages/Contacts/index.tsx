@@ -21,7 +21,7 @@ const Contacts = () => {
   const [getAllContacts, { data, isLoading }] = useLazyGetAllContactQuery()
 
   const handleCloseAddEditContactModal = (status: boolean) => {
-    setAddEditContactModalOpen(false)
+    setAddEditContactModalOpen(status)
   }
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)

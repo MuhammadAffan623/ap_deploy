@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-// import { getUsercontacts } from '~/services/usercontacts.services'
 import { contactApi } from '~/store/services/contact.services'
 
 interface IContactState {
@@ -22,19 +21,14 @@ export const contactsSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addMatcher(contactApi.endpoints.getAllContact.matchFulfilled, (state, { payload }) => {
-    }),
-      builder.addMatcher(
-        contactApi.endpoints.updateUserById.matchFulfilled,
-        (state, { payload }) => {
-          state.contacts = state.contacts.map((item) => {
-            if (item._id === payload?.data?.id) {
-              return payload.data
-            }
-            return item
-          })
+    builder.addMatcher(contactApi.endpoints.updateUserById.matchFulfilled, (state, { payload }) => {
+      state.contacts = state.contacts.map((item) => {
+        if (item._id === payload?.data?.id) {
+          return payload.data
         }
-      )
+        return item
+      })
+    })
   }
 })
 

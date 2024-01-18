@@ -6,7 +6,6 @@ import {
   useCreateUserByIdMutation,
   useUpdateUserByIdMutation
 } from '~/store/services/contact.services'
-import toast from '~/store/toast'
 import { getCountries } from 'country-state-picker'
 
 interface IAddEditContactProps {
@@ -38,9 +37,8 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
   } = useToken()
 
   const handleFormSubmit = (body: any) => {
-    console.log(body)
     const newObj = { ...body, phone: body.countryCode + body.phone }
-    console.log(newObj)
+
     if (isEdit) {
       updateUserById({
         id: contact?._id,
