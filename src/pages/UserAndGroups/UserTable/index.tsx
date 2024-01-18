@@ -38,13 +38,13 @@ const UserTable = () => {
 
   useEffect(() => {
     fetchUsers()
-  }, [pagination.current, pagination.searchText, pagination.isActive])
+  }, [pagination.current, pagination.searchText])
   useEffect(() => {
     fetchActiveUsers()
-  }, [activePagination.current, activePagination.searchText, activePagination.isActive])
+  }, [activePagination.current, activePagination.searchText])
   useEffect(() => {
     fetchDisabledUsers()
-  }, [disabledPagination.current, disabledPagination.searchText, disabledPagination.isActive])
+  }, [disabledPagination.current, disabledPagination.searchText])
 
   const fetchUsers = () => {
     getAllUsers(pagination)

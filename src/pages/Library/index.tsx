@@ -12,20 +12,19 @@ import {
   useGetAllCategoriesMutation,
   useGetLibrariesMutation
 } from '~/store/services/library.service'
+import { defautlPagination } from '~/utils/constant'
 
 const Library = () => {
   const [allData, setAllData] = useState([])
+  const [activeData, setActiveData] = useState([])
+  const [disabledData, setDisabledData] = useState([])
+  const [pagination, setPagination] = useState<IPagination>(defautlPagination)
+  const [activePagination, setActivePagination] = useState<IPagination>(defautlPagination)
+  const [disabledPagination, setDisabledPagination] = useState<IPagination>(defautlPagination)
   const [open, setOpen] = useState<boolean>(false)
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
   const [isEdit, setEdit] = useState<boolean>(false)
   const [editingItem, setEditingItem] = useState<ILibrary | null>(null)
-  const [pagination, setPagination] = useState<IPagination>({
-    current: 1,
-    pageSize: 7,
-    total: 0,
-    searchText: '',
-    isActive: ''
-  })
 
   const { categories } = useLibrarySelector()
   const [getAllLibraries, { isLoading }] = useGetLibrariesMutation()
@@ -34,7 +33,13 @@ const Library = () => {
   useEffect(() => {
     fetchLibraries()
     getCategories('')
-  }, [pagination.current, pagination.searchText, pagination.isActive])
+  }, [pagination.current, pagination.searchText])
+  useEffect(() => {
+    fetchActiveLibraries()
+  }, [activePagination.current, activePagination.searchText])
+  useEffect(() => {
+    fetchDisabledLibraries()
+  }, [disabledPagination.current, disabledPagination.searchText])
 
   const fetchLibraries = () => {
     getAllLibraries(pagination)
@@ -42,6 +47,24 @@ const Library = () => {
       .then((res) => {
         setAllData(res.data.libraryItems)
         setPagination({ ...pagination, total: res.data.meta.totalLibraryItems })
+      })
+      .catch((err) => message.error(err?.data?.error))
+  }
+  const fetchActiveLibraries = () => {
+    getAllLibraries({ ...activePagination, isActive: true })
+      .unwrap()
+      .then((res) => {
+        setActiveData(res.data.libraryItems)
+        setActivePagination({ ...activePagination, total: res.data.meta.totalLibraryItems })
+      })
+      .catch((err) => message.error(err?.data?.error))
+  }
+  const fetchDisabledLibraries = () => {
+    getAllLibraries({ ...disabledPagination, isActive: false })
+      .unwrap()
+      .then((res) => {
+        setDisabledData(res.data.libraryItems)
+        setDisabledPagination({ ...disabledPagination, total: res.data.meta.totalLibraryItems })
       })
       .catch((err) => message.error(err?.data?.error))
   }
@@ -63,16 +86,28 @@ const Library = () => {
     }
   }
 
-  const handlePaginationChange = (pg: IPagination): void => {
-    setPagination((prevPagination) => ({
+  const handlePaginationChange = (pg: IPagination, type: string): void => {
+    const setPaginationFunction =
+      type === 'active'
+        ? setActivePagination
+        : type === 'disabled'
+        ? setDisabledPagination
+        : setPagination
+    setPaginationFunction((prevPagination) => ({
       ...prevPagination,
       current: pg.current,
       pageSize: pg.pageSize
     }))
   }
 
-  const onSearch = (text: string) => {
-    setPagination((prevPagination) => ({
+  const onSearch = (text: string, type: string) => {
+    const setPaginationFunction =
+      type === 'active'
+        ? setActivePagination
+        : type === 'disabled'
+        ? setDisabledPagination
+        : setPagination
+    setPaginationFunction((prevPagination) => ({
       ...prevPagination,
       current: 1,
       searchText: text
@@ -97,10 +132,10 @@ const Library = () => {
         <All
           data={allData}
           pagination={pagination}
-          handlePaginationChange={handlePaginationChange}
+          handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
           handleEdit={handleEdit}
           refetch={fetchLibraries}
-          onSearch={onSearch}
+          onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
         />
       )
@@ -108,18 +143,18 @@ const Library = () => {
     {
       label: (
         <span>
-          Active <span className='tab-count'>{pagination.total}</span>
+          Active <span className='tab-count'>{activePagination.total}</span>
         </span>
       ),
       key: '2',
       children: (
         <Active
-          data={allData}
-          pagination={pagination}
-          handlePaginationChange={handlePaginationChange}
+          data={activeData}
+          pagination={activePagination}
+          handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
           handleEdit={handleEdit}
-          refetch={fetchLibraries}
-          onSearch={onSearch}
+          refetch={fetchActiveLibraries}
+          onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
         />
       )
@@ -127,18 +162,18 @@ const Library = () => {
     {
       label: (
         <span>
-          Disabled <span className='tab-count'>{pagination.total}</span>
+          Disabled <span className='tab-count'>{disabledPagination.total}</span>
         </span>
       ),
       key: '3',
       children: (
         <Disabled
-          data={allData}
-          pagination={pagination}
-          handlePaginationChange={handlePaginationChange}
+          data={disabledData}
+          pagination={disabledPagination}
+          handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
           handleEdit={handleEdit}
-          refetch={fetchLibraries}
-          onSearch={onSearch}
+          refetch={fetchDisabledLibraries}
+          onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
         />
       )
