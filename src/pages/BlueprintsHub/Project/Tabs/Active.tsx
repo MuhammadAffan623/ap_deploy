@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Bluecolumns } from '~/columns/FormsColumns'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockBlueForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
+import { columns } from '../columns'
 
 const Active = () => {
   const navigate = useNavigate()
@@ -73,7 +73,7 @@ const Active = () => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={Bluecolumns(handleResolve, handleDelete)}
+            columns={columns(handleResolve, handleDelete)}
             isLoading={loadingData}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}

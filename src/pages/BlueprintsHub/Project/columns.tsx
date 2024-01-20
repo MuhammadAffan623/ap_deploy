@@ -14,7 +14,7 @@ const btnStyle: CSSProperties = {
 const items: MenuProps['items'] = [
   {
     key: '1',
-    label: 'Mark resolve'
+    label: 'Edit'
   },
   {
     key: '2',
@@ -22,7 +22,7 @@ const items: MenuProps['items'] = [
   }
 ]
 
-export const libraryColumns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
+export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
   return [
     {
       title: 'Title',
@@ -50,14 +50,14 @@ export const libraryColumns = (handleResolve: any, handleDelete: any): ColumnsTy
 
     {
       title: 'STATUS',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'isActive',
+      key: 'isActive',
       sorter: (a, b) => a.status.length - b.status.length,
       sortDirections: ['descend'],
-      render: (_, { status }) => {
-        const text = status ? 'Available' : 'Disabled'
-        const textColor = status ? '#14C25A' : '#FC8229'
-        const bgColor = status ? '#14C25A1A' : '#FC82291A'
+      render: (_, { isActive }) => {
+        const text = isActive ? 'Available' : 'Disabled'
+        const textColor = isActive ? '#14C25A' : '#FC8229'
+        const bgColor = isActive ? '#14C25A1A' : '#FC82291A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
     },
@@ -66,7 +66,7 @@ export const libraryColumns = (handleResolve: any, handleDelete: any): ColumnsTy
       align: 'left',
       key: '',
       dataIndex: '',
-      render: (_, { id }) => (
+      render: (_, record) => (
         <Space size='small'>
           <Dropdown
             menu={{
@@ -75,9 +75,9 @@ export const libraryColumns = (handleResolve: any, handleDelete: any): ColumnsTy
                 const { key, domEvent } = params
                 domEvent.stopPropagation()
                 if (key === '1') {
-                  handleResolve(id)
+                  handleResolve(record)
                 } else {
-                  handleDelete(id)
+                  handleDelete(record?._id)
                 }
               }
             }}

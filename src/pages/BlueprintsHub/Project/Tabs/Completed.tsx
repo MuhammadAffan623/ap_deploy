@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockBlueForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
-import { Bluecolumns } from '~/columns/FormsColumns'
+import { columns } from '../columns'
 
 const Completed = () => {
   const [data, setData] = useState<Partial<IBlueForm>[] | []>([])
@@ -67,7 +67,7 @@ const Completed = () => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={Bluecolumns(handleResolve, handleDelete)}
+            columns={columns(handleResolve, handleDelete)}
             isLoading={loadingData}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}

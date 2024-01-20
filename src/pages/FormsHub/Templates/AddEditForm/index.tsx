@@ -5,7 +5,10 @@ import { BasicModal, Button, SelectField, TextField } from '~/components'
 import './styles.scss'
 import FileDropper from './FileDropper'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
-import { useCreateFormMutation, useUpdateFormMutation } from '~/store/services/form.service'
+import {
+  useCreateTemplateMutation,
+  useUpdateTemplatesMutation
+} from '~/store/services/template.service'
 
 interface IAddEditLibraryProps {
   open: boolean
@@ -27,8 +30,8 @@ const AddEditForm = ({
   const [uploading, setUploading] = useState<boolean>(false)
   const [uploadFile] = useUploadFileMutation()
   const [getFile] = useGetFileMutation()
-  const [createForm] = useCreateFormMutation()
-  const [updateForm] = useUpdateFormMutation()
+  const [createTemplate] = useCreateTemplateMutation()
+  const [updateTemplate] = useUpdateTemplatesMutation()
 
   const handleFormSubmit = (values: any) => {
     const body = {
@@ -36,7 +39,7 @@ const AddEditForm = ({
       file: uploadedUrl
     }
     if (isEdit) {
-      updateForm({ id: editItem?._id, ...body })
+      updateTemplate({ id: editItem?._id, ...body })
         .unwrap()
         .then((res: any) => {
           message.success(res?.message)
@@ -48,7 +51,7 @@ const AddEditForm = ({
           message.error(err?.data?.error)
         })
     } else {
-      createForm(body)
+      createTemplate(body)
         .unwrap()
         .then((res) => {
           handleClose(false)
@@ -95,7 +98,7 @@ const AddEditForm = ({
     if (editItem) {
       form.setFieldsValue({
         name: editItem.name,
-        owner: editItem.owner,
+        folder: editItem.folder,
         status: editItem.status
       })
       setUploadedUrl(editItem.file?._id)
@@ -121,26 +124,25 @@ const AddEditForm = ({
         initialValues={{ name: '', owner: '', status: '', file: '' }}
       >
         <Row gutter={[16, 16]}>
-          <Col span={24}>
+          <Col span={24} md={12}>
             <TextField name='name' label='Name' placeholder='Enter Name' required />
           </Col>
-          <Col span={24}>
-            <TextField name='owner' label='Owner' placeholder='Enter Owner Name' required />
+          <Col span={24} md={12}>
+            <TextField name='folder' label='Folder' placeholder='Enter Folder Name' required />
           </Col>
 
-          {editItem && (
-            <Col span={24} md={12}>
-              <SelectField
-                name='status'
-                label='Status'
-                required
-                options={[
-                  { label: 'Draft', value: 'Draft' },
-                  { label: 'Completed', value: 'Completed' }
-                ]}
-              />
-            </Col>
-          )}
+          <Col span={24} md={12}>
+            <SelectField
+              name='status'
+              label='Status'
+              required
+              options={[
+                { label: 'Available', value: 'Available' },
+                { label: 'Disabled', value: 'Disabled' },
+                { label: 'Archived', value: 'Archived' }
+              ]}
+            />
+          </Col>
 
           <Col span={24}>
             <Divider style={{ border: '1px solid rgba(151, 151, 151, 1)' }} />

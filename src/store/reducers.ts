@@ -3,13 +3,16 @@ import { userSlice } from './features/user'
 import { groupsSlice } from './features/groups'
 import { eventsSlice } from './features/events'
 import { userListSlice } from './features/userList'
+import { contactsSlice } from './features/contact'
 import { librarySlice } from './features/library'
+
 import { authApi } from './services/auth.services'
 import { fileApi } from './services/file.services'
 import { groupsApi } from './services/groups.service'
-import { contactsSlice } from './features/contact'
 import { contactApi } from './services/contact.services'
 import { libraryApi } from './services/library.service'
+import { formApi } from './services/form.service'
+import { templateApi } from './services/template.service'
 
 export interface RootState {
   user: ReturnType<typeof userSlice.reducer>
@@ -30,5 +33,7 @@ export const rootReducer = combineReducers({
   [fileApi.reducerPath]: fileApi.reducer,
   [groupsApi.reducerPath]: groupsApi.reducer,
   [contactApi.reducerPath]: contactApi.reducer,
-  [libraryApi.reducerPath]: libraryApi.reducer
+  [libraryApi.reducerPath]: libraryApi.reducer,
+  [formApi.reducerPath]: formApi.reducer,
+  [templateApi.reducerPath]: templateApi.reducer,
 })

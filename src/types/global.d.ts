@@ -41,7 +41,7 @@ declare global {
     role: string
     address?: string
     jobTitle?: string
-    division?:string
+    division?: string
     notes?: string
     group?: Partial<IUserGroup>
     password?: string
@@ -78,6 +78,7 @@ declare global {
     owner: string
     version: string
     status?: boolean
+    file?: any
   }
 
   interface IBlueForm extends IBase {
@@ -117,6 +118,7 @@ declare global {
     total: number
     searchText?: string
     isActive?: boolean | string
+    status?: string
   }
 }
 

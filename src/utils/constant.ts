@@ -3,5 +3,6 @@ export const defautlPagination = {
   pageSize: 7,
   total: 0,
   searchText: '',
-  isActive: ''
+  isActive: '',
+  status: ''
 }

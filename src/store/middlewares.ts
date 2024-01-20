@@ -4,6 +4,8 @@ import { contactApi } from './services/contact.services'
 import { fileApi } from './services/file.services'
 import { groupsApi } from './services/groups.service'
 import { libraryApi } from './services/library.service'
+import { formApi } from './services/form.service'
+import { templateApi } from './services/template.service'
 
 export const middlewares = (getDefaultMiddleware: CurriedGetDefaultMiddleware<any>) => {
   return getDefaultMiddleware()
@@ -12,6 +14,8 @@ export const middlewares = (getDefaultMiddleware: CurriedGetDefaultMiddleware<an
     .concat(fileApi.middleware)
     .concat(groupsApi.middleware)
     .concat(libraryApi.middleware)
+    .concat(formApi.middleware)
+    .concat(templateApi.middleware)
 }
 
 export default middlewares

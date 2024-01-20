@@ -14,7 +14,7 @@ const btnStyle: CSSProperties = {
 const items: MenuProps['items'] = [
   {
     key: '1',
-    label: 'Mark resolve'
+    label: 'Edit'
   },
   {
     key: '2',
@@ -32,10 +32,10 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       sortDirections: ['descend']
     },
     {
-      title: 'Owner',
-      dataIndex: 'owner',
-      key: 'owner',
-      sorter: (a, b) => a.owner.length - b.owner.length,
+      title: 'Folder Name',
+      dataIndex: 'folder',
+      key: 'folder',
+      sorter: (a, b) => a.folder.length - b.folder.length,
       sortDirections: ['descend']
     },
     {
@@ -51,7 +51,8 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       dataIndex: 'version',
       key: 'version',
       sorter: (a, b) => a.version.length - b.version.length,
-      sortDirections: ['descend']
+      sortDirections: ['descend'],
+      render: (_, { file }) => `v ${file?.versions[0]?.labelNumber}` ?? '--'
     },
     {
       title: 'STATUS',
@@ -60,9 +61,9 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       sorter: (a, b) => a.status.length - b.status.length,
       sortDirections: ['descend'],
       render: (_, { status }) => {
-        const text = status ? 'Completed' : 'Draft'
-        const textColor = status ? '#14C25A' : '#FC8229'
-        const bgColor = status ? '#14C25A1A' : '#FC82291A'
+        const text = status
+        const textColor = status !== 'Disabled' ? '#14C25A' : '#FC8229'
+        const bgColor = status !== 'Disabled' ? '#14C25A1A' : '#FC82291A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
     },
@@ -71,7 +72,7 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       align: 'left',
       key: '',
       dataIndex: '',
-      render: (_, { id }) => (
+      render: (_, record) => (
         <Space size='small'>
           <Dropdown
             menu={{
@@ -80,9 +81,9 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
                 const { key, domEvent } = params
                 domEvent.stopPropagation()
                 if (key === '1') {
-                  handleResolve(id)
+                  handleResolve(record)
                 } else {
-                  handleDelete(id)
+                  handleDelete(record?._id)
                 }
               }
             }}
