@@ -143,7 +143,7 @@ const Library = () => {
     {
       label: (
         <span>
-          Active <span className='tab-count'>{activePagination.total}</span>
+          Available <span className='tab-count'>{activePagination.total}</span>
         </span>
       ),
       key: '2',
