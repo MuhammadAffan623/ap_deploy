@@ -1,4 +1,4 @@
-import Project from './Project'
+import Project from './Projects'
 
 const BlueprintsHub = () => {
   return <Project />

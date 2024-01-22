@@ -87,6 +87,7 @@ declare global {
     updated: string
     version: string
     status?: boolean
+    sheets?: any
   }
 
   interface IEvent extends EventInput {

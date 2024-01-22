@@ -6,6 +6,7 @@ import { groupsApi } from './services/groups.service'
 import { libraryApi } from './services/library.service'
 import { formApi } from './services/form.service'
 import { templateApi } from './services/template.service'
+import { projectApi } from './services/project.service'
 
 export const middlewares = (getDefaultMiddleware: CurriedGetDefaultMiddleware<any>) => {
   return getDefaultMiddleware()
@@ -16,6 +17,7 @@ export const middlewares = (getDefaultMiddleware: CurriedGetDefaultMiddleware<an
     .concat(libraryApi.middleware)
     .concat(formApi.middleware)
     .concat(templateApi.middleware)
+    .concat(projectApi.middleware)
 }
 
 export default middlewares

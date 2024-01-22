@@ -13,6 +13,7 @@ import { contactApi } from './services/contact.services'
 import { libraryApi } from './services/library.service'
 import { formApi } from './services/form.service'
 import { templateApi } from './services/template.service'
+import { projectApi } from './services/project.service'
 
 export interface RootState {
   user: ReturnType<typeof userSlice.reducer>
@@ -36,4 +37,5 @@ export const rootReducer = combineReducers({
   [libraryApi.reducerPath]: libraryApi.reducer,
   [formApi.reducerPath]: formApi.reducer,
   [templateApi.reducerPath]: templateApi.reducer,
+  [projectApi.reducerPath]: projectApi.reducer,
 })

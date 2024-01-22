@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { getMockBlueForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
-import { columns } from '../../Project/columns'
+import { columns } from '../columns'
 
 const All = () => {
   const [data, setData] = useState<Partial<IBlueForm>[] | []>([])
