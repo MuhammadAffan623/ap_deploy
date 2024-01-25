@@ -5,6 +5,7 @@ import { itemsActions } from '~/utils/options'
 import { message } from 'antd'
 import '../style.scss'
 import { useDeleteProjectMutation } from '~/store/services/project.service'
+import { useNavigate } from 'react-router-dom'
 
 const All = ({
   isLoading,
@@ -16,7 +17,7 @@ const All = ({
   refetch
 }: {
   isLoading: boolean
-  data: ILibrary[]
+  data: IProject[]
   pagination: IPagination
   handleEdit: (editingItem: ILibrary) => void
   onSearch: (text: string) => void
@@ -26,7 +27,7 @@ const All = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [open, setOpen] = useState<boolean>(false)
   const [projectId, setProjectId] = useState<string[] | null>(null)
-
+  const navigate = useNavigate()
   const [deleteProject] = useDeleteProjectMutation()
 
   const handleClickItem = (key: string) => {
@@ -67,6 +68,10 @@ const All = ({
     setSelectedRowKeys(newSelectedRowKeys)
   }
 
+  const onRowClick = (record: IProject) => {
+    navigate(`/blueprints-hub/${record?._id}`)
+  }
+
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange
@@ -88,6 +93,7 @@ const All = ({
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
+            onRowClick={onRowClick}
           />
         )
       }, [data, selectedRowKeys, isLoading])}

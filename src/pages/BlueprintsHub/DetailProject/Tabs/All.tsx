@@ -1,26 +1,16 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { DropDown, DynamicTable, SearchField } from '~/components'
-import { getMockBlueForms } from '~/mocks'
 import { itemsActions } from '~/utils/options'
 import { columns } from '../columns'
 
-const All = () => {
-  const [data, setData] = useState<Partial<IBlueForm>[] | []>([])
+const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const [loadingData, setLoadingData] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
   const [pagination, setPagination] = useState<IPagination>({
     current: 1,
     pageSize: 7,
     total: 0
   })
-
-  useEffect(() => {
-    setLoadingData(true)
-    const fetchData = getMockBlueForms(20, true)
-    setData(fetchData)
-    setLoadingData(false)
-  }, [pagination])
 
   const handlePaginationChange = (pg: IPagination): void => {
     setPagination((prevPagination) => ({
@@ -68,13 +58,13 @@ const All = () => {
           <DynamicTable
             dataSource={data}
             columns={columns(handleResolve, handleDelete)}
-            isLoading={loadingData}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
+            isLoading={isLoading}
           />
         )
-      }, [data, selectedRowKeys])}
+      }, [data, selectedRowKeys, isLoading])}
     </div>
   )
 }

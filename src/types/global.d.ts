@@ -43,12 +43,21 @@ declare global {
     jobTitle?: string
     division?: string
     notes?: string
-    group?: Partial<IUserGroup>
+    group?: IGroupWithPermission
     password?: string
     confirmPassword: string
     activeDevices?: IDevice[]
   }
 
+  interface IGroupWithPermission {
+    _id: string
+    name: string
+    permissions: {
+      management: IGroupPermissionsKeyValue[]
+      user: IGroupPermissionsKeyValue[]
+      advanced: IGroupPermissionsKeyValue[]
+    }
+  }
   interface IProject extends IBase {
     address: string
     name: string

@@ -17,6 +17,7 @@ import { setCalenderModalOpen } from '~/store/features/events'
 import DropDown from '../DropDown'
 import { calenderActionItems } from '~/utils/options'
 import { logout } from '~/store/features/user'
+import { useUserSelector } from '~/store/hooks'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -41,9 +42,10 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const [isOpenMenu, setOpenMenu] = useState<string[] | []>([])
   const dispatch = useDispatch()
   const isCalendarPage = pathname.includes('calender')
+  const { user, userPermissions } = useUserSelector()
 
   const logoutMenuItem: MenuItem[] = [
-    getMenuItem('Logout', 'logout', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
+    getMenuItem('Logout', 'logout', '', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
       dispatch(logout())
     })
   ]
@@ -76,6 +78,31 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const handleClickItem = (key: string) => {
     console.log('handleClickItem key: ', key)
   }
+
+  const filterMenuItems = (menuItems: any, permissions: any) => {
+    return menuItems.filter((menuItem: any) => {
+      const hasPermission = permissions.some(
+        (permission: any) => permission.key === menuItem.permissionKey
+      )
+
+      if (hasPermission) {
+        // If the menuItem has children, recursively filter them
+        if (menuItem.children && menuItem.children.length > 0) {
+          menuItem.children = filterMenuItems(menuItem.children, permissions)
+        }
+
+        return true
+      }
+
+      return false
+    })
+  }
+
+  // Use the recursive function to filter navigationMenuItems
+  const filteredMenuItems =
+    user?.userType === 'User'
+      ? filterMenuItems(navigationMenuItems, userPermissions)
+      : navigationMenuItems
 
   return (
     <SidebarWrapper
@@ -113,7 +140,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
               selectedKeys={[pathname]}
               openKeys={isOpenMenu}
               onOpenChange={onOpenChange}
-              items={navigationMenuItems}
+              items={filteredMenuItems}
               mode='inline'
               className='sidebarMenu'
               onClick={(item) => navigate(item.key)}

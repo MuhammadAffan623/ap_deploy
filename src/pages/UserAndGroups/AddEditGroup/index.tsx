@@ -222,11 +222,11 @@ const AddEditGroup = () => {
                   </Row>
 
                   <Typography.Paragraph className='user-permission-instructions'>
-                    Allow Edit or Add the following:
+                    Allow users to view the following
                   </Typography.Paragraph>
                   <Typography.Text className='gear-icon-info'>
                     <FaInfoCircle /> For more Granular Permissions click on gear icon{' '}
-                  </Typography.Text>
+                  </Typography.Text>  
 
                   <Row gutter={[20, 20]}>
                     {userPermissions?.map((permission: IPermission) => (

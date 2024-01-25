@@ -1,16 +1,23 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { authApi } from '~/store/services/auth.services'
 
+interface IUserPermissions {
+  key: string
+  name: string
+}
+
 interface IUserState {
   user: IUser | null
   token: string | null
   loading: boolean
+  userPermissions: IUserPermissions[] | []
 }
 
 const initialState: IUserState = {
   loading: true,
   token: null,
-  user: null
+  user: null,
+  userPermissions: []
 }
 
 export const userSlice = createSlice({
@@ -37,6 +44,13 @@ export const userSlice = createSlice({
       state.user = user
       state.token = token
       localStorage.setItem('token', token)
+      if (user.group) {
+        state.userPermissions = [
+          ...user.group.permissions.user,
+          ...user.group.permissions.management,
+          ...user.group.permissions.advanced
+        ]
+      }
     }
 
     builder.addMatcher(authApi?.endpoints?.login?.matchFulfilled, (state, { payload }) => {
@@ -50,7 +64,8 @@ export const userSlice = createSlice({
     builder.addMatcher(
       authApi?.endpoints?.getUserFromToken?.matchFulfilled,
       (state, { payload }) => {
-        state.user = payload.data
+        const token = localStorage.getItem('token') || ''
+        loginUser(state, payload?.data, token)
       }
     )
   }

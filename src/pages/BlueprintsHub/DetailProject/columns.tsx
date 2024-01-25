@@ -3,7 +3,6 @@ import { Dropdown, MenuProps, Space } from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
 import { Pill } from '~/components'
 import { CSSProperties } from 'react'
-import { formatDate } from '~/utils/helper'
 
 const btnStyle: CSSProperties = {
   border: 'none',
@@ -39,25 +38,17 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       sorter: (a, b) => a.category.length - b.category.length,
       sortDirections: ['descend']
     },
-    {
-      title: 'UPDATED',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
-      sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
-      sortDirections: ['descend'],
-      render: ({ updatedAt }) => formatDate(updatedAt)
-    },
 
     {
       title: 'STATUS',
-      dataIndex: 'isActive',
-      key: 'isActive',
+      dataIndex: 'status',
+      key: 'status',
       sorter: (a, b) => a.status.length - b.status.length,
       sortDirections: ['descend'],
-      render: (_, { isActive }) => {
-        const text = isActive ? 'Available' : 'Disabled'
-        const textColor = isActive ? '#14C25A' : '#FC8229'
-        const bgColor = isActive ? '#14C25A1A' : '#FC82291A'
+      render: (_, { status }) => {
+        const text = status ? 'Available' : 'Disabled'
+        const textColor = status ? '#14C25A' : '#FC8229'
+        const bgColor = status ? '#14C25A1A' : '#FC82291A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
     },

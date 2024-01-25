@@ -42,12 +42,13 @@ export type MenuItem = Required<MenuProps>['items'][number]
 export const getMenuItem = (
   label: ReactNode,
   key: Key,
+  permissionKey?: string,
   icon?: ReactNode,
   children?: MenuItem[] | null,
   className?: string,
   style?: CSSProperties,
   onClick?: () => void,
-  type?: 'group'
+  type?: 'group',
 ): MenuItem => {
   return {
     key,
@@ -57,7 +58,8 @@ export const getMenuItem = (
     type,
     style,
     className,
-    onClick
+    onClick,
+    permissionKey
   } as MenuItem
 }
 
@@ -130,23 +132,23 @@ export const userPermissions: IPermission[] = [
   },
   {
     label: 'Calendar',
-    value:  PermissionEnums.USER_CALENDAR
+    value: PermissionEnums.USER_CALENDAR
   },
   {
     label: 'Contacts',
-    value:  PermissionEnums.USER_CONTACTS
+    value: PermissionEnums.USER_CONTACTS
   },
   {
     label: 'Library',
-    value:  PermissionEnums.USER_LIBRARY
+    value: PermissionEnums.USER_LIBRARY
   },
   {
     label: 'Blueprints Hub',
-    value:  PermissionEnums.USER_BLUEPRINTS_HUB,
+    value: PermissionEnums.USER_BLUEPRINTS_HUB,
     children: [
       {
         label: 'Projects',
-        value:  PermissionEnums.USER_PROJECTS
+        value: PermissionEnums.USER_PROJECTS
       }
     ]
   }

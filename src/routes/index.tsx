@@ -24,9 +24,60 @@ import PublicRoutes from './PublicRoutes'
 import ProtectedRoute from './ProtectedRoutes'
 import { useEffect } from 'react'
 import { useGetUserFromTokenMutation } from '~/store/services/auth.services'
+import { PermissionEnums } from '~/enums/permission'
+import { useUserSelector } from '~/store/hooks'
+import { Loader } from '~/components'
+
+const dynamicRoutes = [
+  { path: 'dashboard', element: <Dashboard /> },
+  {
+    path: 'forms-hub/templates',
+    element: <Templates />,
+    permissionkey: PermissionEnums.USER_FORM_TEMPLATES
+  },
+  { path: 'forms-hub/forms', element: <Forms />, permissionkey: PermissionEnums.USER_FORMS },
+  { path: 'calender', element: <Calender />, permissionkey: PermissionEnums.USER_CALENDAR },
+  { path: 'contacts', element: <Contacts />, permissionkey: PermissionEnums.USER_CONTACTS },
+  { path: 'library', element: <Library />, permissionkey: PermissionEnums.USER_LIBRARY },
+  { path: 'library-view', element: <LibraryView /> },
+  {
+    path: 'blueprints-hub',
+    children: [
+      { path: '', element: <BlueprintsHub /> },
+      { path: ':id', element: <DetailProject /> }
+    ],
+    permissionkey: PermissionEnums.USER_PROJECTS
+  },
+  {
+    path: 'device-management',
+    element: <DeviceManagement />,
+    permissionkey: PermissionEnums.MANAGEMENT_DEVICE_MANAGEMENT
+  },
+  {
+    path: 'user-and-groups',
+    element: <UserAndGroups />,
+    permissionkey: PermissionEnums.MANAGEMENT_USERS_GROUPS
+  },
+  {
+    path: 'user-and-groups/:id',
+    element: <AddEditGroup />,
+    permissionkey: PermissionEnums.MANAGEMENT_USERS_GROUPS
+  },
+  {
+    path: 'add-group',
+    element: <AddEditGroup />,
+    permissionkey: PermissionEnums.MANAGEMENT_USERS_GROUPS
+  },
+  {
+    path: 'settings',
+    element: <Settings />,
+    permissionkey: PermissionEnums.MANAGEMENT_SETTINGS
+  }
+]
 
 const Routes = () => {
-  const [fetchUserFromToken] = useGetUserFromTokenMutation()
+  const [fetchUserFromToken, { isLoading }] = useGetUserFromTokenMutation()
+  const { user, userPermissions } = useUserSelector()
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -35,6 +86,12 @@ const Routes = () => {
     }
   }, [])
 
+  const filterRoutes = dynamicRoutes.filter((item) =>
+    userPermissions.some((permission) => permission.key === item.permissionkey)
+  )
+  const filteredRoutes = user?.userType === 'User' ? filterRoutes : dynamicRoutes
+  const afterLoginRoute = filteredRoutes[0]?.path
+
   const element = useRoutes([
     {
       path: '/',
@@ -42,7 +99,7 @@ const Routes = () => {
     },
     {
       path: '/',
-      element: <PublicRoutes navLink='/dashboard' component={AuthLayout} />,
+      element: <PublicRoutes navLink={afterLoginRoute} component={AuthLayout} />,
       children: [
         { path: 'login', element: <Login /> },
         { path: 'reset-password', element: <ResetPassword /> }
@@ -51,27 +108,7 @@ const Routes = () => {
     {
       path: '/',
       element: <ProtectedRoute navLink='/login' component={MainLayout} />,
-      children: [
-        { path: 'dashboard', element: <Dashboard /> },
-        { path: 'calender', element: <Calender /> },
-        { path: 'contacts', element: <Contacts /> },
-        { path: 'library', element: <Library /> },
-        { path: 'library-view', element: <LibraryView /> },
-        {
-          path: 'blueprints-hub',
-          children: [
-            { path: 'detail-project', element: <DetailProject /> },
-            { path: '', element: <BlueprintsHub /> }
-          ]
-        },
-        { path: 'device-management', element: <DeviceManagement /> },
-        { path: 'user-and-groups', element: <UserAndGroups /> },
-        { path: 'user-and-groups/:id', element: <AddEditGroup /> },
-        { path: 'add-group', element: <AddEditGroup /> },
-        { path: 'settings', element: <Settings /> },
-        { path: 'forms-hub/templates', element: <Templates /> },
-        { path: 'forms-hub/forms', element: <Forms /> }
-      ]
+      children: filteredRoutes
     },
     { path: 'editor', element: <PDFEditor /> },
     { path: '404', element: <NotFound /> },
@@ -80,6 +117,11 @@ const Routes = () => {
       element: <Navigate to='/404' />
     }
   ])
+
+  if (isLoading) {
+    return <Loader fullScreen />
+  }
+
   return element
 }
 

@@ -50,6 +50,7 @@ const Dashboard = () => {
           </Col>
         </Row>,
         user?._id as string,
+        '',
         <Avatar size='default' src={user?.avatarUrl as string} name={user?.name as string} />,
         null,
         'active-user'

@@ -1,6 +1,6 @@
 import { ImagesBox, PageHeader } from '~/components'
-import { Card, Col, Row, Tabs, Typography } from 'antd'
-import { useState } from 'react'
+import { Card, Col, Row, Tabs, Typography, message } from 'antd'
+import React, { useEffect, useState } from 'react'
 import CardProject from './CardProject'
 import All from './Tabs/All'
 import Border from '~/assets/icons/border-left.png'
@@ -8,48 +8,52 @@ import List from '~/assets/icons/List .png'
 import Tick from '~/assets/icons/arrow-tick.png'
 import Camera from '~/assets/icons/camera.png'
 import './style.scss'
-
-const tabsItems = [
-  {
-    label: (
-      <span>
-        All <span className='tab-count'>6</span>
-      </span>
-    ),
-    key: '1',
-    children: <All />
-  }
-]
+import { useParams } from 'react-router-dom'
+import { useGetProjectByIdMutation } from '~/store/services/project.service'
 
 const DetailProject = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
+  const [data, setData] = useState<any>(null)
+  const { id } = useParams()
+  const [getProjectById, { isLoading }] = useGetProjectByIdMutation()
 
-  const Data = [
-    {
-      icon: '',
-      title: 'JAN 17, 2023'
-    },
-    {
-      icon: List,
-      title: 'Jarby A. added 2 markups.'
-    },
-    {
-      icon: Camera,
-      title: 'Jarby A. added a photo.'
-    },
-    {
-      icon: Tick,
-      title: 'Jarby A.  created Project 21034- Sunbridge'
-    },
-    {
-      icon: '',
-      title: 'End of activity'
+  useEffect(() => {
+    if (id) {
+      getProjectById({ id })
+        .unwrap()
+        .then((res) => {
+          setData(res.data)
+        })
+        .catch((err: any) => {
+          message.error(err?.data?.error || 'Failed to load project data')
+        })
     }
-  ]
+  }, [id])
 
   const handleSelectChange = (value: string) => {
     setSelectedFilter(value)
   }
+
+  const activityData = data?.recentActivities?.map((item: any) => ({
+    icon:
+      (item.imageType === 'list' && List) ||
+      (item.imageType === 'camera' && Camera) ||
+      (item.imageType === 'check' && Tick) ||
+      '',
+    title: item.description
+  }))
+
+  const tabsItems = [
+    {
+      label: (
+        <span>
+          All <span className='tab-count'>6</span>
+        </span>
+      ),
+      key: '1',
+      children: <All data={data?.project.sheets || []} isLoading={isLoading} />
+    }
+  ]
 
   return (
     <Row gutter={[20, 20]}>
@@ -68,7 +72,7 @@ const DetailProject = () => {
       </Col>
 
       <Col span={24} lg={8}>
-        <Card style={{height:'100%'}}>
+        <Card style={{ height: '100%' }}>
           <Typography.Title level={3} className='Title' type='secondary'>
             Recent Activity
           </Typography.Title>
@@ -77,15 +81,15 @@ const DetailProject = () => {
               <ImagesBox src={Border} alt='' />
             </Col>
             <Col className='whole-wrapper'>
-              {Data?.map((item) => (
-                <>
+              {activityData?.map((item: { icon: string; title: string }, index: number) => (
+                <React.Fragment key={index}>
                   <Col className='Map-data'>
                     {item.icon && <ImagesBox src={item.icon} />}
                     <Typography.Title level={5} className='Typography' type='secondary'>
                       {item.title}
                     </Typography.Title>
                   </Col>
-                </>
+                </React.Fragment>
               ))}
             </Col>
           </Col>
