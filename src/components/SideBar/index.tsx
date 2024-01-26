@@ -18,6 +18,7 @@ import DropDown from '../DropDown'
 import { calenderActionItems } from '~/utils/options'
 import { logout } from '~/store/features/user'
 import { useUserSelector } from '~/store/hooks'
+import usePermission from '~/hooks/usePermission'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -43,6 +44,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const dispatch = useDispatch()
   const isCalendarPage = pathname.includes('calender')
   const { user, userPermissions } = useUserSelector()
+  const { isCalenderManagement } = usePermission()
 
   const logoutMenuItem: MenuItem[] = [
     getMenuItem('Logout', 'logout', '', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
@@ -81,8 +83,8 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
 
   const filterMenuItems = (menuItems: any, permissions: any) => {
     return menuItems.filter((menuItem: any) => {
-      const hasPermission = permissions.some(
-        (permission: any) => permission.key === menuItem.permissionKey
+      const hasPermission = permissions.some((permission: any) =>
+        menuItem.permissionKey.includes(permission.key)
       )
 
       if (hasPermission) {
@@ -148,7 +150,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
           </div>
         </PerfectScrollbar>
 
-        {isCalendarPage && (
+        {isCalendarPage && isCalenderManagement && (
           <div style={{ height: '340px', overflow: 'auto' }} className='scrollbar-hidden'>
             <div className='schedule-wrapper'>
               <Typography.Text className='sidebar-schedules'>SCHEDULES</Typography.Text>

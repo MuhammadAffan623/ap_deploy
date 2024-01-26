@@ -22,7 +22,11 @@ const items: MenuProps['items'] = [
   }
 ]
 
-export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
+export const columns = (
+  handleResolve: any,
+  handleDelete: any,
+  isActionEnabled?: boolean
+): ColumnsType<any> => {
   return [
     {
       title: 'Project Name',
@@ -75,9 +79,11 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       sorter: (a, b) => a.status.length - b.status.length,
       sortDirections: ['descend'],
       render: (_, { status }) => {
-        const text = status?.slice(0,1).toUpperCase() + status?.slice(1).toLowerCase()
-        const textColor = status === 'active' ? '#14C25A' : status === 'completed'? '#22CCE2' : '#FC8229'
-        const bgColor = status === 'active' ? '#14C25A1A' : status === 'completed'? '#22CCE21A' : '#FC82291A'
+        const text = status?.slice(0, 1).toUpperCase() + status?.slice(1).toLowerCase()
+        const textColor =
+          status === 'active' ? '#14C25A' : status === 'completed' ? '#22CCE2' : '#FC8229'
+        const bgColor =
+          status === 'active' ? '#14C25A1A' : status === 'completed' ? '#22CCE21A' : '#FC82291A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
     },
@@ -86,35 +92,38 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       align: 'left',
       key: '',
       dataIndex: '',
-      render: (_, record) => (
-        <Space size='small'>
-          <Dropdown
-            menu={{
-              items,
-              onClick: (params) => {
-                const { key, domEvent } = params
-                domEvent.stopPropagation()
-                if (key === '1') {
-                  handleResolve(record)
-                } else {
-                  handleDelete(record?._id)
+      render: (_, record) =>
+        !isActionEnabled ? (
+          ''
+        ) : (
+          <Space size='small'>
+            <Dropdown
+              menu={{
+                items,
+                onClick: (params) => {
+                  const { key, domEvent } = params
+                  domEvent.stopPropagation()
+                  if (key === '1') {
+                    handleResolve(record)
+                  } else {
+                    handleDelete(record?._id)
+                  }
                 }
-              }
-            }}
-            placement='bottomRight'
-          >
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
               }}
-              style={btnStyle}
+              placement='bottomRight'
             >
-              <MoreOutlined rev style={{ fontSize: '22px' }} />
-            </button>
-          </Dropdown>
-        </Space>
-      )
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                }}
+                style={btnStyle}
+              >
+                <MoreOutlined rev style={{ fontSize: '22px' }} />
+              </button>
+            </Dropdown>
+          </Space>
+        )
     }
   ]
 }

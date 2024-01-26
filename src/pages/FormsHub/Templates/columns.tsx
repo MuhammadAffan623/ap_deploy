@@ -22,7 +22,11 @@ const items: MenuProps['items'] = [
   }
 ]
 
-export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
+export const columns = (
+  handleResolve: any,
+  handleDelete: any,
+  isActionEnabled?: boolean
+): ColumnsType<any> => {
   return [
     {
       title: 'FORM NAME',
@@ -72,35 +76,38 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       align: 'left',
       key: '',
       dataIndex: '',
-      render: (_, record) => (
-        <Space size='small'>
-          <Dropdown
-            menu={{
-              items,
-              onClick: (params) => {
-                const { key, domEvent } = params
-                domEvent.stopPropagation()
-                if (key === '1') {
-                  handleResolve(record)
-                } else {
-                  handleDelete(record?._id)
+      render: (_, record) =>
+        !isActionEnabled ? (
+          ''
+        ) : (
+          <Space size='small'>
+            <Dropdown
+              menu={{
+                items,
+                onClick: (params) => {
+                  const { key, domEvent } = params
+                  domEvent.stopPropagation()
+                  if (key === '1') {
+                    handleResolve(record)
+                  } else {
+                    handleDelete(record?._id)
+                  }
                 }
-              }
-            }}
-            placement='bottomRight'
-          >
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
               }}
-              style={btnStyle}
+              placement='bottomRight'
             >
-              <EllipsisOutlined rev />
-            </button>
-          </Dropdown>
-        </Space>
-      )
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                }}
+                style={btnStyle}
+              >
+                <EllipsisOutlined rev />
+              </button>
+            </Dropdown>
+          </Space>
+        )
     }
   ]
 }

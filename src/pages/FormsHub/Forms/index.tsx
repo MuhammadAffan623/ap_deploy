@@ -2,13 +2,14 @@ import { Col, Row, Tabs, message } from 'antd'
 import All from './Tabs/All'
 import './style.scss'
 
-import Active from './Tabs/Available'
-import Disabled from './Tabs/Disabled'
+import Completed from './Tabs/Completed'
+import Draft from './Tabs/Draft'
 import { PageHeader } from '~/components'
 import { useEffect, useState } from 'react'
 import AddEditForm from './AddEditForm'
 import { defautlPagination } from '~/utils/constant'
 import { useGetFormsMutation } from '~/store/services/form.service'
+import usePermission from '~/hooks/usePermission'
 
 const Forms = () => {
   const [allData, setAllData] = useState([])
@@ -23,6 +24,7 @@ const Forms = () => {
   const [editingItem, setEditingItem] = useState<IForm | null>(null)
 
   const [getForms, { isLoading }] = useGetFormsMutation()
+  const { isFormManagement } = usePermission()
 
   useEffect(() => {
     fetchForms()
@@ -130,6 +132,7 @@ const Forms = () => {
           refetch={fetchForms}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
+          isActionManagement={isFormManagement}
         />
       )
     },
@@ -141,7 +144,7 @@ const Forms = () => {
       ),
       key: '2',
       children: (
-        <Active
+        <Completed
           data={activeData}
           pagination={activePagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
@@ -149,6 +152,7 @@ const Forms = () => {
           refetch={fetchCompletedForms}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
+          isActionManagement={isFormManagement}
         />
       )
     },
@@ -160,7 +164,7 @@ const Forms = () => {
       ),
       key: '3',
       children: (
-        <Disabled
+        <Draft
           data={disabledData}
           pagination={disabledPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
@@ -168,6 +172,7 @@ const Forms = () => {
           refetch={fetchDraftForms}
           onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
+          isActionManagement={isFormManagement}
         />
       )
     }
@@ -178,7 +183,7 @@ const Forms = () => {
       <Col span={24} style={{ textAlign: 'right' }}>
         <PageHeader
           title='Form'
-          buttonText='Add Form'
+          buttonText={isFormManagement ? 'Add Form' : ''}
           // showSelect
           // options={[
           //   { label: 'Last 7 days', value: 'last7days' },

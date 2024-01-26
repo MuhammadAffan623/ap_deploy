@@ -6,14 +6,15 @@ import { message } from 'antd'
 import '../style.scss'
 import { useDeleteFormMutation } from '~/store/services/form.service'
 
-const Disabled = ({
+const Completed = ({
   isLoading,
   data = [],
   pagination,
   handlePaginationChange,
-  handleEdit,
   onSearch,
-  refetch
+  handleEdit,
+  refetch,
+  isActionManagement
 }: {
   isLoading: boolean
   data: IForm[]
@@ -22,6 +23,7 @@ const Disabled = ({
   handlePaginationChange: (pg: IPagination) => void
   onSearch: (text: string) => void
   refetch: () => void
+  isActionManagement?: boolean
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [open, setOpen] = useState<boolean>(false)
@@ -77,13 +79,13 @@ const Disabled = ({
         <div className='search-box'>
           <SearchField placeholder='Search...' handleChange={(value) => onSearch(value)} />
         </div>
-        <DropDown items={itemsActions} handleClickItem={handleClickItem} />
+        {isActionManagement && <DropDown items={itemsActions} handleClickItem={handleClickItem} />}
       </div>
       {useMemo(() => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns(handleResolve, handleDelete)}
+            columns={columns(handleResolve, handleDelete, isActionManagement)}
             isLoading={isLoading}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
@@ -106,4 +108,4 @@ const Disabled = ({
   )
 }
 
-export default Disabled
+export default Completed

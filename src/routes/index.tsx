@@ -33,12 +33,28 @@ const dynamicRoutes = [
   {
     path: 'forms-hub/templates',
     element: <Templates />,
-    permissionkey: PermissionEnums.USER_FORM_TEMPLATES
+    permissionkey: [PermissionEnums.USER_FORM_TEMPLATES, PermissionEnums.MANAGEMENT_FORMS_HUB]
   },
-  { path: 'forms-hub/forms', element: <Forms />, permissionkey: PermissionEnums.USER_FORMS },
-  { path: 'calender', element: <Calender />, permissionkey: PermissionEnums.USER_CALENDAR },
-  { path: 'contacts', element: <Contacts />, permissionkey: PermissionEnums.USER_CONTACTS },
-  { path: 'library', element: <Library />, permissionkey: PermissionEnums.USER_LIBRARY },
+  {
+    path: 'forms-hub/forms',
+    element: <Forms />,
+    permissionkey: [PermissionEnums.USER_FORMS, PermissionEnums.MANAGEMENT_FORMS_HUB]
+  },
+  {
+    path: 'calender',
+    element: <Calender />,
+    permissionkey: [PermissionEnums.USER_CALENDAR, PermissionEnums.MANAGEMENT_CALENDAR]
+  },
+  {
+    path: 'contacts',
+    element: <Contacts />,
+    permissionkey: [PermissionEnums.USER_CONTACTS, PermissionEnums.MANAGEMENT_CONTACTS]
+  },
+  {
+    path: 'library',
+    element: <Library />,
+    permissionkey: [PermissionEnums.USER_LIBRARY, PermissionEnums.MANAGEMENT_LIBRARY]
+  },
   { path: 'library-view', element: <LibraryView /> },
   {
     path: 'blueprints-hub',
@@ -46,38 +62,38 @@ const dynamicRoutes = [
       { path: '', element: <BlueprintsHub /> },
       { path: ':id', element: <DetailProject /> }
     ],
-    permissionkey: PermissionEnums.USER_PROJECTS
+    permissionkey: [PermissionEnums.USER_PROJECTS, PermissionEnums.MANAGEMENT_BLUEPRINTS_HUB]
   },
   {
     path: 'device-management',
     element: <DeviceManagement />,
-    permissionkey: PermissionEnums.MANAGEMENT_DEVICE_MANAGEMENT
+    permissionkey: [PermissionEnums.MANAGEMENT_DEVICE_MANAGEMENT]
   },
   {
     path: 'user-and-groups',
     element: <UserAndGroups />,
-    permissionkey: PermissionEnums.MANAGEMENT_USERS_GROUPS
+    permissionkey: [PermissionEnums.MANAGEMENT_USERS_GROUPS]
   },
   {
     path: 'user-and-groups/:id',
     element: <AddEditGroup />,
-    permissionkey: PermissionEnums.MANAGEMENT_USERS_GROUPS
+    permissionkey: [PermissionEnums.MANAGEMENT_USERS_GROUPS]
   },
   {
     path: 'add-group',
     element: <AddEditGroup />,
-    permissionkey: PermissionEnums.MANAGEMENT_USERS_GROUPS
+    permissionkey: [PermissionEnums.MANAGEMENT_USERS_GROUPS]
   },
   {
     path: 'settings',
     element: <Settings />,
-    permissionkey: PermissionEnums.MANAGEMENT_SETTINGS
+    permissionkey: [PermissionEnums.MANAGEMENT_SETTINGS]
   }
 ]
 
 const Routes = () => {
   const [fetchUserFromToken, { isLoading }] = useGetUserFromTokenMutation()
-  const { user, userPermissions } = useUserSelector()
+  const { user, userPermissions } = useUserSelector() as any
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -87,7 +103,7 @@ const Routes = () => {
   }, [])
 
   const filterRoutes = dynamicRoutes.filter((item) =>
-    userPermissions.some((permission) => permission.key === item.permissionkey)
+    userPermissions.some((permission: any) => item.permissionkey?.includes(permission.key))
   )
   const filteredRoutes = user?.userType === 'User' ? filterRoutes : dynamicRoutes
   const afterLoginRoute = filteredRoutes[0]?.path

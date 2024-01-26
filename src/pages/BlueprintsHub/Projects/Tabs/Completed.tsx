@@ -13,7 +13,8 @@ const Completed = ({
   handlePaginationChange,
   handleEdit,
   onSearch,
-  refetch
+  refetch,
+  isActionEnabled
 }: {
   isLoading: boolean
   data: ILibrary[]
@@ -22,6 +23,7 @@ const Completed = ({
   handlePaginationChange: (pg: IPagination) => void
   onSearch: (text: string) => void
   refetch: () => void
+  isActionEnabled?: boolean
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [open, setOpen] = useState<boolean>(false)
@@ -77,20 +79,20 @@ const Completed = ({
         <div className='search-box'>
           <SearchField placeholder='Search...' handleChange={(value) => onSearch(value)} />
         </div>
-        <DropDown items={itemsActions} handleClickItem={handleClickItem} />
+        {isActionEnabled && <DropDown items={itemsActions} handleClickItem={handleClickItem} />}
       </div>
       {useMemo(() => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns(handleResolve, handleDelete)}
+            columns={columns(handleResolve, handleDelete, isActionEnabled)}
             isLoading={isLoading}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
           />
         )
-      }, [data, selectedRowKeys,isLoading])}
+      }, [data, selectedRowKeys, isLoading])}
 
       <ConfirmationModal
         open={open}

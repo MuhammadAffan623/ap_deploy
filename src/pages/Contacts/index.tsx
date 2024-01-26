@@ -5,6 +5,7 @@ import { Button, Card, ContactCard, Loader, SearchField } from '~/components'
 import './styles.scss'
 import AddEditContact from './AddEditContact'
 import { useLazyGetAllContactQuery } from '~/store/services/contact.services'
+import usePermission from '~/hooks/usePermission'
 
 const Contacts = () => {
   const [users, setUsers] = useState<Partial<IUser>[]>([])
@@ -17,8 +18,8 @@ const Contacts = () => {
     total: 0
   })
   const [search, setSearch] = useState('')
-
   const [getAllContacts, { data, isLoading }] = useLazyGetAllContactQuery()
+  const { isContactManagement } = usePermission()
 
   const handleCloseAddEditContactModal = (status: boolean) => {
     setAddEditContactModalOpen(status)
@@ -29,7 +30,7 @@ const Contacts = () => {
 
   const handleContactCardClick = (user: Partial<IUser>) => {
     setContact(user)
-    setAddEditContactModalOpen(true)
+    isContactManagement ? setAddEditContactModalOpen(true) : setAddEditContactModalOpen(false)
   }
   useEffect(() => {
     if (data) {
@@ -85,18 +86,20 @@ const Contacts = () => {
               </Button>
             </Col>
             <Col>
-              <Button
-                type='primary'
-                className='addContactButton'
-                icon={<FaPerson />}
-                onClick={() => {
-                  setAddEditContactModalOpen(true)
-                  setContact(null)
-                  setEdit(false)
-                }}
-              >
-                Add
-              </Button>
+              {isContactManagement && (
+                <Button
+                  type='primary'
+                  className='addContactButton'
+                  icon={<FaPerson />}
+                  onClick={() => {
+                    setAddEditContactModalOpen(true)
+                    setContact(null)
+                    setEdit(false)
+                  }}
+                >
+                  Add
+                </Button>
+              )}
             </Col>
           </Row>
         </Card>

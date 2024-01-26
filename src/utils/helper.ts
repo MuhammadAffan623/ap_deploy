@@ -42,13 +42,13 @@ export type MenuItem = Required<MenuProps>['items'][number]
 export const getMenuItem = (
   label: ReactNode,
   key: Key,
-  permissionKey?: string,
+  permissionKey?: string | string[],
   icon?: ReactNode,
   children?: MenuItem[] | null,
   className?: string,
   style?: CSSProperties,
   onClick?: () => void,
-  type?: 'group',
+  type?: 'group'
 ): MenuItem => {
   return {
     key,

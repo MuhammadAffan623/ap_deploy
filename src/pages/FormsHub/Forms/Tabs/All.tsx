@@ -13,7 +13,8 @@ const All = ({
   handlePaginationChange,
   onSearch,
   handleEdit,
-  refetch
+  refetch,
+  isActionManagement
 }: {
   isLoading: boolean
   data: IForm[]
@@ -22,6 +23,7 @@ const All = ({
   onSearch: (text: string) => void
   handlePaginationChange: (pg: IPagination) => void
   refetch: () => void
+  isActionManagement?: boolean
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [open, setOpen] = useState<boolean>(false)
@@ -77,13 +79,13 @@ const All = ({
         <div className='search-box'>
           <SearchField placeholder='Search...' handleChange={(value) => onSearch(value)} />
         </div>
-        <DropDown items={itemsActions} handleClickItem={handleClickItem} />
+        {isActionManagement && <DropDown items={itemsActions} handleClickItem={handleClickItem} />}
       </div>
       {useMemo(() => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns(handleResolve, handleDelete)}
+            columns={columns(handleResolve, handleDelete, isActionManagement)}
             isLoading={isLoading}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}

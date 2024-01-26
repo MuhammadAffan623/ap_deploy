@@ -10,6 +10,7 @@ import AddEditForm from './AddEditForm'
 import { defautlPagination } from '~/utils/constant'
 import { useGetTemplatesMutation } from '~/store/services/template.service'
 import Archived from './Tabs/Archived'
+import usePermission from '~/hooks/usePermission'
 
 const Templates = () => {
   const [allData, setAllData] = useState([])
@@ -26,6 +27,7 @@ const Templates = () => {
   const [editingItem, setEditingItem] = useState<IForm | null>(null)
 
   const [getForms, { isLoading }] = useGetTemplatesMutation()
+  const { isFormManagement } = usePermission()
 
   useEffect(() => {
     fetchAllTemplates()
@@ -149,6 +151,7 @@ const Templates = () => {
           refetch={fetchAllTemplates}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
+          isActionEnabled={isFormManagement}
         />
       )
     },
@@ -168,6 +171,7 @@ const Templates = () => {
           refetch={fetchAvailabedTemplates}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
+          isActionEnabled={isFormManagement}
         />
       )
     },
@@ -187,6 +191,7 @@ const Templates = () => {
           refetch={fetchDisabledTemplates}
           onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
+          isActionEnabled={isFormManagement}
         />
       )
     },
@@ -206,6 +211,7 @@ const Templates = () => {
           refetch={fetchArchivedTemplates}
           onSearch={(text: string) => onSearch(text, 'archived')}
           isLoading={isLoading}
+          isActionEnabled={isFormManagement}
         />
       )
     }
@@ -216,7 +222,7 @@ const Templates = () => {
       <Col span={24} style={{ textAlign: 'right' }}>
         <PageHeader
           title='Templates'
-          buttonText='Add Template'
+          buttonText={isFormManagement ? 'Add Template' : ''}
           // showSelect
           // options={[
           //   { label: 'Last 7 days', value: 'last7days' },

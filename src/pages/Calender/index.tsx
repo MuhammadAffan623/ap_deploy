@@ -12,6 +12,7 @@ import EventDetail from './EventDetail'
 import AddNewCalender from './AddNewCalender'
 import './styles.scss'
 import { PageHeader } from '~/components'
+import usePermission from '~/hooks/usePermission'
 
 const Calender: React.FC = () => {
   const [weekendsVisible] = useState<boolean>(true)
@@ -22,6 +23,7 @@ const Calender: React.FC = () => {
 
   const { events, calenderSideBarOpen } = useEventSelector()
   const dispatch = useAppDispatch()
+  const { isCalenderManagement } = usePermission()
 
   useEffect(() => {
     dispatch(getEventsAsync(11))
@@ -32,7 +34,7 @@ const Calender: React.FC = () => {
   }, [events])
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    setOpen(true)
+    isCalenderManagement ? setOpen(true) : setOpen(false)
     const calendarApi = selectInfo.view.calendar
     calendarApi.unselect()
   }
@@ -85,7 +87,7 @@ const Calender: React.FC = () => {
     <>
       <PageHeader
         title='Calender'
-        buttonText='Add Event'
+        buttonText={isCalenderManagement ? 'Add Event' : ''}
         onButtonClick={() => {
           setOpen(true)
         }}
@@ -135,6 +137,7 @@ const Calender: React.FC = () => {
           handleClose={() => setIsEventModal(false)}
           onDelete={handleDeleteEvent}
           event={event}
+          isActionEnabled={isCalenderManagement}
         />
       </div>
     </>

@@ -90,7 +90,7 @@ const AdvancedUserPermissions = ({
       onCancel={() => {
         handleClose(false)
       }}
-      width='900'
+      width={1200}
       bodyStyle={{ minHeight: '60vh' }}
     >
       <Row gutter={[20, 60]}>

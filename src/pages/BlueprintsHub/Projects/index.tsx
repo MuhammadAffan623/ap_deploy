@@ -10,6 +10,7 @@ import AddEditProject from './AddEditProject'
 import { defautlPagination } from '~/utils/constant'
 import Archived from './Tabs/Archived'
 import { useGetProjectsMutation } from '~/store/services/project.service'
+import usePermission from '~/hooks/usePermission'
 
 const Projects = () => {
   const [allData, setAllData] = useState([])
@@ -26,6 +27,7 @@ const Projects = () => {
   const [editingItem, setEditingItem] = useState<ILibrary | null>(null)
 
   const [getAllProjects, { isLoading }] = useGetProjectsMutation()
+  const { isBluePrintManagement } = usePermission()
 
   useEffect(() => {
     fetchAllProjects()
@@ -151,6 +153,7 @@ const Projects = () => {
           refetch={fetchAllProjects}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
+          isActionEnabled={isBluePrintManagement}
         />
       )
     },
@@ -170,6 +173,7 @@ const Projects = () => {
           refetch={fetchActiveProjects}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
+          isActionEnabled={isBluePrintManagement}
         />
       )
     },
@@ -189,6 +193,7 @@ const Projects = () => {
           refetch={fetchCompletedProjects}
           onSearch={(text: string) => onSearch(text, 'completed')}
           isLoading={isLoading}
+          isActionEnabled={isBluePrintManagement}
         />
       )
     },
@@ -208,6 +213,7 @@ const Projects = () => {
           refetch={fetchCompletedProjects}
           onSearch={(text: string) => onSearch(text, 'archived')}
           isLoading={isLoading}
+          isActionEnabled={isBluePrintManagement}
         />
       )
     }
@@ -218,7 +224,7 @@ const Projects = () => {
       <Col span={24} style={{ textAlign: 'right' }}>
         <PageHeader
           title='Project Dashboard'
-          buttonText='Add Project'
+          buttonText={isBluePrintManagement ? 'Add Project' : ''}
           // showSelect
           // options={[
           //   { label: 'Last 7 days', value: 'last7days' },

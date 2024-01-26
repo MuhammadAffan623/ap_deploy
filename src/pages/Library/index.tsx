@@ -13,6 +13,7 @@ import {
   useGetLibrariesMutation
 } from '~/store/services/library.service'
 import { defautlPagination } from '~/utils/constant'
+import usePermission from '~/hooks/usePermission'
 
 const Library = () => {
   const [allData, setAllData] = useState([])
@@ -29,6 +30,7 @@ const Library = () => {
   const { categories } = useLibrarySelector()
   const [getAllLibraries, { isLoading }] = useGetLibrariesMutation()
   const [getCategories] = useGetAllCategoriesMutation()
+  const { isLibraryManagement } = usePermission()
 
   useEffect(() => {
     fetchLibraries()
@@ -137,6 +139,7 @@ const Library = () => {
           refetch={fetchLibraries}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
+          isActionEnabled={isLibraryManagement}
         />
       )
     },
@@ -156,6 +159,7 @@ const Library = () => {
           refetch={fetchActiveLibraries}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
+          isActionEnabled={isLibraryManagement}
         />
       )
     },
@@ -175,6 +179,7 @@ const Library = () => {
           refetch={fetchDisabledLibraries}
           onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
+          isActionEnabled={isLibraryManagement}
         />
       )
     }
@@ -184,8 +189,8 @@ const Library = () => {
     <Row gutter={[10, 10]} style={{ marginTop: 40 }}>
       <Col span={24} style={{ textAlign: 'right' }}>
         <PageHeader
-          title='Libarary Dashboard'
-          buttonText='Add Library'
+          title='Library Dashboard'
+          buttonText={isLibraryManagement ? 'Add Library' : ''}
           // showSelect
           // options={[
           //   { label: 'Last 7 days', value: 'last7days' },

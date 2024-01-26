@@ -6,14 +6,15 @@ import { message } from 'antd'
 import '../style.scss'
 import { useDeleteFormMutation } from '~/store/services/form.service'
 
-const Available = ({
+const Draft = ({
   isLoading,
   data = [],
   pagination,
   handlePaginationChange,
-  onSearch,
   handleEdit,
-  refetch
+  onSearch,
+  refetch,
+  isActionManagement
 }: {
   isLoading: boolean
   data: IForm[]
@@ -22,6 +23,7 @@ const Available = ({
   handlePaginationChange: (pg: IPagination) => void
   onSearch: (text: string) => void
   refetch: () => void
+  isActionManagement?: boolean
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [open, setOpen] = useState<boolean>(false)
@@ -77,20 +79,20 @@ const Available = ({
         <div className='search-box'>
           <SearchField placeholder='Search...' handleChange={(value) => onSearch(value)} />
         </div>
-        <DropDown items={itemsActions} handleClickItem={handleClickItem} />
+        {isActionManagement && <DropDown items={itemsActions} handleClickItem={handleClickItem} />}
       </div>
       {useMemo(() => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns(handleResolve, handleDelete)}
+            columns={columns(handleResolve, handleDelete, isActionManagement)}
             isLoading={isLoading}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
           />
         )
-      }, [data, selectedRowKeys,isLoading])}
+      }, [data, selectedRowKeys, isLoading])}
 
       <ConfirmationModal
         open={open}
@@ -106,4 +108,4 @@ const Available = ({
   )
 }
 
-export default Available
+export default Draft

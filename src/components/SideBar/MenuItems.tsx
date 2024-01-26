@@ -10,13 +10,17 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'Forms Hub',
     '/forms-hub',
-    PermissionEnums.USER_FORMS_HUB,
+    [
+      PermissionEnums.USER_FORM_TEMPLATES,
+      PermissionEnums.USER_FORMS,
+      PermissionEnums.MANAGEMENT_FORMS_HUB
+    ],
     <RxFileText size={20} />,
     [
       getMenuItem(
         'Templates',
         '/forms-hub/templates',
-        PermissionEnums.USER_FORM_TEMPLATES,
+        [PermissionEnums.USER_FORM_TEMPLATES],
         <RxDotFilled size={20} />,
         null,
         'menuItem'
@@ -24,7 +28,7 @@ export const navigationMenuItems: MenuItem[] = [
       getMenuItem(
         'Forms',
         '/forms-hub/forms',
-        PermissionEnums.USER_FORMS,
+        [PermissionEnums.USER_FORMS],
         <RxDotFilled size={20} />,
         null,
         'menuItem'
@@ -35,7 +39,7 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'Calender',
     '/calender',
-    PermissionEnums.USER_CALENDAR,
+    [PermissionEnums.USER_CALENDAR, PermissionEnums.MANAGEMENT_CALENDAR],
     <RxCalendar size={20} />,
     null,
     'menuItem'
@@ -43,7 +47,7 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'Contacts',
     '/contacts',
-    PermissionEnums.USER_CONTACTS,
+    [PermissionEnums.USER_CONTACTS, PermissionEnums.MANAGEMENT_CONTACTS],
     <AiOutlineMobile size={20} />,
     null,
     'menuItem'
@@ -51,7 +55,7 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'Library',
     '/library',
-    PermissionEnums.USER_LIBRARY,
+    [PermissionEnums.USER_LIBRARY, PermissionEnums.MANAGEMENT_LIBRARY],
     <BsFolder2 size={20} />,
     null,
     'menuItem'
@@ -59,7 +63,7 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'Blueprints Hub',
     '/blueprints-hub',
-    PermissionEnums.USER_PROJECTS,
+    [PermissionEnums.USER_PROJECTS, PermissionEnums.MANAGEMENT_BLUEPRINTS_HUB],
     <RxLayers size={20} />,
     null,
     'menuItem'
@@ -67,7 +71,7 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'Device Management',
     '/device-management',
-    PermissionEnums.MANAGEMENT_DEVICE_MANAGEMENT,
+    [PermissionEnums.MANAGEMENT_DEVICE_MANAGEMENT],
     <AiOutlineMobile size={20} />,
     null,
     'menuItem'
@@ -75,7 +79,7 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'User & Groups',
     '/user-and-groups',
-    PermissionEnums.MANAGEMENT_USERS_GROUPS,
+    [PermissionEnums.MANAGEMENT_USERS_GROUPS],
     <UserOutlined rev={false} />,
     null,
     'menuItem'
@@ -83,7 +87,7 @@ export const navigationMenuItems: MenuItem[] = [
   getMenuItem(
     'Settings',
     '/settings',
-    PermissionEnums.MANAGEMENT_SETTINGS,
+    [PermissionEnums.MANAGEMENT_SETTINGS],
     <SettingOutlined rev='rev' />,
     null,
     'menuItem'
