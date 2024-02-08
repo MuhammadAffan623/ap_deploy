@@ -1,11 +1,13 @@
-import { Checkbox, Col, Form, Row, Tag, Typography, message, theme } from 'antd'
+import { Checkbox, Col, Form, Row, Tag, Typography, message, theme, Skeleton } from 'antd'
 import { getCountries } from 'country-state-picker'
-import { CSSProperties, useEffect } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import { FaCrown } from 'react-icons/fa6'
-import { Avatar, BasicModal, Button, SelectField, TextField } from '~/components'
+import { Avatar, BasicModal, Button, ImagesBox, SelectField, TextField } from '~/components'
 import ActiveDevice from './ActiveDevice'
 import './styles.scss'
 import { useRegisterMutation, useUpdateProfileMutation } from '~/store/services/auth.services'
+import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
+import editIcon from '~/assets/icons/edit.svg'
 
 interface IAddEditUserInGroupProps {
   open: boolean
@@ -39,6 +41,11 @@ const AddEditUserInGroup = ({
 }: IAddEditUserInGroupProps) => {
   const [form] = Form.useForm()
   const { useToken } = theme
+  const [uploading, setUploading] = useState<boolean>(false)
+
+  const [uploadFile]: any = useUploadFileMutation()
+  const [getFile]: any = useGetFileMutation()
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | null>(user?.avatar as string)
 
   const {
     token: { colorTextTertiary }
@@ -50,7 +57,8 @@ const AddEditUserInGroup = ({
   const handleFormSubmit = (values: any) => {
     const body = {
       ...values,
-      name: values.firstName + ' ' + values.lastName
+      name: values.firstName + ' ' + values.lastName,
+      avatar: uploadedImgUrl ?? user?.avatar ?? ''
     }
     if (isEdit) {
       updateProfile({ id: user?._id, ...body })
@@ -69,12 +77,52 @@ const AddEditUserInGroup = ({
         .then((res) => {
           handleClose(false)
           refetch()
+          form.resetFields()
+          setUploadedImgUrl(null)
           message.success(res.message)
         })
         .catch((err) => {
           message.error(err?.data?.error)
         })
     }
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0]
+
+    if (file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      handleUpload(formData)
+    }
+  }
+
+  const handleUpload = (formData: FormData) => {
+    setUploading(true)
+    message.info('Please wait, file is being uploaded')
+    uploadFile({ type: 'profile', folderName: 'setting', formData })
+      .unwrap()
+      .then((res: any) => {
+        const params = {
+          key: res.data.uploadedFile.key,
+          versionId: res.data.uploadedFile.s3VersionId
+        }
+        getFile(params)
+          .unwrap()
+          .then((response: any) => {
+            setUploading(false)
+            setUploadedImgUrl(response.data)
+            message.success('File uploaded successfully')
+          })
+          .catch((error: any) => {
+            setUploading(false)
+            message.error(error?.data?.error)
+          })
+      })
+      .catch((err: any) => {
+        setUploading(false)
+        message.error(err?.data?.error)
+      })
   }
 
   useEffect(() => {
@@ -86,7 +134,7 @@ const AddEditUserInGroup = ({
       phoneNo: user?.phoneNo,
       role: user?.role,
       group: user?.group?._id ?? null,
-      avatar: user?.avatar,
+      avatar: user?.avatar ?? '',
       activeDevices: user?.activeDevices ?? [],
       enableSuperAdmin: user?.userType === 'Admin' ? true : false
     })
@@ -108,13 +156,41 @@ const AddEditUserInGroup = ({
         className='add-edit-user-group-form'
       >
         <Row gutter={[16, 16]}>
-          <Col span={24} className='center'>
+          {/* <Col span={24} className='center'>
             <Avatar
               src={(user?.avatar as string) ?? '#'}
               name='+'
               shape='square'
               style={getAvatarContainerStyle(colorTextTertiary)}
             />
+          </Col> */}
+
+          <Col span={24}>
+            <div className='profile-image-container'>
+              {uploading ? (
+                <Skeleton.Image active={uploading} className='img-placeholder' />
+              ) : (
+                <>
+                  <label className='edit-circle'>
+                    <ImagesBox src={editIcon} width={30} height={30} />
+                    <input
+                      type='file'
+                      accept='image/*'
+                      onChange={handleImageChange}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+
+                  <Avatar
+                    src={uploadedImgUrl as string}
+                    name=''
+                    shape='square'
+                    style={getAvatarContainerStyle(colorTextTertiary)}
+                    rootClassName='profile-avatar'
+                  />
+                </>
+              )}
+            </div>
           </Col>
 
           <Col span={24} md={12}>
