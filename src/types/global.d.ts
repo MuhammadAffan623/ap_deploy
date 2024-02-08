@@ -31,7 +31,7 @@ declare global {
     os: string
   }
   interface IUser extends IBase {
-    avatarUrl?: string | null
+    avatar?: string | null
     name: string
     email: string
     username: string

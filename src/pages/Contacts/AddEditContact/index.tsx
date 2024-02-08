@@ -1,16 +1,27 @@
-import { Col, Form, Row, Typography, message, theme } from 'antd'
-import { CSSProperties, useEffect } from 'react'
-import { Avatar, BasicModal, Button, SelectField, TextArea, TextField } from '~/components'
+import { Col, Form, Row, Skeleton, Typography, message, theme } from 'antd'
+import { CSSProperties, useEffect, useState } from 'react'
+import userImg from '~/assets/images/user.png'
+import editIcon from '~/assets/icons/edit.svg'
+import {
+  Avatar,
+  BasicModal,
+  Button,
+  ImagesBox,
+  SelectField,
+  TextArea,
+  TextField
+} from '~/components'
 import './styles.scss'
 import {
   useCreateUserByIdMutation,
   useUpdateUserByIdMutation
 } from '~/store/services/contact.services'
 import { getCountries } from 'country-state-picker'
+import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
 
 interface IAddEditContactProps {
   open: boolean
-  handleClose: (status: boolean) => void
+  handleClose: () => void
   isEdit?: boolean
   contact: Partial<IUser>
 }
@@ -29,15 +40,26 @@ const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
   }
 }
 const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEditContactProps) => {
+  console.log(contact?.avatar ?? '')
   const [form] = Form.useForm()
   const { useToken } = theme
+  const [uploadFile]: any = useUploadFileMutation()
+  const [getFile]: any = useGetFileMutation()
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | null>(
+    (contact?.avatar as string) ?? userImg
+  )
+  const [uploading, setUploading] = useState<boolean>(false)
 
   const {
     token: { colorTextTertiary }
   } = useToken()
 
   const handleFormSubmit = (body: any) => {
-    const newObj = { ...body, phone: body.countryCode + body.phone }
+    const newObj = {
+      ...body,
+      phone: body.countryCode + body.phone,
+      avatar: uploadedImgUrl ?? contact?.avatar ?? ''
+    }
 
     if (isEdit) {
       updateUserById({
@@ -47,28 +69,71 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
         .unwrap()
         .then((res) => {
           message.success(res?.data?.message ?? 'Contact updated successfully')
-          handleClose(true)
+          handleClose()
         })
         .catch((err) => {
           message.error(err?.data?.error ?? 'Something went wrong')
         })
     } else {
-      createUserById({ ...body, phone: body.countryCode + body.phone })
+      createUserById({ ...newObj, phone: body.countryCode + body.phone })
         .unwrap()
         .then((res) => {
           message?.success(res?.data?.message ?? 'Contact created successfully')
-          handleClose(true)
+          handleClose()
         })
         .catch((err) => {
           message.error(err?.data?.error ?? 'Something went wrong')
         })
     }
   }
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0]
+
+    if (file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      handleUpload(formData)
+    }
+  }
+
+  const handleUpload = (formData: FormData) => {
+    setUploading(true)
+    message.info('Please wait, file is being uploaded')
+    uploadFile({ type: 'profile', folderName: 'setting', formData })
+      .unwrap()
+      .then((res: any) => {
+        const params = {
+          key: res.data.uploadedFile.key,
+          versionId: res.data.uploadedFile.s3VersionId
+        }
+        getFile(params)
+          .unwrap()
+          .then((response: any) => {
+            setUploading(false)
+            setUploadedImgUrl(response.data)
+            message.success('File uploaded successfully')
+          })
+          .catch((error: any) => {
+            setUploading(false)
+            message.error(error?.data?.error)
+          })
+      })
+      .catch((err: any) => {
+        setUploading(false)
+        message.error(err?.data?.error)
+      })
+  }
 
   const [updateUserById, { isLoading: updateUserLoading }] = useUpdateUserByIdMutation()
   const [createUserById, { isLoading: createUserLoading }] = useCreateUserByIdMutation()
 
   useEffect(() => {
+    if (!open) {
+      form.resetFields()
+      setUploadedImgUrl('#')
+      return
+    }
+
     form.setFieldsValue({
       name: contact?.name ?? '',
       email: contact?.email,
@@ -77,15 +142,18 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
       address: contact?.address,
       jobTitle: contact?.jobTitle,
       division: contact?.division,
-      notes: contact?.notes
+      notes: contact?.notes,
+      avatar: contact?.avatar ?? ''
     })
-  }, [contact])
+
+    setUploadedImgUrl((contact?.avatar as string) ?? '#')
+  }, [contact, open])
 
   return (
     <BasicModal
       open={open}
       onCancel={() => {
-        handleClose(false)
+        handleClose()
       }}
     >
       <Typography.Title level={3}>{isEdit ? 'Edit' : 'Add'} Contact</Typography.Title>
@@ -96,13 +164,41 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
         className='add-edit-contact-form'
       >
         <Row gutter={[16, 16]}>
-          <Col span={24} style={{ textAlign: 'center' }}>
+          {/* <Col span={24} style={{ textAlign: 'center' }}>
             <Avatar
-              src='#'
-              name='+'
+              src={uploadedImgUrl as string}
+              name=''
               shape='square'
               style={getAvatarContainerStyle(colorTextTertiary)}
+              rootClassName='profile-avatar'
             />
+          </Col> */}
+          <Col span={24}>
+            <div className='profile-image-container'>
+              {uploading ? (
+                <Skeleton.Image active={uploading} className='img-placeholder' />
+              ) : (
+                <>
+                  <label className='edit-circle'>
+                    <ImagesBox src={editIcon} width={30} height={30} />
+                    <input
+                      type='file'
+                      accept='image/*'
+                      onChange={handleImageChange}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+
+                  <Avatar
+                    src={uploadedImgUrl as string}
+                    name=''
+                    shape='square'
+                    style={getAvatarContainerStyle(colorTextTertiary)}
+                    rootClassName='profile-avatar'
+                  />
+                </>
+              )}
+            </div>
           </Col>
 
           <Col span={12}>
@@ -113,6 +209,9 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
             <TextField name='email' label='Email *' placeholder='Enter email' required />
           </Col>
           <Col span={24}>
+            <Col span={24}>
+              <Typography.Text style={{ color: colorTextTertiary }}>Phone *</Typography.Text>
+            </Col>
             <Row className='phone-number-combined-field'>
               <SelectField
                 name='countryCode'
@@ -146,7 +245,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
           </Col>
 
           <Col span={24}>
-            <TextField name='division' label='Division *' placeholder='Division' required />
+            <TextField name='division' label='Division *' placeholder='Division' />
           </Col>
 
           <Col span={24}>

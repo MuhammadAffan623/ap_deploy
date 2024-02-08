@@ -7,16 +7,18 @@ import Disabled from './Tabs/Disabled'
 import { PageHeader } from '~/components'
 import { useEffect, useState } from 'react'
 import AddEditLibrary from './AddEditLibrary'
-import { useLibrarySelector } from '~/store/hooks'
+import { useLibrarySelector, useUserSelector } from '~/store/hooks'
 import {
   useGetAllCategoriesMutation,
   useGetLibrariesMutation
 } from '~/store/services/library.service'
 import { defautlPagination } from '~/utils/constant'
+import UserLibrary from './UserLibrary'
 import usePermission from '~/hooks/usePermission'
 
 const Library = () => {
   const [allData, setAllData] = useState([])
+  const { user } = useUserSelector()
   const [activeData, setActiveData] = useState([])
   const [disabledData, setDisabledData] = useState([])
   const [pagination, setPagination] = useState<IPagination>(defautlPagination)
@@ -184,6 +186,14 @@ const Library = () => {
       )
     }
   ]
+
+  if (user?.userType !== 'Admin') {
+    return (
+      <div>
+        <UserLibrary />
+      </div>
+    )
+  }
 
   return (
     <Row gutter={[10, 10]} style={{ marginTop: 40 }}>

@@ -28,7 +28,7 @@ const ContactCard = ({ user, onClick }: IContactCardProps) => {
               <Col>
                 <Avatar
                   size='large'
-                  src={user?.avatarUrl as string}
+                  src={user?.avatar as string}
                   name={user?.name as string}
                   shape='square'
                 />
