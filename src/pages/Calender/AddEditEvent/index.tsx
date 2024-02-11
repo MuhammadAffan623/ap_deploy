@@ -86,6 +86,7 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false }: IProps) => {
         description: event.description,
         start: event.start,
         end: event.end
+        // range: [startDate, endDate]
       })
       setDefaultValue([startDate, endDate])
     } else {
@@ -95,7 +96,7 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false }: IProps) => {
 
   useEffect(() => {
     if (calenders) {
-      const items = calenders.map((item) => ({
+      const items = calenders.map((item: any) => ({
         key: item._id,
         label: item.name,
         color: item.color,

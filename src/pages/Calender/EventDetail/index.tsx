@@ -3,8 +3,8 @@ import { Space, Typography } from 'antd'
 import { BasicModal, Button, ColorIcon } from '~/components'
 import { EventInput } from '@fullcalendar/core'
 import './styles.scss'
-import { formatDate } from '~/utils/helper'
-import { BsCalendar, BsClock, BsList, BsPencil, BsThreeDots, BsTrash } from 'react-icons/bs'
+import { formatEventDate } from '~/utils/helper'
+import { BsCalendar, BsClock, BsDash, BsList, BsPencil, BsTrash } from 'react-icons/bs'
 
 interface IProps {
   open: boolean
@@ -34,9 +34,6 @@ const EventDetail = ({ event, handleClose, onDelete, onEdit, open, isActionEnabl
             <Button onClick={onDelete ? () => onDelete(event?.id as string) : () => {}}>
               <BsTrash size={16} />
             </Button>
-            <Button>
-              <BsThreeDots size={16} />
-            </Button>
           </div>
         )}
         <div className='modal-content'>
@@ -47,7 +44,8 @@ const EventDetail = ({ event, handleClose, onDelete, onEdit, open, isActionEnabl
           <Space className='list-item'>
             <BsClock />
             <Typography.Text>
-              {formatDate(event?.start as string)} - {formatDate(event?.end as string)}
+              {formatEventDate(event?.start as string)} <BsDash />{' '}
+              {formatEventDate(event?.end as string)}
             </Typography.Text>
           </Space>
           <Space className='list-item'>

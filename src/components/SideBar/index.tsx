@@ -41,7 +41,8 @@ const childrenWrapperStyles: CSSProperties = {
 
 const customTitle: CSSProperties = {
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  alignItems: 'center'
 }
 
 const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: SidebarProps) => {
@@ -79,7 +80,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
           title={
             <span style={customTitle}>
               SCHEDULES
-              <Button style={{ marginRight: '10px' }} onClick={handleOpenModal}>
+              <Button className='custom-plus-button' onClick={handleOpenModal}>
                 <BsPlus />
               </Button>
             </span>
@@ -88,12 +89,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
           {data?.data?.calendarItems.map((item: ICalender) => (
             <Menu.Item
               key={item._id}
-              icon={
-                <Checkbox
-                  checked={checkedItems.includes(item._id)}
-                  // style={{ backgroundColor: item.color }}
-                />
-              }
+              icon={<Checkbox checked={checkedItems.includes(item._id)} />}
               onClick={() => handleItemClick(item._id)}
               className='sidebarMenu'
               itemIcon={
@@ -175,7 +171,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
           setSelectedCalId('')
           message.success('Calender deleted successfully')
         })
-        .catch((err) => message.error(err?.data?.error))
+        .catch((err: any) => message.error(err?.data?.error))
     }
   }
 
@@ -258,7 +254,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
         open={deleteModal}
         onCancel={() => setDeleteModal(false)}
         onOk={confirmToDelete}
-        message='Are you sure? you want to delete this calender'
+        message='Are you sure you want to delete this calender?'
       />
     </SidebarWrapper>
   )
