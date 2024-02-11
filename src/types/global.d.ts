@@ -99,6 +99,16 @@ declare global {
     sheets?: any
   }
 
+  interface ICalender {
+    _id: string
+    name: string
+    description: string
+    color: string
+    events: []
+    createdAt: string
+    updatedAt: string
+  }
+
   interface IEvent extends EventInput {
     _id: string
     title: string

@@ -1,40 +1,20 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getEventsApi } from '~/services/events.services'
-import { message } from 'antd'
-interface IInitialState {
-  events: IEvent[]
-  loading: boolean
+import { createSlice } from '@reduxjs/toolkit'
+import { eventApi } from '~/store/services/event.service'
+
+interface IState {
+  events: ICalender[] | []
   calenderSideBarOpen: boolean
 }
 
-const initialState: IInitialState = {
+const initialState: IState = {
   events: [],
-  loading: false,
   calenderSideBarOpen: false
 }
 
-export const getEventsAsync = createAsyncThunk(
-  'events/get',
-  async (count: number, { fulfillWithValue, rejectWithValue }) => {
-    try {
-      const res = await getEventsApi(count)
-      return fulfillWithValue(res)
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data)
-    }
-  }
-)
-
-export const eventsSlice = createSlice({
-  name: 'events',
+export const eventSlice = createSlice({
+  name: 'eventSlice',
   initialState,
   reducers: {
-    setEvents: (state, { payload }: PayloadAction<IEvent[]>) => {
-      state.events = payload
-    },
-    addEvent: (state, { payload }: PayloadAction<IEvent[]>) => {
-      state.events = [...payload, ...state.events]
-    },
     setCalenderModalOpen: (state) => {
       state.calenderSideBarOpen = true
     },
@@ -44,20 +24,19 @@ export const eventsSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder
-      .addCase(getEventsAsync.pending, (state) => {
-        state.loading = true
-      })
-      .addCase(getEventsAsync.rejected, (state, { payload }: PayloadAction<any>) => {
-        state.loading = false
-        message.error(payload.message)
-      })
-      .addCase(getEventsAsync.fulfilled, (state, { payload }) => {
-        state.events = payload
-        state.loading = false
-      })
+    builder.addMatcher(
+      eventApi?.endpoints?.getAllEvents?.matchFulfilled,
+      (state, { payload }: any) => {
+        const modifiedData = payload.data?.eventItems.map((item: IEvent) => ({
+          ...item,
+          title: item.name,
+          start: item.startTime,
+          end: item.endTime
+        }))
+        state.events = modifiedData
+      }
+    )
   }
 })
 
-export const { setEvents, addEvent, setCalenderModalClose, setCalenderModalOpen } =
-  eventsSlice.actions
+export const { setCalenderModalClose, setCalenderModalOpen } = eventSlice.actions

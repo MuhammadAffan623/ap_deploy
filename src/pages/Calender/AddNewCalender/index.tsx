@@ -1,9 +1,10 @@
 import { CSSProperties, useState } from 'react'
-import { Col, Form, Row, Typography } from 'antd'
+import { Col, Form, Row, Typography, message } from 'antd'
 import { Button, TextArea, TextField } from '~/components'
 import { BsCheck, BsX } from 'react-icons/bs'
 import { colorsToHex } from '~/utils/helper'
 import './styles.scss'
+import { useCreateCalenderMutation } from '~/store/services/calender.service'
 
 interface IProps {
   handleClose: () => void
@@ -20,14 +21,16 @@ const AddNewCalender = ({ handleClose }: IProps) => {
   }
   const [form] = Form.useForm()
   const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null)
+  const [createCalender, { isLoading }] = useCreateCalenderMutation()
 
   const handleFormSubmit = (values: any) => {
-    const modifiedObj = {
-      ...values
-    }
-
-    console.log(modifiedObj)
-    handleClose()
+    createCalender(values)
+      .unwrap()
+      .then((res) => {
+        message.success(res.message)
+        handleClose()
+      })
+      .catch((err: any) => message.error(err?.data?.error))
   }
 
   const beforePseudoStyles: CSSProperties = {
@@ -103,7 +106,7 @@ const AddNewCalender = ({ handleClose }: IProps) => {
           </Col>
 
           <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type='primary' htmlType='submit' block>
+            <Button type='primary' htmlType='submit' block loading={isLoading}>
               Create
             </Button>
           </Col>

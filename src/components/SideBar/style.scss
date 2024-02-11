@@ -75,6 +75,10 @@
       background-color: unset !important;
       border-color: transparent;
 
+      & .text-white {
+        color: white
+      }
+
       &.dmsMenu {
         margin-bottom: calc($margin * 0.75);
       }

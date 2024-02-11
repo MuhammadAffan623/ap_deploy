@@ -5,18 +5,21 @@ import { DownOutlined, EllipsisOutlined } from '@ant-design/icons'
 const DropDown = ({
   items,
   handleClickItem,
+  onPopupClick,
   dot,
   color = 'black',
   title = 'Actions'
 }: {
   items: MenuProps['items']
-  handleClickItem: (e: string) => void
+  handleClickItem?: (e: string) => void
+  onPopupClick?: (e: any) => void
   dot?: boolean
   title?: string
   color?: string
 }) => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    handleClickItem(e.key)
+    handleClickItem && handleClickItem(e.key)
+    onPopupClick && onPopupClick(e)
   }
 
   const menuProps = {

@@ -1,77 +1,76 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { EventApi, DateSelectArg, EventClickArg, EventContentArg } from '@fullcalendar/core'
+import React, { useMemo, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import AddEditEvent from './AddEditEvent'
-import { getEventsAsync, setCalenderModalClose } from '~/store/features/events'
-import { useAppDispatch, useEventSelector } from '~/store/hooks'
-
 import EventDetail from './EventDetail'
 import AddNewCalender from './AddNewCalender'
-import './styles.scss'
-import { PageHeader } from '~/components'
+import { ConfirmationModal, PageHeader } from '~/components'
 import usePermission from '~/hooks/usePermission'
+import { DateSelectArg, EventClickArg, EventContentArg } from '@fullcalendar/core'
+import { useDeleteEventMutation, useGetAllEventsQuery } from '~/store/services/event.service'
+import { setCalenderModalClose } from '~/store/features/events'
+import { useAppDispatch, useEventSelector } from '~/store/hooks'
+import { message } from 'antd'
+import './styles.scss'
 
 const Calender: React.FC = () => {
   const [weekendsVisible] = useState<boolean>(true)
-  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
   const [open, setOpen] = useState<boolean>(false)
+  const [editMode, setEditMode] = useState<boolean>(false)
+  const [showConfiramtion, setShowConfiramtion] = useState<boolean>(false)
   const [isEventModal, setIsEventModal] = useState<boolean>(false)
   const [event, setEvent] = useState<any>(null)
+  const [eventId, setEventId] = useState<any>(null)
 
   const { events, calenderSideBarOpen } = useEventSelector()
+  const { data } = useGetAllEventsQuery('')
+  const [deleteEventApi] = useDeleteEventMutation()
   const dispatch = useAppDispatch()
   const { isCalenderManagement } = usePermission()
 
-  useEffect(() => {
-    dispatch(getEventsAsync(11))
-  }, [dispatch])
-
-  useEffect(() => {
-    setCurrentEvents(events as any)
-  }, [events])
-
   const handleDateSelect = (selectInfo: DateSelectArg) => {
+    setEditMode(false)
     isCalenderManagement ? setOpen(true) : setOpen(false)
     const calendarApi = selectInfo.view.calendar
     calendarApi.unselect()
   }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
-    setEvent({
-      title: clickInfo.event.title,
-      start: clickInfo.event.start,
-      end: clickInfo.event.end,
-      color: clickInfo.event.backgroundColor,
-      clickInfo
-    })
-    setIsEventModal(true)
-  }
-
-  const handleDeleteEvent = () => {
-    if (event.clickInfo) {
-      event.clickInfo.event.remove()
-      setEvent(null)
-      setIsEventModal(false)
+    if (data) {
+      setEvent({
+        id: clickInfo.event.extendedProps._id,
+        title: clickInfo.event.title,
+        start: clickInfo.event.start,
+        end: clickInfo.event.end,
+        color: clickInfo.event.backgroundColor,
+        description: clickInfo.event.extendedProps.description
+      })
+      setIsEventModal(true)
     }
   }
 
-  const handleEvents = (events: EventApi[]) => {
-    console.log('currentEvents', currentEvents)
-    setCurrentEvents(events)
+  const handleDeleteEvent = (id: string) => {
+    setEventId(id)
+    setShowConfiramtion(true)
+    setIsEventModal(false)
   }
 
-  const handleEventMouseEnter = (mouseEnterInfo: any) => {
-    const eventDetail = mouseEnterInfo.event
-    console.log(eventDetail)
+  const confirmDeleteEvent = () => {
+    deleteEventApi({ id: eventId })
+      .unwrap()
+      .then(() => {
+        setShowConfiramtion(false)
+        message.success('Event deleted successfully')
+      })
+      .catch((err) => message.error(err?.data?.error))
   }
 
   const renderEventContent = (eventContent: EventContentArg) => (
     <div>
       <b>{eventContent.timeText}</b>
-      <span>{eventContent.event.title}</span>
+      <span style={{ marginLeft: 2 }}>{eventContent.event.title}</span>
     </div>
   )
 
@@ -89,6 +88,7 @@ const Calender: React.FC = () => {
         title='Calender'
         buttonText={isCalenderManagement ? 'Add Event' : ''}
         onButtonClick={() => {
+          setEditMode(false)
           setOpen(true)
         }}
       />
@@ -116,28 +116,42 @@ const Calender: React.FC = () => {
                 select={handleDateSelect}
                 eventContent={renderEventContent}
                 eventClick={handleEventClick}
-                eventMouseEnter={handleEventMouseEnter}
-                eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-                /* you can update a remote database when these fire:
-              eventAdd={function(){}}
-              eventChange={function(){}}
-              eventRemove={function(){}}
-              
-              */
               />
             </div>
           ),
           [events]
         )}
 
-        <AddEditEvent open={open} handleClose={() => setOpen(false)} event={event} />
+        <AddEditEvent
+          open={open}
+          isEdit={editMode}
+          handleClose={() => {
+            setEditMode(false)
+            setOpen(false)
+          }}
+          event={event}
+        />
 
         <EventDetail
           open={isEventModal}
           handleClose={() => setIsEventModal(false)}
           onDelete={handleDeleteEvent}
+          onEdit={(event) => {
+            setEditMode(true)
+            setOpen(true)
+            setEvent(event)
+            setIsEventModal(false)
+          }}
           event={event}
           isActionEnabled={isCalenderManagement}
+        />
+
+        <ConfirmationModal
+          title='Deleting Event'
+          message='Are you sure you want to delete it?'
+          open={showConfiramtion}
+          onOk={confirmDeleteEvent}
+          onCancel={() => setShowConfiramtion(false)}
         />
       </div>
     </>

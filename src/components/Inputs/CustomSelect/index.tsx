@@ -13,10 +13,12 @@ export interface IItem {
 
 const CustomSelect = ({
   handleChange,
-  options: items = []
+  options: items = [],
+  placeholder = ''
 }: {
   handleChange: (key: string) => void
   options: IItem[]
+  placeholder: string
 }) => {
   const [key, setKey] = useState('liniting-schedule')
   const [color, setColor] = useState('tomato')
@@ -44,7 +46,8 @@ const CustomSelect = ({
     >
       <Space className='custom-select'>
         <Space>
-          <ColorIcon color={color} /> {getSelectedValueLabel()}
+          <ColorIcon color={color} />{' '}
+          {getSelectedValueLabel() || <span className='custom-placeholder'>{placeholder}</span>}
         </Space>
         <DownOutlined rev />
       </Space>

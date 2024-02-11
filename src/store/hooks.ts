@@ -9,3 +9,4 @@ export const useUserListSelector = () => useAppSelector((state) => state.userLis
 export const useGroupsSelector = () => useAppSelector((state) => state.groups)
 export const useLibrarySelector = () => useAppSelector((state) => state.library)
 export const useEventSelector = () => useAppSelector((state) => state.events)
+export const useCalenderSelector = () => useAppSelector((state) => state.calender)
