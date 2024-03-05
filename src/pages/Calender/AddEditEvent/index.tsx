@@ -18,6 +18,7 @@ interface IProps {
   handleClose: (status: boolean) => void
   isEdit?: boolean
   event: Partial<EventInput> | null
+  startDate?: any
 }
 
 const defaultItems: IItem[] = [
@@ -29,12 +30,12 @@ const defaultItems: IItem[] = [
   }
 ]
 
-const AddEditEvent = ({ event, handleClose, open, isEdit = false }: IProps) => {
+const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = '' }: IProps) => {
   const initialValues = {
     name: '',
     description: '',
     range: [],
-    startTime: '',
+    startTime: startDate,
     endTime: '',
     repeat: false,
     allDay: false,
@@ -53,7 +54,8 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false }: IProps) => {
       endTime: dayjs(values.range[1]).format('YYYY-MM-DD HH:mm'),
       name: values.name,
       allDay: values.allDay,
-      description: values.description
+      description: values.description,
+      calendar: values.calender
     }
     if (isEdit) {
       updateEvent({ _id: event?.id, ...modifiedObj })
@@ -85,8 +87,8 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false }: IProps) => {
         name: event.title,
         description: event.description,
         start: event.start,
-        end: event.end
-        // range: [startDate, endDate]
+        end: event.end,
+        range: [startDate, endDate]
       })
       setDefaultValue([startDate, endDate])
     } else {
@@ -106,6 +108,16 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false }: IProps) => {
       setCalenderItems(items)
     }
   }, [calenders])
+
+  useEffect(() => {
+    const startTime = dayjs(startDate, 'YYYY-MM-DD HH:mm')
+    const endTime = dayjs(startDate, 'YYYY-MM-DD HH:mm')
+    if (startDate) {
+      form.setFieldValue('range', [startTime, endTime])
+    } else {
+      form.resetFields()
+    }
+  }, [startDate])
 
   return (
     <BasicModal

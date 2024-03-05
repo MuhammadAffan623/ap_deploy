@@ -23,6 +23,7 @@ const Calender: React.FC = () => {
   const [isEventModal, setIsEventModal] = useState<boolean>(false)
   const [event, setEvent] = useState<any>(null)
   const [eventId, setEventId] = useState<any>(null)
+  const [startDate, setStartDate] = useState<any>(null)
 
   const { events, calenderSideBarOpen } = useEventSelector()
   const { data } = useGetAllEventsQuery('')
@@ -32,6 +33,7 @@ const Calender: React.FC = () => {
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     setEditMode(false)
+    setStartDate(selectInfo.start.toISOString())
     isCalenderManagement ? setOpen(true) : setOpen(false)
     const calendarApi = selectInfo.view.calendar
     calendarApi.unselect()
@@ -89,6 +91,7 @@ const Calender: React.FC = () => {
         buttonText={isCalenderManagement ? 'Add Event' : ''}
         onButtonClick={() => {
           setEditMode(false)
+          setStartDate(null)
           setOpen(true)
         }}
       />
@@ -130,6 +133,7 @@ const Calender: React.FC = () => {
             setOpen(false)
           }}
           event={event}
+          startDate={startDate}
         />
 
         <EventDetail
