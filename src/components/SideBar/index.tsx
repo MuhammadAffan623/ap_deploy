@@ -13,16 +13,17 @@ import { useDispatch } from 'react-redux'
 import { setCalenderModalOpen } from '~/store/features/events'
 import { calenderActionItems } from '~/utils/options'
 import { logout } from '~/store/features/user'
-import { useUserSelector } from '~/store/hooks'
+import { useCalenderSelector, useUserSelector } from '~/store/hooks'
 import {
   useDeleteCalenderMutation,
   useGetAllCalenderQuery
 } from '~/store/services/calender.service'
-import { BsPlus } from 'react-icons/bs'
+import { BsCalendar, BsPlus } from 'react-icons/bs'
 import SubMenu from 'antd/es/menu/SubMenu'
 import DropDown from '../DropDown'
 import usePermission from '~/hooks/usePermission'
 import ConfirmationModal from '../ConfirmationModal'
+import { setCalendarIds } from '~/store/features/calender'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -56,21 +57,28 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const isCalendarPage = pathname.includes('calender')
   const { user, userPermissions } = useUserSelector()
   const { data } = useGetAllCalenderQuery('')
+  const { calendarIds } = useCalenderSelector()
   const { isCalenderManagement } = usePermission()
 
   const [deleteModal, setDeleteModal] = useState(false)
   const [selectedCalId, setSelectedCalId] = useState('')
   const [deleteCalender] = useDeleteCalenderMutation()
 
-  const MyMenuItemWithSubMenu = () => {
+  const SheduleMenuItem = ({ collapsed }: { collapsed: boolean | undefined }) => {
     const [checkedItems, setCheckedItems] = useState<string[]>([])
+
+    useEffect(() => {
+      setCheckedItems(calendarIds)
+    }, [calendarIds])
 
     const handleItemClick = (itemKey: string) => {
       const isChecked = checkedItems.includes(itemKey)
       if (isChecked) {
         setCheckedItems(checkedItems.filter((key) => key !== itemKey))
+        dispatch(setCalendarIds(checkedItems.filter((key) => key !== itemKey)))
       } else {
         setCheckedItems([...checkedItems, itemKey])
+        dispatch(setCalendarIds([...checkedItems, itemKey]))
       }
     }
     return (
@@ -79,7 +87,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
           key='subMenu'
           title={
             <span style={customTitle}>
-              SCHEDULES
+              {!collapsed && 'SCHEDULES'}
               <Button className='custom-plus-button' onClick={handleOpenModal}>
                 <BsPlus />
               </Button>
@@ -240,7 +248,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
             className='sidebarMenu'
             onClick={(item) => navigate(item.key)}
           />
-          {isCalendarPage && isCalenderManagement && <MyMenuItemWithSubMenu />}
+          {isCalendarPage && isCalenderManagement && <SheduleMenuItem collapsed={collapsed} />}
         </div>
 
         <Divider style={{ margin: 0 }} />

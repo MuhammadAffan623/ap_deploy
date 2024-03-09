@@ -38,14 +38,14 @@ const EventDetail = ({ event, handleClose, onDelete, onEdit, open, isActionEnabl
         )}
         <div className='modal-content'>
           <Space className='list-item'>
-            <ColorIcon color={event?.color || 'tomato'} />
+            <ColorIcon color={event?.color || 'lightgrey'} />
             <Typography.Title level={3}>{event?.title}</Typography.Title>
           </Space>
           <Space className='list-item'>
             <BsClock />
             <Typography.Text>
               {formatEventDate(event?.start as string)} <BsDash />{' '}
-              {formatEventDate(event?.end as string)}
+              {formatEventDate((event?.end as string) ?? event?.start)}
             </Typography.Text>
           </Space>
           <Space className='list-item'>

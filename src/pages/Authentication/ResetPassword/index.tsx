@@ -1,18 +1,19 @@
-import { Divider, Form, Typography } from 'antd'
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Divider, Form, Typography, message } from 'antd'
+import { Link } from 'react-router-dom'
 import { Button, TextField } from '~/components'
 import './style.scss'
+import { useResetPasswordMutation } from '~/store/services/auth.services'
 
 const ResetPassword = () => {
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [resetPasswordEmail, { isLoading }]: any = useResetPasswordMutation()
 
   const handleSubmit = (values: KeyValuePair) => {
-    setLoading(true)
-    console.log(values)
-    setLoading(false)
-    navigate('/dashboard')
+    resetPasswordEmail(values)
+      .unwrap()
+      .then(() => message.success('Email send successfully'))
+      .catch((error: any) => {
+        message.error(error?.data?.error || 'Somthing went wrong')
+      })
   }
 
   return (
@@ -41,7 +42,7 @@ const ResetPassword = () => {
           Go back
         </Link>
 
-        <Button loading={loading} type='primary' htmlType='submit' className='auth-button'>
+        <Button loading={isLoading} type='primary' htmlType='submit' className='auth-button'>
           Send
         </Button>
       </Form>

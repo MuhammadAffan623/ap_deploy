@@ -10,8 +10,8 @@ export const eventApi = createApi({
   tagTypes: ['event'],
   endpoints: (builder) => ({
     getAllEvents: builder.query({
-      query: () => ({
-        url: `/event/getAllEvents`,
+      query: ({ calendarIds }) => ({
+        url: `/event/getAllEvents?calendarIds=${calendarIds?.join(', ')}`,
         method: 'GET'
       }),
 

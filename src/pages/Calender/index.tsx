@@ -11,7 +11,7 @@ import usePermission from '~/hooks/usePermission'
 import { DateSelectArg, EventClickArg, EventContentArg } from '@fullcalendar/core'
 import { useDeleteEventMutation, useGetAllEventsQuery } from '~/store/services/event.service'
 import { setCalenderModalClose } from '~/store/features/events'
-import { useAppDispatch, useEventSelector } from '~/store/hooks'
+import { useAppDispatch, useCalenderSelector, useEventSelector } from '~/store/hooks'
 import { message } from 'antd'
 import './styles.scss'
 
@@ -26,12 +26,13 @@ const Calender: React.FC = () => {
   const [startDate, setStartDate] = useState<any>(null)
 
   const { events, calenderSideBarOpen } = useEventSelector()
-  const { data } = useGetAllEventsQuery('')
   const [deleteEventApi] = useDeleteEventMutation()
   const dispatch = useAppDispatch()
   const { isCalenderManagement } = usePermission()
-
+  const { calendarIds } = useCalenderSelector()
+  const { data } = useGetAllEventsQuery({ calendarIds })
   const handleDateSelect = (selectInfo: DateSelectArg) => {
+    setEvent(null)
     setEditMode(false)
     setStartDate(selectInfo.start.toISOString())
     isCalenderManagement ? setOpen(true) : setOpen(false)

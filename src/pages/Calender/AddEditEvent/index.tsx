@@ -41,17 +41,18 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     allDay: false,
     calender: ''
   }
-  const [defaultValue, setDefaultValue] = useState<any>([])
   const [form] = Form.useForm()
   const { calenders } = useCalenderSelector()
   const [calendarItems, setCalenderItems] = useState(defaultItems)
   const [createEvent, { isLoading }] = useCreateEventMutation()
   const [updateEvent, { isLoading: isUpdateLoading }] = useUpdateEventMutation()
 
+  const formatDate = 'YYYY-MM-DD HH:mm'
+
   const handleFormSubmit = (values: any) => {
     const modifiedObj = {
-      startTime: dayjs(values.range[0]).format('YYYY-MM-DD HH:mm'),
-      endTime: dayjs(values.range[1]).format('YYYY-MM-DD HH:mm'),
+      startTime: dayjs(values.range[0]).format(formatDate),
+      endTime: dayjs(values.range[1]).format(formatDate),
       name: values.name,
       allDay: values.allDay,
       description: values.description,
@@ -80,8 +81,8 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
 
   useEffect(() => {
     if (event) {
-      const startDate = dayjs(event.start?.toLocaleString(), 'YYYY-MM-DD HH:mm')
-      const endDate = dayjs(event.start?.toLocaleString(), 'YYYY-MM-DD HH:mm')
+      const startDate = dayjs(event.start?.toLocaleString(), formatDate)
+      const endDate = dayjs(event.start?.toLocaleString(), formatDate)
 
       form.setFieldsValue({
         name: event.title,
@@ -90,7 +91,6 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
         end: event.end,
         range: [startDate, endDate]
       })
-      setDefaultValue([startDate, endDate])
     } else {
       form.resetFields()
     }
@@ -109,9 +109,10 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     }
   }, [calenders])
 
-  useEffect(() => {
-    const startTime = dayjs(startDate, 'YYYY-MM-DD HH:mm')
-    const endTime = dayjs(startDate, 'YYYY-MM-DD HH:mm')
+  useEffect(() => 
+    const startTime = dayjs(startDate, formatDate)
+    const endTime = dayjs(startDate, formatDate)
+
     if (startDate) {
       form.setFieldValue('range', [startTime, endTime])
     } else {
@@ -155,7 +156,7 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
               rules={[{ required: true }]}
               className='formItem'
             >
-              <RangePicker defaultValue={defaultValue} showTime style={{ width: '100%' }} />
+              <RangePicker showTime style={{ width: '100%' }} />
             </Form.Item>
           </Col>
 
