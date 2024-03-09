@@ -34,7 +34,7 @@ const Settings = () => {
     token: { colorTextTertiary }
   } = useToken()
   const { user } = useUserSelector()
-  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | ArrayBuffer | null>(userImg)
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | ArrayBuffer | null>('')
   const [uploading, setUploading] = useState<boolean>(false)
 
   const [updatePassword, { isLoading: isPasswordLoading }] = useUpdatePasswordMutation()
@@ -252,7 +252,7 @@ const Settings = () => {
             </div>
           </Col>
           <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
-            <div className='profile-image-container'>
+            <div className='setting-profile-image-container'>
               {uploading ? (
                 <Skeleton.Image active={uploading} className='img-placeholder' />
               ) : (
@@ -268,7 +268,7 @@ const Settings = () => {
                   </label>
 
                   <Avatar
-                    src={uploadedImgUrl as string}
+                    src={(uploadedImgUrl as string) ?? userImg}
                     name=''
                     shape='square'
                     style={getAvatarContainerStyle(colorTextTertiary)}
