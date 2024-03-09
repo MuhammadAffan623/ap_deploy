@@ -8,6 +8,7 @@ import './styles.scss'
 import { useRegisterMutation, useUpdateProfileMutation } from '~/store/services/auth.services'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
 import editIcon from '~/assets/icons/edit.svg'
+import userImg from '~/assets/images/user.png'
 
 interface IAddEditUserInGroupProps {
   open: boolean
@@ -138,8 +139,13 @@ const AddEditUserInGroup = ({
       activeDevices: user?.activeDevices ?? [],
       enableSuperAdmin: user?.userType === 'Admin' ? true : false
     })
-  }, [user])
+    setUploadedImgUrl(user?.avatar as string)
 
+    return () => {
+      form.resetFields()
+      setUploadedImgUrl('')
+    }
+  }, [user])
   return (
     <BasicModal
       open={open}
@@ -156,15 +162,6 @@ const AddEditUserInGroup = ({
         className='add-edit-user-group-form'
       >
         <Row gutter={[16, 16]}>
-          {/* <Col span={24} className='center'>
-            <Avatar
-              src={(user?.avatar as string) ?? '#'}
-              name='+'
-              shape='square'
-              style={getAvatarContainerStyle(colorTextTertiary)}
-            />
-          </Col> */}
-
           <Col span={24}>
             <div className='profile-image-container'>
               {uploading ? (
@@ -182,7 +179,7 @@ const AddEditUserInGroup = ({
                   </label>
 
                   <Avatar
-                    src={uploadedImgUrl as string}
+                    src={(uploadedImgUrl as string) ?? userImg}
                     name=''
                     shape='square'
                     style={getAvatarContainerStyle(colorTextTertiary)}
@@ -260,7 +257,7 @@ const AddEditUserInGroup = ({
               <Col span={24}>
                 <Row align='middle'>
                   <Col span={12}>
-                    <Button type='primary' danger htmlType='submit'>
+                    <Button type='primary' danger>
                       Change Password
                     </Button>
                   </Col>
@@ -283,7 +280,7 @@ const AddEditUserInGroup = ({
                         key={device?.lastSync}
                         device={device}
                         onLogoutClick={() => {
-                          console.log('logout')
+                          // console.log('logout')
                         }}
                       />
                     )
