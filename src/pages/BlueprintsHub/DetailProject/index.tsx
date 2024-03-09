@@ -10,11 +10,13 @@ import Camera from '~/assets/icons/camera.png'
 import './style.scss'
 import { useParams } from 'react-router-dom'
 import { useGetProjectByIdMutation } from '~/store/services/project.service'
+import { useUserSelector } from '~/store/hooks'
 
 const DetailProject = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
   const [data, setData] = useState<any>(null)
   const { id } = useParams()
+  const { user } = useUserSelector()
   const [getProjectById, { isLoading }] = useGetProjectByIdMutation()
 
   useEffect(() => {
@@ -59,7 +61,7 @@ const DetailProject = () => {
     <Row gutter={[20, 20]}>
       <Col span={24}>
         <PageHeader
-          title='Good Morning Jarby'
+          title={`Good Morning ${user?.name}`}
           buttonText=' Upload Sheet'
           selectValue={selectedFilter}
           onSelectChange={handleSelectChange}
