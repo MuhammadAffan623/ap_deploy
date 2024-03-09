@@ -18,7 +18,7 @@ import {
   useDeleteCalenderMutation,
   useGetAllCalenderQuery
 } from '~/store/services/calender.service'
-import { BsCalendar, BsPlus } from 'react-icons/bs'
+import { BsPlus } from 'react-icons/bs'
 import SubMenu from 'antd/es/menu/SubMenu'
 import DropDown from '../DropDown'
 import usePermission from '~/hooks/usePermission'
