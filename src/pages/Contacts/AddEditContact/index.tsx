@@ -40,16 +40,12 @@ const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
   }
 }
 const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEditContactProps) => {
-  console.log(contact?.avatar ?? '')
   const [form] = Form.useForm()
   const { useToken } = theme
   const [uploadFile]: any = useUploadFileMutation()
   const [getFile]: any = useGetFileMutation()
-  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | null>(
-    (contact?.avatar as string) ?? userImg
-  )
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | null>('')
   const [uploading, setUploading] = useState<boolean>(false)
-
   const {
     token: { colorTextTertiary }
   } = useToken()
@@ -130,7 +126,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
   useEffect(() => {
     if (!open) {
       form.resetFields()
-      setUploadedImgUrl('#')
+      setUploadedImgUrl('')
       return
     }
 
@@ -145,8 +141,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
       notes: contact?.notes,
       avatar: contact?.avatar ?? ''
     })
-
-    setUploadedImgUrl((contact?.avatar as string) ?? '#')
+    setUploadedImgUrl(contact?.avatar ?? userImg)
   }, [contact, open])
 
   return (
@@ -164,15 +159,6 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
         className='add-edit-contact-form'
       >
         <Row gutter={[16, 16]}>
-          {/* <Col span={24} style={{ textAlign: 'center' }}>
-            <Avatar
-              src={uploadedImgUrl as string}
-              name=''
-              shape='square'
-              style={getAvatarContainerStyle(colorTextTertiary)}
-              rootClassName='profile-avatar'
-            />
-          </Col> */}
           <Col span={24}>
             <div className='profile-image-container'>
               {uploading ? (
@@ -190,7 +176,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
                   </label>
 
                   <Avatar
-                    src={uploadedImgUrl as string}
+                    src={(uploadedImgUrl as string) ?? userImg}
                     name=''
                     shape='square'
                     style={getAvatarContainerStyle(colorTextTertiary)}
