@@ -109,7 +109,7 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     }
   }, [calenders])
 
-  useEffect(() => 
+  useEffect(() => {
     const startTime = dayjs(startDate, formatDate)
     const endTime = dayjs(startDate, formatDate)
 
