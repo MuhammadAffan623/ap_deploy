@@ -17,6 +17,7 @@ import { templateApi } from './services/template.service'
 import { projectApi } from './services/project.service'
 import { calenderApi } from './services/calender.service'
 import { eventApi } from './services/event.service'
+import { dashoboardApi } from './services/dashboard.services'
 
 export interface RootState {
   user: ReturnType<typeof userSlice.reducer>
@@ -44,5 +45,6 @@ export const rootReducer = combineReducers({
   [templateApi.reducerPath]: templateApi.reducer,
   [projectApi.reducerPath]: projectApi.reducer,
   [calenderApi.reducerPath]: calenderApi.reducer,
-  [eventApi.reducerPath]: eventApi.reducer
+  [eventApi.reducerPath]: eventApi.reducer,
+  [dashoboardApi.reducerPath]: dashoboardApi.reducer
 })

@@ -9,6 +9,7 @@ import { templateApi } from './services/template.service'
 import { projectApi } from './services/project.service'
 import { calenderApi } from './services/calender.service'
 import { eventApi } from './services/event.service'
+import { dashoboardApi } from './services/dashboard.services'
 
 export const middlewares = (getDefaultMiddleware: CurriedGetDefaultMiddleware<any>) => {
   return getDefaultMiddleware()
@@ -22,6 +23,7 @@ export const middlewares = (getDefaultMiddleware: CurriedGetDefaultMiddleware<an
     .concat(projectApi.middleware)
     .concat(calenderApi.middleware)
     .concat(eventApi.middleware)
+    .concat(dashoboardApi.middleware)
 }
 
 export default middlewares
