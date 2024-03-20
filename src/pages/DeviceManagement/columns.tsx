@@ -1,28 +1,10 @@
 import type { ColumnsType } from 'antd/es/table'
-import { Dropdown, MenuProps, Space } from 'antd'
-import { EllipsisOutlined } from '@ant-design/icons'
+import { Button, Space } from 'antd'
 import { Pill } from '~/components'
-import { CSSProperties } from 'react'
 import { formatDate } from '~/utils/helper'
+import { AiOutlineDelete } from 'react-icons/ai'
 
-const btnStyle: CSSProperties = {
-  border: 'none',
-  outline: 'none',
-  backgroundColor: 'transparent'
-}
-
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: 'Mark resolve'
-  },
-  {
-    key: '2',
-    label: 'Delete'
-  }
-]
-
-export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any> => {
+export const columns = (handleDelete: any, isActionEnabled?: boolean): ColumnsType<any> => {
   return [
     {
       title: 'NAME',
@@ -33,36 +15,36 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
     },
     {
       title: 'MAKE/MODEL',
-      dataIndex: 'owner',
-      key: 'owner',
-      sorter: (a, b) => a.owner.length - b.owner.length,
+      dataIndex: 'deviceMake',
+      key: 'deviceMake',
+      sorter: (a, b) => a.deviceMake.length - b.deviceMake.length,
       sortDirections: ['descend']
     },
     {
       title: 'Last SYNC',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
-      sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
+      dataIndex: 'lastSync',
+      key: 'lastSync',
+      sorter: (a, b) => a.lastSync.length - b.lastSync.length,
       sortDirections: ['descend'],
-      render: ({ updatedAt }) => formatDate(updatedAt)
+      render: ({ lastSync }) => formatDate(lastSync)
     },
     {
       title: 'APP VERSION',
-      dataIndex: 'version',
-      key: 'version',
-      sorter: (a, b) => a.version.length - b.version.length,
+      dataIndex: 'appVersion',
+      key: 'appVersion',
+      sorter: (a, b) => a.appVersion.length - b.appVersion.length,
       sortDirections: ['descend']
     },
     {
       title: 'HEALTH',
-      dataIndex: 'status',
-      key: 'status',
-      sorter: (a, b) => a.status.length - b.status.length,
+      dataIndex: 'healthCheck',
+      key: 'healthCheck',
+      sorter: (a, b) => a.healthCheck.length - b.healthCheck.length,
       sortDirections: ['descend'],
-      render: (_, { status }) => {
-        const text = status ? 'Healthy' : 'Unhealthy';
-        const textColor = status ? '#14C25A' : '#FC8229'
-        const bgColor = status ? '#14C25A1A' : '#FC82291A'
+      render: (_, { healthCheck }) => {
+        const text = healthCheck ? 'Healthy' : 'Unhealthy'
+        const textColor = healthCheck ? '#14C25A' : '#FC8229'
+        const bgColor = healthCheck ? '#14C25A1A' : '#FC82291A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
     },
@@ -71,35 +53,16 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       align: 'left',
       key: '',
       dataIndex: '',
-      render: (_, { id }) => (
-        <Space size='small'>
-          <Dropdown
-            menu={{
-              items,
-              onClick: (params) => {
-                const { key, domEvent } = params
-                domEvent.stopPropagation()
-                if (key === '1') {
-                  handleResolve(id)
-                } else {
-                  handleDelete(id)
-                }
-              }
-            }}
-            placement='bottomRight'
-          >
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
-              }}
-              style={btnStyle}
-            >
-              <EllipsisOutlined rev />
-            </button>
-          </Dropdown>
-        </Space>
-      )
+      render: (_, record) =>
+        !isActionEnabled ? (
+          ''
+        ) : (
+          <Space size='small' onClick={() => handleDelete(record?._id)}>
+            <Button>
+              <AiOutlineDelete />{' '}
+            </Button>
+          </Space>
+        )
     }
   ]
 }
