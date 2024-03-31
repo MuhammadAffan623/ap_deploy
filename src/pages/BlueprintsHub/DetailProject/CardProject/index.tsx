@@ -1,14 +1,33 @@
-import { Button, Card, Map } from '~/components'
-import { Col, Row, Typography } from 'antd'
+
+import { Card, Map } from '~/components'
+import { Col, DatePicker, Row, Typography } from 'antd'
 import './style.scss'
 import { CloudUploadOutlined } from '@ant-design/icons'
 import CountCard from '~/components/CountCard'
 import NewProject from '../../../../assets/images/Project.png'
 import MapIcon from '../../../../assets/images/Map.png'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
 
-const CardProject = ({ handleSheetClick }: { handleSheetClick: () => void }) => {
+const CardProject = ({
+  handleSheetClick,
+  handleDateChange,
+  projectDetails
+}: {
+  handleSheetClick: () => void
+  handleDateChange: (d: string | null) => void
+  projectDetails: any
+}) => {
   const [showMap, setShowMap] = useState(false)
+  const [selectedDate, setSelectedDate] = useState()
+  const dt = projectDetails?.project?.projectEndDate
+  useEffect(() => {
+    if (dt) {
+      setSelectedDate(dt)
+    }
+  }, [dt])
+
+
   return (
     <>
       <Col span={24} lg={12} xl={24} xxl={24}>
@@ -26,9 +45,16 @@ const CardProject = ({ handleSheetClick }: { handleSheetClick: () => void }) => 
               </Typography.Paragraph>
             </Col>
             <Col>
-              <Button type='primary' className='save-button'>
-                Add Dates
-              </Button>
+              <DatePicker
+                name='selectedDate'
+                placeholder='Select End Date'
+                style={{ marginTop: '3px' }}
+                allowClear={false}
+                value={dayjs(selectedDate)}
+                onChange={(val) => {
+                  handleDateChange(val ? dayjs(val).toISOString() : null)
+                }}
+              />
             </Col>
           </Row>
         </Card>

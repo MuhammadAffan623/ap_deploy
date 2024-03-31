@@ -93,6 +93,19 @@ const DetailProject = () => {
       })
   }
 
+  const handleDateChange = (d: string | null) => {
+    updateProject({ id, projectEndDate: d })
+      .unwrap()
+      .then((res) => {
+        setUploading(false)
+        fetchProjectById(id as string)
+        message.success(res.message)
+      })
+      .catch((err) => {
+        message.error(err?.data?.error)
+      })
+  }
+
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0]
 
@@ -128,7 +141,11 @@ const DetailProject = () => {
       />
       <Col span={24} lg={16}>
         <Row gutter={[20, 20]}>
-          <CardProject handleSheetClick={() => fileRef.current.click()} />
+          <CardProject
+            handleSheetClick={() => fileRef.current.click()}
+            handleDateChange={handleDateChange}
+            projectDetails={data}
+          />
         </Row>
       </Col>
 
