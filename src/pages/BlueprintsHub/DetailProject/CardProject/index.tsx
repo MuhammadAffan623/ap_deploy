@@ -1,12 +1,14 @@
-import { Button, Card } from '~/components'
+import { Button, Card, Map } from '~/components'
 import { Col, Row, Typography } from 'antd'
 import './style.scss'
 import { CloudUploadOutlined } from '@ant-design/icons'
 import CountCard from '~/components/CountCard'
 import NewProject from '../../../../assets/images/Project.png'
-import Map from '../../../../assets/images/Map.png'
+import MapIcon from '../../../../assets/images/Map.png'
+import { useState } from 'react'
 
-const CardProject = () => {
+const CardProject = ({ handleSheetClick }: { handleSheetClick: () => void }) => {
+  const [showMap, setShowMap] = useState(false)
   return (
     <>
       <Col span={24} lg={12} xl={24} xxl={24}>
@@ -32,10 +34,19 @@ const CardProject = () => {
         </Card>
       </Col>
       <Col span={12} xl={12} xxl={6}>
-        <CountCard title='PROJECT LINKS' src={NewProject} count='1' children=' + Sheet' />
+        <CountCard title='PROJECT LINKS' src={NewProject} count='1' onClick={handleSheetClick}>
+          + Sheet
+        </CountCard>
       </Col>
       <Col span={12} xl={12} xxl={6}>
-        <CountCard title='PROJECT ADDRESS' src={Map} count='2' children='Open Map' />
+        <CountCard
+          title='PROJECT ADDRESS'
+          src={MapIcon}
+          count='2'
+          onClick={() => setShowMap((prev) => !prev)}
+        >
+          {showMap ? 'Close' : 'Open'} Map
+        </CountCard>
       </Col>
       <Col span={24} xxl={12}>
         <Card>
@@ -82,6 +93,11 @@ const CardProject = () => {
           </Col>
         </Card>
       </Col>
+      {showMap && (
+        <Col xs={24}>
+          <Map />
+        </Col>
+      )}
     </>
   )
 }

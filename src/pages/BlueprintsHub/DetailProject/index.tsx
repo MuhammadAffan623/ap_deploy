@@ -1,6 +1,6 @@
 import { ImagesBox, PageHeader } from '~/components'
 import { Card, Col, Row, Tabs, Typography, message } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CardProject from './CardProject'
 import All from './Tabs/All'
 import Border from '~/assets/icons/border-left.png'
@@ -9,8 +9,12 @@ import Tick from '~/assets/icons/arrow-tick.png'
 import Camera from '~/assets/icons/camera.png'
 import './style.scss'
 import { useParams } from 'react-router-dom'
-import { useGetProjectByIdMutation } from '~/store/services/project.service'
+import {
+  useGetProjectByIdMutation,
+  useUpdateProjectMutation
+} from '~/store/services/project.service'
 import { useUserSelector } from '~/store/hooks'
+import { useUploadFileMutation } from '~/store/services/file.services'
 
 const DetailProject = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
@@ -18,17 +22,25 @@ const DetailProject = () => {
   const { id } = useParams()
   const { user } = useUserSelector()
   const [getProjectById, { isLoading }] = useGetProjectByIdMutation()
+  const fileRef = useRef<any>(null)
+  const [uploadFile] = useUploadFileMutation()
+  const [updateProject] = useUpdateProjectMutation()
+  const [uploading, setUploading] = useState<boolean>(false)
+
+  const fetchProjectById = (id: string) => {
+    getProjectById({ id })
+      .unwrap()
+      .then((res) => {
+        setData(res.data)
+      })
+      .catch((err: any) => {
+        message.error(err?.data?.error || 'Failed to load project data')
+      })
+  }
 
   useEffect(() => {
     if (id) {
-      getProjectById({ id })
-        .unwrap()
-        .then((res) => {
-          setData(res.data)
-        })
-        .catch((err: any) => {
-          message.error(err?.data?.error || 'Failed to load project data')
-        })
+      fetchProjectById(id)
     }
   }, [id])
 
@@ -49,7 +61,7 @@ const DetailProject = () => {
     {
       label: (
         <span>
-          All <span className='tab-count'>6</span>
+          All <span className='tab-count'>{data?.project.sheets.length}</span>
         </span>
       ),
       key: '1',
@@ -57,19 +69,66 @@ const DetailProject = () => {
     }
   ]
 
+  const handleUpload = (formData: FormData) => {
+    const previousSheets = data?.project.sheets.map((item: { _id: string }) => item._id)
+
+    setUploading(true)
+    message.info('Please wait, Sheet is being uploaded')
+    uploadFile({ type: 'project', folderName: 'project-sheet', formData })
+      .unwrap()
+      .then((res: any) => {
+        updateProject({ id, sheets: [res.data.file._id, ...previousSheets] })
+          .unwrap()
+          .then(() => {
+            setUploading(false)
+            fetchProjectById(id as string)
+          })
+          .catch((err) => {
+            message.error(err?.data?.error)
+          })
+      })
+      .catch((err: any) => {
+        setUploading(false)
+        message.error(err?.data?.error)
+      })
+  }
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0]
+
+    if (file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      handleUpload(formData)
+    }
+  }
+
+  // if (uploading) {
+  //   return <div>Loading ...</div>
+  // }
+
   return (
     <Row gutter={[20, 20]}>
       <Col span={24}>
         <PageHeader
           title={`Good Morning ${user?.name}`}
           buttonText=' Upload Sheet'
+          btnLoader={uploading}
           selectValue={selectedFilter}
           onSelectChange={handleSelectChange}
+          onButtonClick={() => fileRef.current.click()}
         />
       </Col>
+      <input
+        type='file'
+        accept='.pdf'
+        ref={fileRef}
+        onChange={handleFileInput}
+        style={{ display: 'none' }}
+      />
       <Col span={24} lg={16}>
         <Row gutter={[20, 20]}>
-          <CardProject />
+          <CardProject handleSheetClick={() => fileRef.current.click()} />
         </Row>
       </Col>
 

@@ -2,15 +2,21 @@ import { useMemo, useState } from 'react'
 import { DropDown, DynamicTable, SearchField } from '~/components'
 import { itemsActions } from '~/utils/options'
 import { columns } from '../columns'
+import { useNavigate } from 'react-router-dom'
+import { useGetFileMutation } from '~/store/services/file.services'
+import { message } from 'antd'
 
 const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [search, setSearch] = useState<string>('')
+  const [isNavigating, setNavigating] = useState<boolean>(false)
   const [pagination, setPagination] = useState<IPagination>({
     current: 1,
     pageSize: 7,
     total: 0
   })
+  const navigate = useNavigate()
+  const [getFile] = useGetFileMutation()
 
   const handlePaginationChange = (pg: IPagination): void => {
     setPagination((prevPagination) => ({
@@ -24,12 +30,32 @@ const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
     console.log('handleClickItem key: ', key)
   }
 
-  const handleResolve = (id: number | string) => {
-    console.log('resolved', id)
-  }
+  // const handleResolve = (id: number | string) => {
+  //   console.log('resolved', id)
+  // }
 
-  const handleDelete = (id: number | string) => {
-    console.log('deleted', id)
+  // const handleDelete = (id: number | string) => {
+  //   console.log('deleted', id)
+  // }
+
+  const onRowClick = (record: any) => {
+    const selectedSheet = record.versions[record.versions?.length - 1]
+    const params = {
+      key: selectedSheet.key,
+      versionId: selectedSheet.awsVersionId
+    }
+
+    setNavigating(true)
+    getFile(params)
+      .unwrap()
+      .then((res) => {
+        setNavigating(false)
+        navigate(`/editor?fileUrl=${res.data}`)
+      })
+      .catch((error: any) => {
+        setNavigating(false)
+        message.error(error?.data?.error)
+      })
   }
 
   const onSelectChange = (newSelectedRowKeys: any) => {
@@ -57,14 +83,15 @@ const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns(handleResolve, handleDelete)}
+            columns={columns()}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
-            isLoading={isLoading}
+            isLoading={isLoading || isNavigating}
+            onRowClick={onRowClick}
           />
         )
-      }, [data, selectedRowKeys, isLoading])}
+      }, [data, selectedRowKeys, isLoading, isNavigating])}
     </div>
   )
 }

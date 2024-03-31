@@ -8,6 +8,7 @@ interface IProps {
   title?: string
   showSelect?: boolean
   buttonText?: string
+  btnLoader?: boolean
   selectValue?: string
   options?: IOption[]
   onButtonClick?: () => void
@@ -18,6 +19,7 @@ const PageHeader = ({
   title,
   showSelect,
   buttonText,
+  btnLoader,
   options,
   onButtonClick,
   onSelectChange,
@@ -50,6 +52,7 @@ const PageHeader = ({
             icon={<PlusOutlined rev={false} />}
             onClick={onButtonClick}
             className='btn'
+            disabled={btnLoader}
           >
             {buttonText}
           </Button>

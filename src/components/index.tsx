@@ -27,6 +27,7 @@ import LibraryViewCart from './LibraryViewCart'
 import CustomSelect from './Inputs/CustomSelect'
 import ColorIcon from './ColorIcon'
 import ConfirmationModal from './ConfirmationModal'
+import Map from './GoogleMap/GoogleMap'
 
 export {
   PageHeader,
@@ -57,5 +58,6 @@ export {
   Dragger,
   LibraryViewCart,
   CustomSelect,
-  ColorIcon
+  ColorIcon,
+  Map
 }

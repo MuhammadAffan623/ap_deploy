@@ -9,7 +9,7 @@ interface CountCard {
   src?: any
   count?: string
   className?: string
-  children?: string
+  children?: ReactNode
   onClick?: () => void
 }
 

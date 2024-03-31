@@ -1,11 +1,11 @@
 import WebViewer, { WebViewerInstance } from '@pdftron/webviewer'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const PDFEditor = () => {
   const viewer = useRef<HTMLElement>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const pathToFiles = '/webviewer/lib'
-  const filePath = new URLSearchParams(window.location.search).get('file') ?? ''
+  const filePath = new URLSearchParams(window.location.search).get('fileUrl') ?? ''
 
   useEffect(() => {
     setLoading(true)
