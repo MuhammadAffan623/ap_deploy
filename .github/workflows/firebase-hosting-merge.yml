@@ -10,6 +10,9 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - uses: iamsauravsharma/create-dotenv@v1.2.1
         with:
           env-prefix: 'ENV_KEY_'
@@ -17,9 +20,9 @@ jobs:
           ENV_KEY_VITE_APPLICATION_STATUS: production
           ENV_KEY_VITE_DEVELOPMENT_BASE_URL: http://localhost:5000/api/v1
           ENV_KEY_VITE_PRODUCTION_BASE_URL: https://apsone.atlanticpipe.us/api/v1
-          ENV_KEY_VITE_GOOGLE_MAP_API_KEY: '${{ secrets.GOOGLE_MAP_API_KEY }}'
+          ENV_KEY_VITE_GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
 
-      - uses: actions/checkout@v3
+      
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
