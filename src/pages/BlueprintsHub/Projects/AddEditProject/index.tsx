@@ -1,6 +1,6 @@
 import { Col, Divider, Form, Input, Row, Space, message } from 'antd'
 import { useEffect, useRef, useState } from 'react'
-import { BasicModal, Button, SelectField, TextField } from '~/components'
+import { BasicModal, Button, GoogleAutocomplete, SelectField, TextField } from '~/components'
 import { PlusOutlined } from '@ant-design/icons'
 import type { InputRef } from 'antd'
 import './styles.scss'
@@ -35,6 +35,8 @@ const AddEditProject = ({
   const [form] = Form.useForm()
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
   const [uploading, setUploading] = useState<boolean>(false)
+  const [address, setAddress] = useState<any>(null)
+  const [resetKey, setResetKey] = useState<boolean>(false)
   const [uploadFile] = useUploadFileMutation()
   const [getFile] = useGetFileMutation()
   const [createProject] = useCreateProjectMutation()
@@ -61,7 +63,10 @@ const AddEditProject = ({
 
     const body = {
       ...values,
-      sheets: [uploadedUrl]
+      sheets: [uploadedUrl],
+      address: address?.formatted_address,
+      latitude: `${address?.geometry?.location?.lat()}`,
+      longitude: `${address?.geometry?.location?.lng()}`
     }
     if (isEdit) {
       updateProject({ id: editItem?._id, ...body })
@@ -71,6 +76,8 @@ const AddEditProject = ({
           handleClose(false)
           refetch()
           form.resetFields()
+          setAddress(null)
+          setResetKey((prevKey) => !prevKey)
         })
         .catch((err: any) => {
           message.error(err?.data?.error)
@@ -82,6 +89,8 @@ const AddEditProject = ({
           handleClose(false)
           refetch()
           form.resetFields()
+          setAddress(null)
+          setResetKey((prevKey) => !prevKey)
           message.success(res.message)
         })
         .catch((err) => {
@@ -153,7 +162,12 @@ const AddEditProject = ({
       >
         <Row gutter={[16, 16]}>
           <Col span={24} md={12}>
-            <TextField name='name' label='Project Name *' placeholder='Enter Project Name' required />
+            <TextField
+              name='name'
+              label='Project Name *'
+              placeholder='Enter Project Name'
+              required
+            />
           </Col>
           <Col span={24} md={12}>
             <SelectField
@@ -187,8 +201,16 @@ const AddEditProject = ({
             />
           </Col>
 
-          <Col span={24} md={12}>
+          {/* <Col span={24} md={12}>
             <TextField name='address' label='Address' placeholder='Enter address' />
+          </Col> */}
+
+          <Col span={24} md={12}>
+            <div style={{ color: '#8492a6', padding: '8px' }}>Address</div>
+            <GoogleAutocomplete
+              handlePlaceSelect={(place) => setAddress(place)}
+              resetKey={resetKey}
+            />
           </Col>
 
           {editItem && (

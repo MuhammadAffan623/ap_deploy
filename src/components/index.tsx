@@ -28,6 +28,7 @@ import CustomSelect from './Inputs/CustomSelect'
 import ColorIcon from './ColorIcon'
 import ConfirmationModal from './ConfirmationModal'
 import Map from './GoogleMap/GoogleMap'
+import GoogleAutocomplete from './GoogleAutocomplete/GoogleAutocomplete'
 
 export {
   PageHeader,
@@ -59,5 +60,6 @@ export {
   LibraryViewCart,
   CustomSelect,
   ColorIcon,
-  Map
+  Map,
+  GoogleAutocomplete
 }
