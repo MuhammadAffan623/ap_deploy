@@ -88,6 +88,8 @@ const All = ({
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
+            onRowClick={handleResolve}
+
           />
         )
       }, [data, selectedRowKeys, isLoading])}

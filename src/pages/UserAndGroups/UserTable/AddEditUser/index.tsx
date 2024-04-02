@@ -41,6 +41,7 @@ const AddEditUserInGroup = ({
   refetch
 }: IAddEditUserInGroupProps) => {
   const [form] = Form.useForm()
+  console.log(form,"form form form")
   const { useToken } = theme
   const [uploading, setUploading] = useState<boolean>(false)
 

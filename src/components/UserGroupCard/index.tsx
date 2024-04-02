@@ -1,4 +1,4 @@
-import { Avatar as AntAvatar, Col, Row, Typography, theme } from 'antd'
+import { Avatar as AntAvatar, Col, Row, Typography, message, theme } from 'antd'
 import { FaCopy } from 'react-icons/fa6'
 import Avatar from '../Avatar'
 import Card from '../Card'
@@ -56,7 +56,11 @@ const UserGroupCard = ({ name, users = [], handleEdit }: IUserGroup) => {
             </Typography.Link>
 
             <Typography.Text>
-              <FaCopy />
+              <FaCopy style={{cursor:"pointer"}} onClick={() => {navigator.clipboard.writeText(name)
+              
+              message.success('User name copied')
+              
+              }}/>
             </Typography.Text>
           </Row>
         </Col>

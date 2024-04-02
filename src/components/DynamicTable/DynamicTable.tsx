@@ -14,7 +14,10 @@ const DynamicTable = ({
 }: any): ReactNode => {
   const onRow = (record: any): HtmlHTMLAttributes<any> => {
     return {
-      onClick: () => (onRowClick ? onRowClick(record) : {})
+      onClick: (e) => {
+        e.stopPropagation()
+        onRowClick ? onRowClick(record) : {}
+      }
     }
   }
   return (
