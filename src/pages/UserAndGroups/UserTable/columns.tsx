@@ -1,10 +1,8 @@
-import type { ColumnsType } from 'antd/es/table'
-import { Dropdown, MenuProps, Space } from 'antd'
 import { EllipsisOutlined } from '@ant-design/icons'
-import { ImagesBox, Pill } from '~/components'
+import { Dropdown, MenuProps, Space } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
 import { CSSProperties } from 'react'
-import crossIcon from '~/assets/icons/cross.svg'
-import tickIcon from '~/assets/icons/tick.svg'
+import { Pill } from '~/components'
 
 const btnStyle: CSSProperties = {
   border: 'none',
