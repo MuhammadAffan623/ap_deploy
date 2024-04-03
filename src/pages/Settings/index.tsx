@@ -41,6 +41,8 @@ const Settings = () => {
   const [updateProfile, { isLoading: isProfileLoading }]: any = useUpdateProfileMutation()
   const [uploadFile]: any = useUploadFileMutation()
   const [getFile]: any = useGetFileMutation()
+  const [numberCode, setNumberCode] = useState([])
+
 
   useEffect(() => {
     if (user) {
@@ -52,7 +54,7 @@ const Settings = () => {
         email: user.email,
         firstName: firstName,
         lastName: lastName,
-        phoneNo: user.phoneNo
+        phoneNo: user.Phone_No
       })
     }
   }, [user])
@@ -95,11 +97,13 @@ const Settings = () => {
     }
   }
   const handleFormSubmit = (values: any) => {
+
+
     const body = {
       id: user?._id,
       name: `${values.firstName} ${values.lastName}`,
       email: values.email,
-      phoneNo: values.phoneNo,
+      phoneNo: values.Phone_No,
       avatar: uploadedImgUrl
     }
 
@@ -114,6 +118,7 @@ const Settings = () => {
   }
 
   const handleUpdatePassword = (values: any) => {
+
     updatePassword(values)
       .unwrap()
       .then((res) => {
@@ -125,6 +130,20 @@ const Settings = () => {
       })
   }
 
+  useEffect(() => {
+    const numCode = getCountries().filter(
+      ({ code, dial_code }: { dial_code: string; code: string }) => {
+        if (code !== 'cx') {
+          return {
+            label: `${dial_code} - ${code.toUpperCase()}`,
+            value: dial_code
+          }
+        }
+      }
+    )
+
+    setNumberCode(numCode)
+  }, [])
   return (
     <div>
       <PageHeader title='Profile Setting' />
@@ -147,7 +166,7 @@ const Settings = () => {
                   <Col span={24} md={12}>
                     <TextField
                       name='firstName'
-                      label='First Name'
+                      label='First Name*'
                       placeholder='Enter first name'
                       required
                     />
@@ -155,7 +174,7 @@ const Settings = () => {
                   <Col span={24} md={12}>
                     <TextField
                       name='lastName'
-                      label='Last Name'
+                      label='Last Name*'
                       placeholder='Enter last name'
                       required
                     />
@@ -165,7 +184,7 @@ const Settings = () => {
                     <TextField
                       name='email'
                       type='email'
-                      label='Email'
+                      label='Email*'
                       placeholder='Enter email'
                       required
                     />
@@ -175,16 +194,17 @@ const Settings = () => {
                     <Row gutter={[20, 10]}>
                       <Col span={24}>
                         <Typography.Text style={{ color: colorTextTertiary }}>
-                          Phone
+                          Phone*
                         </Typography.Text>
                       </Col>
                       <Col span={24}>
                         <Row className='phone-number-combined-field'>
                           <SelectField
                             name='countryCode'
-                            options={getCountries().map(
+                            options={numberCode.map(
                               ({ code, dial_code }: { dial_code: string; code: string }) => ({
                                 label: `${dial_code} - ${code.toUpperCase()}`,
+        
                                 value: dial_code
                               })
                             )}
@@ -195,10 +215,15 @@ const Settings = () => {
                             style={{ border: 'none', width: '100%' }}
                           />
                           <TextField
-                            name='phoneNo'
+                            name='Phone_No'
                             placeholder='Enter phone'
                             required
                             formItemClass='phone-number-form-item'
+                            onChange={(e) => {
+                              const cleanedValue = e.target.value.replace(/\D/g, '');
+                              form.setFieldValue("Phone_No",cleanedValue)
+                          }}
+                          
                           />
                         </Row>
                       </Col>
@@ -243,7 +268,7 @@ const Settings = () => {
                   </Col>
 
                   <Col span={24} style={{ textAlign: 'right' }}>
-                    <Button type='primary' htmlType='submit' loading={isPasswordLoading}>
+                    <Button disabled={isPasswordLoading} type='primary' htmlType='submit' loading={isPasswordLoading}>
                       Change Password
                     </Button>
                   </Col>

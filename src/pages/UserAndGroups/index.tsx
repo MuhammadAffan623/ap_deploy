@@ -9,10 +9,8 @@ import './style.scss'
 import { useGetGroupsMutation } from '~/store/services/groups.service'
 
 const UserAndGroups = () => {
-  const [fetchGroups] = useGetGroupsMutation()
-  const [loader, setLoader] = useState(false)
+  const [fetchGroups,{ isLoading: loader } ] = useGetGroupsMutation()
   const { groups } = useGroupsSelector()
-  console.log(loader, 'loader loader loader')
 
   const navigate = useNavigate()
   const { useToken } = theme
@@ -26,10 +24,7 @@ const UserAndGroups = () => {
   }
 
   useEffect(() => {
-    setLoader(true)
-    fetchGroups('').then(() => {
-      setLoader(false)
-    })
+    fetchGroups('')
   }, [])
 
   const handleEdit = (name: string) => {
