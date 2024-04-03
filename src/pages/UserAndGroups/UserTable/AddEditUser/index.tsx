@@ -5,7 +5,7 @@ import { FaCrown } from 'react-icons/fa6'
 import { Avatar, BasicModal, Button, ImagesBox, SelectField, TextField } from '~/components'
 import ActiveDevice from './ActiveDevice'
 import './styles.scss'
-import { useRegisterMutation, useUpdateProfileMutation } from '~/store/services/auth.services'
+import { useRegisterMutation, useUpdateProfileSpecificUserMutation } from '~/store/services/auth.services'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
 import editIcon from '~/assets/icons/edit.svg'
 import userImg from '~/assets/images/user.png'
@@ -41,7 +41,7 @@ const AddEditUserInGroup = ({
   refetch
 }: IAddEditUserInGroupProps) => {
   const [form] = Form.useForm()
-  console.log(form, 'form form form')
+  const isAdmin = Form.useWatch('enableSuperAdmin', form)
   const { useToken } = theme
   const [uploading, setUploading] = useState<boolean>(false)
   const [changePassShow, setChangePassShow] = useState(false)
@@ -55,7 +55,9 @@ const AddEditUserInGroup = ({
   } = useToken()
 
   const [registerUser, { isLoading: isAddLoading }] = useRegisterMutation()
-  const [updateProfile, { isLoading: isUpdateLoading }]: any = useUpdateProfileMutation()
+  // const [updateProfile, { isLoading: isUpdateLoading }]: any = useUpdateProfileMutation()
+  const [updateProfileSpecificUser, { isLoading: isUpdateLoading }]: any = useUpdateProfileSpecificUserMutation()
+
 
   const handleFormSubmit = (values: any) => {
     const body = {
@@ -64,7 +66,7 @@ const AddEditUserInGroup = ({
       avatar: uploadedImgUrl ?? user?.avatar ?? ''
     }
     if (isEdit) {
-      updateProfile({ id: user?._id, ...body })
+      updateProfileSpecificUser({ id: user?._id, ...body })
         .unwrap()
         .then((res: any) => {
           message.success(res?.message)
@@ -165,31 +167,42 @@ const AddEditUserInGroup = ({
       >
         <Row gutter={[16, 16]}>
           <Col span={24}>
-            <div className='profile-image-container'>
-              {uploading ? (
-                <Skeleton.Image active={uploading} className='img-placeholder' />
-              ) : (
-                <>
-                  <label className='edit-circle'>
-                    <ImagesBox src={editIcon} width={30} height={30} />
-                    <input
-                      type='file'
-                      accept='image/*'
-                      onChange={handleImageChange}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
+            <Form.Item
+              name='avatar'
+              label='Avatar'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please upload an avatar.'
+                }
+              ]}
+            >
+              <div className='profile-image-container'>
+                {uploading ? (
+                  <Skeleton.Image active={uploading} className='img-placeholder' />
+                ) : (
+                  <>
+                    <label className='edit-circle'>
+                      <ImagesBox src={editIcon} width={30} height={30} />
+                      <input
+                        type='file'
+                        accept='image/*'
+                        onChange={handleImageChange}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
 
-                  <Avatar
-                    src={(uploadedImgUrl as string) ?? userImg}
-                    name=''
-                    shape='square'
-                    style={getAvatarContainerStyle(colorTextTertiary)}
-                    rootClassName='profile-avatar'
-                  />
-                </>
-              )}
-            </div>
+                    <Avatar
+                      src={(uploadedImgUrl as string) ?? userImg}
+                      name=''
+                      shape='square'
+                      style={getAvatarContainerStyle(colorTextTertiary)}
+                      rootClassName='profile-avatar'
+                    />
+                  </>
+                )}
+              </div>
+            </Form.Item>
           </Col>
 
           <Col span={24} md={12}>
@@ -240,19 +253,22 @@ const AddEditUserInGroup = ({
             </Row>
           </Col>
 
-          <Col span={24}>
-            <SelectField
-              label='Add Group(s)'
-              name='group'
-              className='groups-multiple-select'
-              // mode='multiple'
-              options={groups.map((item) => ({
-                label: item?.name,
-                value: item._id
-              }))}
-              placeholder='Select Groups'
-            />
-          </Col>
+          {!isAdmin && (
+            <Col span={24}>
+              <SelectField
+                label='Add Group(s)'
+                name='group'
+                className='groups-multiple-select'
+                // mode='multiple'
+                options={groups.map((item) => ({
+                  label: item?.name,
+                  value: item._id
+                }))}
+                placeholder='Select Groups'
+                required
+              />
+            </Col>
+          )}
           {changePassShow && (
             <>
               <Col span={24} md={12}>

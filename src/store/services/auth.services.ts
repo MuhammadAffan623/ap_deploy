@@ -29,6 +29,13 @@ export const authApi = createApi({
         body: body
       })
     }),
+    updateProfileSpecificUser: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/user/${id}`,
+        method: 'PUT',
+        body: body
+      })
+    }),
     updatePassword: builder.mutation({
       query: (body) => ({
         url: `/user/changePassword`,
@@ -78,6 +85,7 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useUpdateProfileMutation,
+  useUpdateProfileSpecificUserMutation,
   useUpdatePasswordMutation,
   useGetUserFromTokenMutation,
   useGetAllUserMutation,

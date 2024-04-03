@@ -39,9 +39,9 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       key: 'group',
       sorter: (a, b) => a.group?.name.length - b.group?.name.length,
       // sortDirections: ['descend'],
-      render: (_, { group }) => {
-        const text = group?.name
-        const textColor = '#304FFD'
+      render: (_, { group,userType }) => {
+        const text =  userType === "Admin" ? "Super Admin" :  group?.name
+        const textColor = userType === "Admin" ? "#fd3030" :'#304FFD'
         const bgColor = '#304FFD1A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
