@@ -41,9 +41,10 @@ const AddEditUserInGroup = ({
   refetch
 }: IAddEditUserInGroupProps) => {
   const [form] = Form.useForm()
-  console.log(form,"form form form")
+  console.log(form, 'form form form')
   const { useToken } = theme
   const [uploading, setUploading] = useState<boolean>(false)
+  const [changePassShow, setChangePassShow] = useState(false)
 
   const [uploadFile]: any = useUploadFileMutation()
   const [getFile]: any = useGetFileMutation()
@@ -252,14 +253,34 @@ const AddEditUserInGroup = ({
               placeholder='Select Groups'
             />
           </Col>
+          {changePassShow && (
+            <>
+              <Col span={24} md={12}>
+                <TextField name='password' label='Password' placeholder='Password' required />
+              </Col>
+
+              <Col span={24} md={12}>
+                <TextField
+                  name='confirmPassword'
+                  label='Confirm Password'
+                  placeholder='Confirm Password'
+                  required
+                />
+              </Col>
+            </>
+          )}
 
           {isEdit ? (
             <>
               <Col span={24}>
                 <Row align='middle'>
                   <Col span={12}>
-                    <Button type='primary' danger>
-                      Change Password
+                    <Button
+                      onClick={() => setChangePassShow((prev) => !prev)}
+                      type='primary'
+                      danger
+                    >
+                      {changePassShow ? 'Remove Change Password' : 'Change Password'}
                     </Button>
                   </Col>
                   <Col span={12}>
@@ -268,7 +289,7 @@ const AddEditUserInGroup = ({
                 </Row>
               </Col>
 
-              <Col>
+              {/* <Col>
                 <Row gutter={20} align='middle'>
                   <Col span={24}>
                     <Typography.Text>
@@ -287,7 +308,7 @@ const AddEditUserInGroup = ({
                     )
                   })}
                 </Row>
-              </Col>
+              </Col> */}
             </>
           ) : (
             <>
