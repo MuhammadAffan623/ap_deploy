@@ -1,12 +1,12 @@
 import { Button, Col, Row, Typography, theme } from 'antd'
-import { CSSProperties, useEffect, useState } from 'react'
-import { Card, ImagesBox, Loader, UserGroupCard } from '~/components'
-import NewGroupImage from '~/assets/images/new-group.png'
-import { useGroupsSelector } from '~/store/hooks'
+import { CSSProperties, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import NewGroupImage from '~/assets/images/new-group.png'
+import { Card, ImagesBox, Loader, UserGroupCard } from '~/components'
+import { useGroupsSelector } from '~/store/hooks'
+import { useGetGroupsMutation } from '~/store/services/groups.service'
 import UserTable from './UserTable'
 import './style.scss'
-import { useGetGroupsMutation } from '~/store/services/groups.service'
 
 const UserAndGroups = () => {
   const [fetchGroups,{ isLoading: loader } ] = useGetGroupsMutation()

@@ -1,17 +1,16 @@
-import { Checkbox, Col, Form, Row, Tag, Typography, message, theme, Skeleton } from 'antd'
+import { Checkbox, Col, Form, Row, Skeleton, Tag, Typography, message, theme } from 'antd'
 import { getCountries } from 'country-state-picker'
 import { CSSProperties, useEffect, useState } from 'react'
 import { FaCrown } from 'react-icons/fa6'
+import editIcon from '~/assets/icons/edit.svg'
+import userImg from '~/assets/images/user.png'
 import { Avatar, BasicModal, Button, ImagesBox, SelectField, TextField } from '~/components'
-import ActiveDevice from './ActiveDevice'
-import './styles.scss'
 import {
   useRegisterMutation,
   useUpdateProfileSpecificUserMutation
 } from '~/store/services/auth.services'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
-import editIcon from '~/assets/icons/edit.svg'
-import userImg from '~/assets/images/user.png'
+import './styles.scss'
 
 interface IAddEditUserInGroupProps {
   open: boolean
