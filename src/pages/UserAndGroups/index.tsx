@@ -42,8 +42,12 @@ const UserAndGroups = () => {
         <Loader dark fullScreen />
       ) : (
         <>
+           <h1 className='section_heading'>
+                  User & Groups
+              </h1> 
           <Row gutter={[30, 30]}>
             <Col span={24} md={12} xl={8}>
+           
               <Card>
                 <Row justify='space-between'>
                   <Col span={6}>

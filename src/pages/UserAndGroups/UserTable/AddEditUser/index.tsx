@@ -5,7 +5,10 @@ import { FaCrown } from 'react-icons/fa6'
 import { Avatar, BasicModal, Button, ImagesBox, SelectField, TextField } from '~/components'
 import ActiveDevice from './ActiveDevice'
 import './styles.scss'
-import { useRegisterMutation, useUpdateProfileSpecificUserMutation } from '~/store/services/auth.services'
+import {
+  useRegisterMutation,
+  useUpdateProfileSpecificUserMutation
+} from '~/store/services/auth.services'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
 import editIcon from '~/assets/icons/edit.svg'
 import userImg from '~/assets/images/user.png'
@@ -56,8 +59,10 @@ const AddEditUserInGroup = ({
 
   const [registerUser, { isLoading: isAddLoading }] = useRegisterMutation()
   // const [updateProfile, { isLoading: isUpdateLoading }]: any = useUpdateProfileMutation()
-  const [updateProfileSpecificUser, { isLoading: isUpdateLoading }]: any = useUpdateProfileSpecificUserMutation()
+  const [updateProfileSpecificUser, { isLoading: isUpdateLoading }]: any =
+    useUpdateProfileSpecificUserMutation()
 
+  const [numberCode, setNumberCode] = useState([])
 
   const handleFormSubmit = (values: any) => {
     const body = {
@@ -129,6 +134,20 @@ const AddEditUserInGroup = ({
         message.error(err?.data?.error)
       })
   }
+  useEffect(() => {
+    const numCode = getCountries().filter(
+      ({ code, dial_code }: { dial_code: string; code: string }) => {
+        if (code !== 'cx') {
+          return {
+            label: `${dial_code} - ${code.toUpperCase()}`,
+            value: dial_code
+          }
+        }
+      }
+    )
+
+    setNumberCode(numCode)
+  }, [])
 
   useEffect(() => {
     form.setFieldsValue({
@@ -208,31 +227,32 @@ const AddEditUserInGroup = ({
           <Col span={24} md={12}>
             <TextField
               name='firstName'
-              label='First Name'
+              label='First Name*'
               placeholder='Enter first name'
               required
             />
           </Col>
           <Col span={24} md={12}>
-            <TextField name='lastName' label='Last Name' placeholder='Enter last name' required />
+            <TextField name='lastName' label='Last Name*' placeholder='Enter last name' required />
           </Col>
 
           <Col span={24}>
-            <TextField name='email' label='Email' placeholder='Enter email' required />
+            <TextField name='email' label='Email*' placeholder='Enter email' required />
           </Col>
 
           <Col span={24}>
             <Row gutter={[20, 10]}>
               <Col span={24}>
-                <Typography.Text style={{ color: colorTextTertiary }}>Phone</Typography.Text>
+                <Typography.Text style={{ color: colorTextTertiary }}>Phone*</Typography.Text>
               </Col>
               <Col span={24}>
                 <Row className='phone-number-combined-field'>
                   <SelectField
                     name='countryCode'
-                    options={getCountries().map(
+                    options={numberCode.map(
                       ({ code, dial_code }: { dial_code: string; code: string }) => ({
                         label: `${dial_code} - ${code.toUpperCase()}`,
+
                         value: dial_code
                       })
                     )}
@@ -256,7 +276,7 @@ const AddEditUserInGroup = ({
           {!isAdmin && (
             <Col span={24}>
               <SelectField
-                label='Add Group(s)'
+                label='Add Group(s)*'
                 name='group'
                 className='groups-multiple-select'
                 // mode='multiple'
@@ -272,13 +292,13 @@ const AddEditUserInGroup = ({
           {changePassShow && (
             <>
               <Col span={24} md={12}>
-                <TextField name='password' label='Password' placeholder='Password' required />
+                <TextField name='password' label='Password*' placeholder='Password' required />
               </Col>
 
               <Col span={24} md={12}>
                 <TextField
                   name='confirmPassword'
-                  label='Confirm Password'
+                  label='Confirm Password*'
                   placeholder='Confirm Password'
                   required
                 />
@@ -299,9 +319,9 @@ const AddEditUserInGroup = ({
                       {changePassShow ? 'Remove Change Password' : 'Change Password'}
                     </Button>
                   </Col>
-                  <Col span={12}>
+                  {/* <Col span={12}>
                     <Checkbox name='sso'>Enable SSO</Checkbox>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Col>
 
