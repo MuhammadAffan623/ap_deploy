@@ -46,17 +46,17 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
     },
-    {
-      title: 'SSO',
-      dataIndex: 'isBlocked',
-      key: 'isBlocked',
-      // sorter: (a, b) => a.isBlocked.length - b.isBlocked.length,
-      // sortDirections: ['descend'],
-      render: (_, { isBlocked }) => {
-        const img = isBlocked ? tickIcon : crossIcon
-        return <ImagesBox src={img} width={20} height={20} />
-      }
-    },
+    // {
+    //   title: 'SSO',
+    //   dataIndex: 'isBlocked',
+    //   key: 'isBlocked',
+    //   // sorter: (a, b) => a.isBlocked.length - b.isBlocked.length,
+    //   // sortDirections: ['descend'],
+    //   render: (_, { isBlocked }) => {
+    //     const img = isBlocked ? tickIcon : crossIcon
+    //     return <ImagesBox src={img} width={20} height={20} />
+    //   }
+    // },
     {
       title: 'STATUS',
       dataIndex: 'isActive',
