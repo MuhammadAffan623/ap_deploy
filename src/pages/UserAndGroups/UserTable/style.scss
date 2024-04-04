@@ -17,6 +17,10 @@
             border-radius: 16px;
         }
     }
+    .ant-table-wrapper {
+        max-height: 518px;
+        min-height: 518px;
+      }
 }
 
 .ant-tabs-top>.ant-tabs-nav::before {
@@ -36,3 +40,4 @@
     font-style: normal;
     font-weight: 600;
 }
+
