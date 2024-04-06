@@ -1,13 +1,24 @@
 import { useMemo, useState } from 'react'
-import { DropDown, DynamicTable, SearchField } from '~/components'
+import { ConfirmationModal, DropDown, DynamicTable, SearchField } from '~/components'
 import { itemsActions } from '~/utils/options'
 import { columns } from '../columns'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useGetFileMutation } from '~/store/services/file.services'
 import { message } from 'antd'
+import { useDeleteProjectSheetMutation } from '~/store/services/project.service'
 
-const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
+const All = ({
+  data,
+  isLoading,
+  onSuccess
+}: {
+  data: any
+  isLoading: boolean
+  onSuccess: () => void
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
+  const [open, setOpen] = useState<boolean>(false)
+  const [sheetsId, setSheetsId] = useState<string[] | null>(null)
   const [search, setSearch] = useState<string>('')
   const [isNavigating, setNavigating] = useState<boolean>(false)
   const [pagination, setPagination] = useState<IPagination>({
@@ -15,8 +26,10 @@ const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
     pageSize: 7,
     total: 0
   })
+  const { id: projectId } = useParams()
   const navigate = useNavigate()
   const [getFile] = useGetFileMutation()
+  const [deleteSheet] = useDeleteProjectSheetMutation()
 
   const handlePaginationChange = (pg: IPagination): void => {
     setPagination((prevPagination) => ({
@@ -27,16 +40,15 @@ const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
   }
 
   const handleClickItem = (key: string) => {
-    console.log('handleClickItem key: ', key)
+    if (key === '1') {
+      if (selectedRowKeys.length > 0) {
+        setOpen(true)
+        setSheetsId(selectedRowKeys)
+      } else {
+        message.info('Please select rows to be deleted')
+      }
+    }
   }
-
-  // const handleResolve = (id: number | string) => {
-  //   console.log('resolved', id)
-  // }
-
-  // const handleDelete = (id: number | string) => {
-  //   console.log('deleted', id)
-  // }
 
   const onRowClick = (record: any) => {
     const selectedSheet = record.versions[record.versions?.length - 1]
@@ -59,10 +71,26 @@ const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
   }
 
   const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys)
     setSelectedRowKeys(newSelectedRowKeys)
   }
 
+  const handleDelete = (e: MouseEvent, id: string) => {
+    e.stopPropagation()
+    setOpen(true)
+    setSheetsId([id])
+  }
+
+  const handleConfirmDelete = () => {
+    deleteSheet({ id: projectId, sheets: sheetsId })
+      .unwrap()
+      .then((res) => {
+        message.success(res.message)
+        onSuccess()
+      })
+      .catch((err) => {
+        message.error(err?.data?.error)
+      })
+  }
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange
@@ -83,7 +111,7 @@ const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns()}
+            columns={columns(handleDelete)}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}
@@ -92,6 +120,17 @@ const All = ({ data, isLoading }: { data: any; isLoading: boolean }) => {
           />
         )
       }, [data, selectedRowKeys, isLoading, isNavigating])}
+
+      <ConfirmationModal
+        open={open}
+        onCancel={() => setOpen(false)}
+        onOk={() => {
+          setOpen(false)
+          handleConfirmDelete()
+        }}
+        title='Confirm Delete'
+        message='Are you sure you want to delete this Sheet?'
+      />
     </div>
   )
 }

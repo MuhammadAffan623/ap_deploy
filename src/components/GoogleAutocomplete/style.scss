@@ -1,0 +1,21 @@
+.google-autocomplete {
+    width: 100%;
+    padding: 9.5px 11px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 16px;
+    color: rgb(63, 67, 74);
+    border: 1px solid rgb(232, 233, 235);
+    outline: none;
+
+    &:hover {
+        border-color: #5978ff;
+        outline: 0;
+    }
+
+    &:focus {
+        border-color: #304ffd;
+        box-shadow: 0 0 0 2px rgba(5, 88, 255, 0.06);
+        outline: 0;
+    }
+}

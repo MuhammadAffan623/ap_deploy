@@ -46,6 +46,13 @@ export const projectApi = createApi({
         method: 'POST',
         body
       })
+    }),
+    deleteProjectSheet: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/project/${id}`,
+        method: 'DELETE',
+        body
+      })
     })
   })
 })
@@ -55,5 +62,6 @@ export const {
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useGetProjectByIdMutation,
-  useDeleteProjectMutation
+  useDeleteProjectMutation,
+  useDeleteProjectSheetMutation
 } = projectApi

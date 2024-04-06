@@ -65,7 +65,13 @@ const DetailProject = () => {
         </span>
       ),
       key: '1',
-      children: <All data={data?.project.sheets || []} isLoading={isLoading} />
+      children: (
+        <All
+          data={data?.project.sheets || []}
+          isLoading={isLoading}
+          onSuccess={() => fetchProjectById(id as string)}
+        />
+      )
     }
   ]
 

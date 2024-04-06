@@ -1,4 +1,3 @@
-
 import { Card, Map } from '~/components'
 import { Col, DatePicker, Row, Typography } from 'antd'
 import './style.scss'
@@ -27,6 +26,8 @@ const CardProject = ({
     }
   }, [dt])
 
+  const lat = projectDetails?.project?.latitude
+  const lng = projectDetails?.project?.longitude
 
   return (
     <>
@@ -121,7 +122,7 @@ const CardProject = ({
       </Col>
       {showMap && (
         <Col xs={24}>
-          <Map />
+          <Map latitude={lat ? Number(lat) : lat} longitude={lng ? Number(lng) : lng} />
         </Col>
       )}
     </>
