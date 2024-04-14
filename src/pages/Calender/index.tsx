@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -31,6 +31,7 @@ const Calender: React.FC = () => {
   const { isCalenderManagement } = usePermission()
   const { calendarIds } = useCalenderSelector()
   const { data } = useGetAllEventsQuery({ calendarIds })
+  const [updatedDate , setUpdatedDate] = useState<any>([])
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     setEvent(null)
     setEditMode(false)
@@ -85,6 +86,25 @@ const Calender: React.FC = () => {
     )
   }
 
+  const subtractFiveHours = (date: any) => {
+    return new Date(date.getTime() - 5 * 60 * 60 * 1000)
+  }
+
+
+
+
+  useEffect(() => {
+    const updatedEvents = events.map((ele:any) => {
+      return {
+        ...ele,
+        start: subtractFiveHours(new Date( ele?.start)),
+        end:subtractFiveHours(new Date(ele?.end)),
+
+      }
+    })
+    setUpdatedDate(updatedEvents)
+  }, [events])
+
   return (
     <>
       <PageHeader
@@ -116,14 +136,14 @@ const Calender: React.FC = () => {
                 selectMirror={true}
                 dayMaxEvents={true}
                 weekends={weekendsVisible}
-                events={events}
+                events={updatedDate}
                 select={handleDateSelect}
                 eventContent={renderEventContent}
                 eventClick={handleEventClick}
               />
             </div>
           ),
-          [events]
+          [updatedDate]
         )}
 
         <AddEditEvent
