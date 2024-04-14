@@ -348,13 +348,13 @@ const AddEditUserInGroup = ({
           ) : (
             <>
               <Col span={24} md={12}>
-                <TextField name='password' label='Password' placeholder='Password' required />
+                <TextField name='password' label='Password*' placeholder='Password' required />
               </Col>
 
               <Col span={24} md={12}>
                 <TextField
                   name='confirmPassword'
-                  label='Confirm Password'
+                  label='Confirm Password*'
                   placeholder='Confirm Password'
                   required
                 />
