@@ -145,17 +145,18 @@ const Calender: React.FC = () => {
           ),
           [updatedDate]
         )}
-
-        <AddEditEvent
-          open={open}
-          isEdit={editMode}
-          handleClose={() => {
-            setEditMode(false)
-            setOpen(false)
-          }}
-          event={event}
-          startDate={startDate}
-        />
+        {open && (
+          <AddEditEvent
+            open={open}
+            isEdit={editMode}
+            handleClose={() => {
+              setEditMode(false)
+              setOpen(false)
+            }}
+            event={event}
+            startDate={startDate}
+          />
+        )}
 
         <EventDetail
           open={isEventModal}
