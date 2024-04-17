@@ -43,7 +43,7 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
   }
   const [form] = Form.useForm()
 
-  console.log(form.getFieldsValue(),"initialValues initialValues initialValues")
+  // console.log(form.getFieldsValue(),"initialValues initialValues initialValues")
   
   const { calenders } = useCalenderSelector()
   const [calendarItems, setCalenderItems] = useState(defaultItems)
@@ -120,16 +120,16 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     const endTime = dayjs(startDate, formatDate)
 
     if (startDate) {
-      form.setFieldValue(['range', 'dates'], [startTime, endTime])
+      form.setFieldValue('range', [startTime, endTime])
     } else {
       form.resetFields()
     }
   }, [startDate])
-  const dateFormat = 'YYYY/MM/DD';
-  const starting = dayjs(event && event?.start).format('YYYY-MM-DD HH:mm:ss');
-  const ending = dayjs(event && event?.end).format('YYYY-MM-DD HH:mm:ss');
-console.log(starting,"starting ")
-console.log(ending,"ending ")
+  // const dateFormat = 'YYYY/MM/DD';
+  const starting = dayjs(event && event?.start as string) .format('YYYY-MM-DD HH:mm:ss');
+  const ending = dayjs(event && event?.end as string).format('YYYY-MM-DD HH:mm:ss');
+// console.log(starting,"starting ")
+// console.log(ending,"ending ")
   return (
     <BasicModal
       open={open}
