@@ -42,6 +42,9 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     calender: ''
   }
   const [form] = Form.useForm()
+
+  console.log(form.getFieldsValue(),"initialValues initialValues initialValues")
+  
   const { calenders } = useCalenderSelector()
   const [calendarItems, setCalenderItems] = useState(defaultItems)
   const [createEvent, { isLoading }] = useCreateEventMutation()
@@ -50,13 +53,16 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
   const formatDate = 'YYYY-MM-DD HH:mm'
 
   const handleFormSubmit = (values: any) => {
+
     const modifiedObj = {
       startTime: dayjs(values.range[0]).format(formatDate),
       endTime: dayjs(values.range[1]).format(formatDate),
       name: values.name,
       allDay: values.allDay,
       description: values.description,
-      calendar: values.calender
+      calendar: values.calender,
+      backgroundColor:calenders.find((ele)=>ele?._id === values.calender)?.color
+
     }
     if (isEdit) {
       updateEvent({ _id: event?.id, ...modifiedObj })
@@ -114,12 +120,16 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     const endTime = dayjs(startDate, formatDate)
 
     if (startDate) {
-      form.setFieldValue('range', [startTime, endTime])
+      form.setFieldValue(['range', 'dates'], [startTime, endTime])
     } else {
       form.resetFields()
     }
   }, [startDate])
-
+  const dateFormat = 'YYYY/MM/DD';
+  const starting = dayjs(event && event?.start).format('YYYY-MM-DD HH:mm:ss');
+  const ending = dayjs(event && event?.end).format('YYYY-MM-DD HH:mm:ss');
+console.log(starting,"starting ")
+console.log(ending,"ending ")
   return (
     <BasicModal
       open={open}
@@ -127,7 +137,7 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
         handleClose(false)
       }}
     >
-      <Typography.Title level={3}>{isEdit ? 'Update event' : 'New event'}</Typography.Title>
+      <Typography.Title level={3}>{isEdit ? 'Update Event' : 'New Event'}</Typography.Title>
       <Form
         form={form}
         initialValues={initialValues}
@@ -135,15 +145,16 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
         onFinish={handleFormSubmit}
         className='add-edit-event-form'
       >
+    
         <Row gutter={[16, 16]}>
           <Col span={24}>
-            <TextField name='name' label='Title' placeholder='Enter Event Title' required />
+            <TextField name='name' label='Title*' placeholder='Enter Event Title' required />
           </Col>
 
           <Col span={24}>
             <TextArea
               name='description'
-              label='Description'
+              label='Description*'
               placeholder='Enter Event Description'
               required
             />
@@ -151,12 +162,22 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
 
           <Col span={24}>
             <Form.Item
-              label='Time and Date'
-              name='range'
-              rules={[{ required: true }]}
+              label='Time and Date*'
+              // name='range'
+              name={['range', 'dates']}
+              rules={[{ required: false }]}
+              // rules={[{ type: 'array', required: true, message: 'Please select time and date!' }]}
+
               className='formItem'
             >
-              <RangePicker showTime style={{ width: '100%' }} />
+              {event &&(
+
+                <RangePicker 
+                    defaultValue={[dayjs(starting), dayjs(ending)]}
+                
+                showTime
+                 style={{ width: '100%' }} />
+              )}
             </Form.Item>
           </Col>
 

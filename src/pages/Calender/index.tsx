@@ -114,6 +114,8 @@ const Calender: React.FC = () => {
           setEditMode(false)
           setStartDate(null)
           setOpen(true)
+          setEvent(null)
+
         }}
       />
 
@@ -145,7 +147,6 @@ const Calender: React.FC = () => {
           ),
           [updatedDate]
         )}
-        {open && (
           <AddEditEvent
             open={open}
             isEdit={editMode}
@@ -156,7 +157,6 @@ const Calender: React.FC = () => {
             event={event}
             startDate={startDate}
           />
-        )}
 
         <EventDetail
           open={isEventModal}
