@@ -235,7 +235,7 @@ const Settings = () => {
 
                   <Col span={24}>
                     <TextField
-                      name='newPassword'
+                      name='password'
                       placeholder='New Password'
                       type='password'
                       required

@@ -15,6 +15,7 @@ import {
 } from '~/store/services/project.service'
 import { useUserSelector } from '~/store/hooks'
 import { useUploadFileMutation } from '~/store/services/file.services'
+import usePermission from '~/hooks/usePermission'
 
 const DetailProject = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
@@ -26,6 +27,8 @@ const DetailProject = () => {
   const [uploadFile] = useUploadFileMutation()
   const [updateProject] = useUpdateProjectMutation()
   const [uploading, setUploading] = useState<boolean>(false)
+  const {isBluePrintManagement} = usePermission()
+  
 
   const fetchProjectById = (id: string) => {
     getProjectById({ id })
@@ -131,7 +134,7 @@ const DetailProject = () => {
       <Col span={24}>
         <PageHeader
           title={`Good Morning ${user?.name}`}
-          buttonText=' Upload Sheet'
+          buttonText={ isBluePrintManagement ?'Upload Sheet' :""}
           btnLoader={uploading}
           selectValue={selectedFilter}
           onSelectChange={handleSelectChange}

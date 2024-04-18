@@ -11,6 +11,7 @@ import { defautlPagination } from '~/utils/constant'
 import { useGetTemplatesMutation } from '~/store/services/template.service'
 import Archived from './Tabs/Archived'
 import usePermission from '~/hooks/usePermission'
+import { useSelector } from 'react-redux'
 
 const Templates = () => {
   const [allData, setAllData] = useState([])
@@ -25,6 +26,8 @@ const Templates = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
   const [isEdit, setEdit] = useState<boolean>(false)
   const [editingItem, setEditingItem] = useState<IForm | null>(null)
+
+
 
   const [getForms, { isLoading }] = useGetTemplatesMutation()
   const { isFormManagement } = usePermission()

@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useGetFileMutation } from '~/store/services/file.services'
 import { message } from 'antd'
 import { useDeleteProjectSheetMutation } from '~/store/services/project.service'
+import usePermission from '~/hooks/usePermission'
 
 const All = ({
   data,
@@ -21,6 +22,8 @@ const All = ({
   const [sheetsId, setSheetsId] = useState<string[] | null>(null)
   const [search, setSearch] = useState<string>('')
   const [isNavigating, setNavigating] = useState<boolean>(false)
+  const {isBluePrintManagement} = usePermission()
+
   const [pagination, setPagination] = useState<IPagination>({
     current: 1,
     pageSize: 7,
@@ -105,13 +108,16 @@ const All = ({
             placeholder='Search...'
           />
         </div>
-        <DropDown items={itemsActions} handleClickItem={handleClickItem} />
+        {isBluePrintManagement &&(
+          
+          <DropDown items={itemsActions} handleClickItem={handleClickItem} />
+          )}
       </div>
       {useMemo(() => {
         return (
           <DynamicTable
             dataSource={data}
-            columns={columns(handleDelete)}
+            columns={columns(isBluePrintManagement, handleDelete)}
             pagination={pagination}
             handlePaginationChange={handlePaginationChange}
             rowSelection={rowSelection}

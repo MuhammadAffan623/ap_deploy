@@ -62,7 +62,7 @@ const TextField = forwardRef(
         labelCol={labelCol}
         style={{ ...styleFormItem }}
       >
-        {type === 'password' ? (
+        {['password', 'newPassword'].includes(type) ? (
           <Input.Password {...commonInputProps} />
         ) : (
           <Input type={type} {...commonInputProps} />
