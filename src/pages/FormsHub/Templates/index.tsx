@@ -11,7 +11,6 @@ import { defautlPagination } from '~/utils/constant'
 import { useGetTemplatesMutation } from '~/store/services/template.service'
 import Archived from './Tabs/Archived'
 import usePermission from '~/hooks/usePermission'
-import { useSelector } from 'react-redux'
 
 const Templates = () => {
   const [allData, setAllData] = useState([])
