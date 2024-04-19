@@ -1,34 +1,43 @@
-// src/components/Weather.tsx
+/* eslint-disable no-console */
+import { Card, Col, Typography } from 'antd'
+import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 
 interface WeatherData {
-  main?: {
-    temp: number
+  current?: {
+    temp_f: number
     humidity: number
+    wind_mph: number
+    wind_dir: number
+    precip_in: number
+    condition: {
+      icon: string
+      text: string
+    }
   }
-  wind?: {
-    speed: number
-    deg: number
+  location?: {
+    name: string
   }
-  rain?: {
-    '1h': number
-  }
-  name?: string
 }
 
 const Weather: React.FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>({})
-  const [apiKey] = useState('YOUR_OPENWEATHERMAP_API_KEY')
 
   const getWeatherData = async (latitude: number, longitude: number) => {
+    const options = {
+      method: 'GET',
+      url: 'https://weatherapi-com.p.rapidapi.com/current.json',
+      params: { q: `${latitude},${longitude}` },
+      headers: {
+        'X-RapidAPI-Key': import.meta.env.VITE_WEATHER_API_KEY,
+        'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+      }
+    }
     try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=imperial`
-      )
-      const data: WeatherData = await response.json()
-      setWeatherData(data)
+      const response = await axios.request(options)
+      setWeatherData(response.data)
     } catch (error) {
-      console.error('Error fetching weather data:', error)
+      console.error(error)
     }
   }
 
@@ -50,23 +59,52 @@ const Weather: React.FC = () => {
     }
 
     getLocation()
-  }, []) // Empty dependency array ensures this effect runs only once on mount
+  }, [])
 
   return (
-    <div>
-      <h1>Weather App</h1>
-      {weatherData.main && (
-        <div>
-          <h2>{weatherData.name}</h2>
-          <p>Temperature: {weatherData.main.temp}°F</p>
-          <p>
-            Wind: {weatherData.wind?.speed} MPH, {weatherData.wind?.deg}°
-          </p>
-          <p>Humidity: {weatherData.main.humidity}%</p>
-          <p>Precipitation: {weatherData.rain ? weatherData.rain['1h'] : 0.0}</p>
-        </div>
-      )}
-    </div>
+    <Card>
+      <Col className='Column-wrapper'>
+        <Typography.Title level={4} className='Heading' type='secondary'>
+          Weather
+        </Typography.Title>
+        <Typography.Title level={4} className='Heading' type='secondary'>
+          {weatherData?.location?.name}
+        </Typography.Title>
+      </Col>
+      <Col className='Wrapper'>
+        <Col>
+          <img src={weatherData?.current?.condition?.icon} alt='icon' />
+        </Col>
+        <Col>
+          <Typography.Title level={5} className='Title'>
+            {weatherData?.current?.condition?.text}
+          </Typography.Title>
+          <Typography.Title level={5} className='Title'>
+            Temp: {weatherData.current?.temp_f} F
+          </Typography.Title>
+        </Col>
+        <Col>
+          {' '}
+          <Typography.Title level={5} className='Title'>
+            Wind:{weatherData.current?.wind_mph} MPH, {weatherData.current?.wind_dir}
+          </Typography.Title>
+          <Typography.Title level={5} className='Title'>
+            Humidity: {weatherData.current?.humidity}%
+          </Typography.Title>
+          <Typography.Title level={5} className='Title'>
+            Percipitation: {weatherData.current?.precip_in}
+          </Typography.Title>
+        </Col>
+      </Col>
+      <Col>
+        <Typography.Title level={5} className='Title'>
+          Powered by Weather
+        </Typography.Title>
+        {/* <Typography.Title level={5} className='Title'>
+          show more
+        </Typography.Title> */}
+      </Col>
+    </Card>
   )
 }
 
