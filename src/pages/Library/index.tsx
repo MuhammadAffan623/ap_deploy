@@ -73,6 +73,12 @@ const Library = () => {
       .catch((err) => message.error(err?.data?.error))
   }
 
+  const refetchAllData = () => {
+    fetchLibraries()
+    fetchActiveLibraries()
+    fetchDisabledLibraries()
+  }
+
   const handleAdd = () => {
     setEditingItem(null)
     setOpen(true)
@@ -138,7 +144,7 @@ const Library = () => {
           pagination={pagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
           handleEdit={handleEdit}
-          refetch={fetchLibraries}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
           isActionEnabled={isLibraryManagement}
@@ -158,7 +164,7 @@ const Library = () => {
           pagination={activePagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
           handleEdit={handleEdit}
-          refetch={fetchActiveLibraries}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
           isActionEnabled={isLibraryManagement}
@@ -178,7 +184,7 @@ const Library = () => {
           pagination={disabledPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
           handleEdit={handleEdit}
-          refetch={fetchDisabledLibraries}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
           isActionEnabled={isLibraryManagement}
@@ -221,7 +227,7 @@ const Library = () => {
         isEdit={isEdit}
         categories={categories ?? []}
         library={editingItem}
-        refetch={fetchLibraries}
+        refetch={refetchAllData}
       />
     </Row>
   )

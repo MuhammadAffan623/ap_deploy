@@ -74,6 +74,12 @@ const UserTable = () => {
       .catch((err) => message.error(err?.data?.error))
   }
 
+  const refetchAllData = () => {
+    fetchUsers()
+    fetchActiveUsers()
+    fetchDisabledUsers()
+  }
+
   const handlePaginationChange = (pg: IPagination, type: string): void => {
     const setPaginationFunction =
       type === 'active'
@@ -130,7 +136,7 @@ const UserTable = () => {
           pagination={pagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
           handleEdit={handleEdit}
-          refetch={fetchUsers}
+          refetch={refetchAllData}
           onSearch={(text) => onSearch(text, 'all')}
           isLoading={isLoading}
         />
@@ -149,7 +155,7 @@ const UserTable = () => {
           pagination={activePagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
           handleEdit={handleEdit}
-          refetch={fetchActiveUsers}
+          refetch={refetchAllData}
           onSearch={(text) => onSearch(text, 'active')}
           isLoading={isLoading}
         />
@@ -168,7 +174,7 @@ const UserTable = () => {
           pagination={disabledPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
           handleEdit={handleEdit}
-          refetch={fetchDisabledUsers}
+          refetch={refetchAllData}
           onSearch={(text) => onSearch(text, 'disabled')}
           isLoading={isLoading}
         />
@@ -201,7 +207,7 @@ const UserTable = () => {
         isEdit={isEdit}
         groups={groups ?? []}
         user={editingUser}
-        refetch={fetchUsers}
+        refetch={refetchAllData}
       />
     </Row>
   )
