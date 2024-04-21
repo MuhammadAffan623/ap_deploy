@@ -19,6 +19,9 @@ import {
   useGetAllCalenderQuery
 } from '~/store/services/calender.service'
 import { BsPlus } from 'react-icons/bs'
+import { FaChevronDown,FaChevronUp } from "react-icons/fa";
+
+
 import SubMenu from 'antd/es/menu/SubMenu'
 import DropDown from '../DropDown'
 import usePermission from '~/hooks/usePermission'
@@ -43,7 +46,26 @@ const childrenWrapperStyles: CSSProperties = {
 const customTitle: CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center'
+  alignItems: 'center',
+  width: "95%",
+
+}
+
+const innerDiv :CSSProperties ={
+  width: "80%",
+  margin: "auto",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+}
+const customDiv: CSSProperties = {
+  display: 'flex',
+  justifyContent: "space-between",
+  width: "90%",
+  margin:" auto",
+  alignItems: "center",
+  color: "#fff",
+
 }
 
 const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: SidebarProps) => {
@@ -59,6 +81,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { data } = useGetAllCalenderQuery('')
   const { calendarIds } = useCalenderSelector()
   const { isCalenderManagement } = usePermission()
+  const [showAccordion,setShowAccordion] = useState(false)
 
   const [deleteModal, setDeleteModal] = useState(false)
   const [selectedCalId, setSelectedCalId] = useState('')
@@ -70,7 +93,6 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
     useEffect(() => {
       setCheckedItems(calendarIds)
     }, [calendarIds])
-
     const handleItemClick = (itemKey: string) => {
       const isChecked = checkedItems.includes(itemKey)
       if (isChecked) {
@@ -81,39 +103,51 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
         dispatch(setCalendarIds([...checkedItems, itemKey]))
       }
     }
+          /* eslint-disable */
+
     return (
-      <Menu mode='inline' className='sidebarMenu'>
-        <SubMenu
+      <div  className='sidebarMenu'>
+        <div
           key='subMenu'
-          title={
-            <span style={customTitle}>
+        >
+          <div style={customDiv} onClick={()=>
+            setShowAccordion((prev) => !prev)}>
+
+             <span style={customTitle}>
               {!collapsed && 'SCHEDULES'}
               <Button className='custom-plus-button' onClick={handleOpenModal}>
                 <BsPlus />
+                
               </Button>
             </span>
-          }
-        >
+            {showAccordion ? <FaChevronUp/> :  <FaChevronDown/>}
+          
+
+            </div>
+            {showAccordion &&<div >
+
           {data?.data?.calendarItems.map((item: ICalender) => (
-            <Menu.Item
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+            <div
+            style={innerDiv}
               key={item._id}
-              icon={<Checkbox checked={checkedItems.includes(item._id)} />}
               onClick={() => handleItemClick(item._id)}
               className='sidebarMenu'
-              itemIcon={
-                <DropDown
+            >
+              <Checkbox checked={checkedItems.includes(item._id)} />
+              <span className='text-white'>{item.name}</span>
+              <DropDown
                   dot
                   items={calenderActionItems}
                   onPopupClick={(e) => handleClickItem(e, item._id)}
                   color='white'
                 />
-              }
-            >
-              <span className='text-white'>{item.name}</span>
-            </Menu.Item>
+            </div>
           ))}
-        </SubMenu>
-      </Menu>
+            </div>}
+
+        </div>
+      </div>
     )
   }
 
