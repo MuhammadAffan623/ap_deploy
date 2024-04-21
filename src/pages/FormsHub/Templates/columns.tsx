@@ -54,7 +54,7 @@ export const columns = (
       title: 'VERSION',
       dataIndex: 'version',
       key: 'version',
-      sorter: (a, b) => a.version.length - b.version.length,
+      sorter: (a, b) => a.version - b.version,
       sortDirections: ['descend'],
       render: (_, { file }) => `v ${file?.versions[0]?.labelNumber}` ?? '--'
     },

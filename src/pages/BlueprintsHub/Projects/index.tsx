@@ -81,6 +81,13 @@ const Projects = () => {
       .catch((err) => message.error(err?.data?.error))
   }
 
+  const refetchAllData = () => {
+    fetchAllProjects()
+    fetchActiveProjects()
+    fetchCompletedProjects()
+    fetchArchivedProjects()
+  }
+
   const handleAdd = () => {
     setEditingItem(null)
     setOpen(true)
@@ -150,7 +157,7 @@ const Projects = () => {
           pagination={pagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
           handleEdit={handleEdit}
-          refetch={fetchAllProjects}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
           isActionEnabled={isBluePrintManagement}
@@ -170,7 +177,7 @@ const Projects = () => {
           pagination={activePagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
           handleEdit={handleEdit}
-          refetch={fetchActiveProjects}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
           isActionEnabled={isBluePrintManagement}
@@ -190,7 +197,7 @@ const Projects = () => {
           pagination={completedPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'completed')}
           handleEdit={handleEdit}
-          refetch={fetchCompletedProjects}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'completed')}
           isLoading={isLoading}
           isActionEnabled={isBluePrintManagement}
@@ -210,7 +217,7 @@ const Projects = () => {
           pagination={archivedPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'archived')}
           handleEdit={handleEdit}
-          refetch={fetchCompletedProjects}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'archived')}
           isLoading={isLoading}
           isActionEnabled={isBluePrintManagement}
@@ -244,7 +251,7 @@ const Projects = () => {
         handleClose={handleClose}
         isEdit={isEdit}
         editItem={editingItem}
-        refetch={fetchAllProjects}
+        refetch={refetchAllData}
       />
     </Row>
   )

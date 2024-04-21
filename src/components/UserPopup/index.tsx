@@ -8,16 +8,20 @@ import { Link } from 'react-router-dom'
 import dropdownIcon from '~/assets/icons/arrow.svg'
 import { logout } from '~/store/features/user'
 import { useDispatch } from 'react-redux'
+import usePermission from '~/hooks/usePermission'
 
 const UserPopup = ({ user, sm }: { user: IUser | null; sm: boolean | undefined }) => {
   const dispatch = useDispatch()
+  const { isSettingsManagement } = usePermission()
 
   const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: <Link to='/settings'>Account Settings</Link>,
-      icon: <SettingOutlined rev />
-    },
+     isSettingsManagement
+    ? {
+        key: '1',
+        label: <Link to='/settings'>Account Settings</Link>,
+        icon: <SettingOutlined rev />
+      }
+    : null,
     {
       key: '2',
       label: 'Logout',

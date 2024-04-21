@@ -64,6 +64,12 @@ const Forms = () => {
       .catch((err) => message.error(err?.data?.error || 'Error while loading forms'))
   }
 
+  const refetchAllData = () => {
+    fetchForms()
+    fetchCompletedForms()
+    fetchDraftForms()
+  }
+
   const handleAdd = () => {
     setEditingItem(null)
     setOpen(true)
@@ -129,7 +135,7 @@ const Forms = () => {
           pagination={pagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
           handleEdit={handleEdit}
-          refetch={fetchForms}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
           isActionManagement={isFormManagement}
@@ -149,7 +155,7 @@ const Forms = () => {
           pagination={activePagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
           handleEdit={handleEdit}
-          refetch={fetchCompletedForms}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
           isActionManagement={isFormManagement}
@@ -169,7 +175,7 @@ const Forms = () => {
           pagination={disabledPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
           handleEdit={handleEdit}
-          refetch={fetchDraftForms}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
           isActionManagement={isFormManagement}
@@ -203,7 +209,7 @@ const Forms = () => {
         handleClose={handleClose}
         isEdit={isEdit}
         editItem={editingItem}
-        refetch={fetchForms}
+        refetch={refetchAllData}
       />
     </Row>
   )

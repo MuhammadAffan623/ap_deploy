@@ -79,6 +79,13 @@ const Templates = () => {
       .catch((err) => message.error(err?.data?.error || 'Error while loading templates'))
   }
 
+  const refetchAllData = () => {
+    fetchAllTemplates()
+    fetchAvailabedTemplates()
+    fetchDisabledTemplates()
+    fetchArchivedTemplates()
+  }
+
   const handleAdd = () => {
     setEditingItem(null)
     setOpen(true)
@@ -148,7 +155,7 @@ const Templates = () => {
           pagination={pagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
           handleEdit={handleEdit}
-          refetch={fetchAllTemplates}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
           isActionEnabled={isFormManagement}
@@ -168,7 +175,7 @@ const Templates = () => {
           pagination={activePagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
           handleEdit={handleEdit}
-          refetch={fetchAvailabedTemplates}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
           isActionEnabled={isFormManagement}
@@ -188,7 +195,7 @@ const Templates = () => {
           pagination={disabledPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
           handleEdit={handleEdit}
-          refetch={fetchDisabledTemplates}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
           isActionEnabled={isFormManagement}
@@ -208,7 +215,7 @@ const Templates = () => {
           pagination={archivedPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'archived')}
           handleEdit={handleEdit}
-          refetch={fetchArchivedTemplates}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'archived')}
           isLoading={isLoading}
           isActionEnabled={isFormManagement}
@@ -242,7 +249,7 @@ const Templates = () => {
         handleClose={handleClose}
         isEdit={isEdit}
         editItem={editingItem}
-        refetch={fetchAllTemplates}
+        refetch={refetchAllData}
       />
     </Row>
   )

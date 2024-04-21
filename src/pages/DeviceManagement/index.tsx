@@ -59,6 +59,12 @@ const Library = () => {
       .catch((err) => message.error(err?.data?.error))
   }
 
+  const refetchAllData = () => {
+    fetchLibraries()
+    fetchActiveDevices()
+    fetchDisabledDevices()
+  }
+
   const handlePaginationChange = (pg: IPagination, type: string): void => {
     const setPaginationFunction =
       type === 'active'
@@ -100,7 +106,7 @@ const Library = () => {
           data={allData}
           pagination={pagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'all')}
-          refetch={fetchLibraries}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'all')}
           isLoading={isLoading}
           isActionEnabled={isLibraryManagement}
@@ -119,7 +125,7 @@ const Library = () => {
           data={activeData}
           pagination={activePagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'active')}
-          refetch={fetchActiveDevices}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'active')}
           isLoading={isLoading}
           isActionEnabled={isLibraryManagement}
@@ -138,7 +144,7 @@ const Library = () => {
           data={disabledData}
           pagination={disabledPagination}
           handlePaginationChange={(pg: IPagination) => handlePaginationChange(pg, 'disabled')}
-          refetch={fetchDisabledDevices}
+          refetch={refetchAllData}
           onSearch={(text: string) => onSearch(text, 'disabled')}
           isLoading={isLoading}
           isActionEnabled={isLibraryManagement}
