@@ -31,6 +31,10 @@ const defaultItems: IItem[] = [
 ]
 
 const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = '' }: IProps) => {
+  const formatDate = 'YYYY-MM-DD HH:mm'
+  const starting = dayjs(event && (event?.start as string)).format('YYYY-MM-DD HH:mm:ss')
+  const ending = dayjs(event && (event?.end as string)).format('YYYY-MM-DD HH:mm:ss')
+
   const initialValues = {
     name: '',
     description: '',
@@ -39,30 +43,26 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     endTime: '',
     repeat: false,
     allDay: false,
-    calender: ''
+    calender: '',
+    range_picker:event ?[dayjs(starting, formatDate), dayjs(ending, formatDate)]: [],
   }
   const [form] = Form.useForm()
 
-  // console.log(form.getFieldsValue(),"initialValues initialValues initialValues")
-  
+
   const { calenders } = useCalenderSelector()
   const [calendarItems, setCalenderItems] = useState(defaultItems)
   const [createEvent, { isLoading }] = useCreateEventMutation()
   const [updateEvent, { isLoading: isUpdateLoading }] = useUpdateEventMutation()
 
-  const formatDate = 'YYYY-MM-DD HH:mm'
-
   const handleFormSubmit = (values: any) => {
-
     const modifiedObj = {
-      startTime: dayjs(values.range[0]).format(formatDate),
-      endTime: dayjs(values.range[1]).format(formatDate),
+      startTime: dayjs(values.range_picker[0]).format(formatDate),
+      endTime: dayjs(values.range_picker[1]).format(formatDate),
       name: values.name,
       allDay: values.allDay,
       description: values.description,
       calendar: values.calender,
-      backgroundColor:calenders.find((ele)=>ele?._id === values.calender)?.color
-
+      backgroundColor: calenders.find((ele) => ele?._id === values.calender)?.color
     }
     if (isEdit) {
       updateEvent({ _id: event?.id, ...modifiedObj })
@@ -95,12 +95,20 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
         description: event.description,
         start: event.start,
         end: event.end,
-        range: [startDate, endDate]
+        range_picker:[dayjs(starting, formatDate), dayjs(ending, formatDate)]
       })
     } else {
+      form.setFieldsValue({
+        range_picker:[]
+      })
+
       form.resetFields()
     }
+  
   }, [event])
+
+ 
+  
 
   useEffect(() => {
     if (calenders) {
@@ -115,21 +123,20 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
     }
   }, [calenders])
 
-  useEffect(() => {
-    const startTime = dayjs(startDate, formatDate)
-    const endTime = dayjs(startDate, formatDate)
+  // useEffect(() => {
+  //   const startTime = dayjs(startDate, formatDate)
+  //   const endTime = dayjs(startDate, formatDate)
 
-    if (startDate) {
-      form.setFieldValue('range', [startTime, endTime])
-    } else {
-      form.resetFields()
-    }
-  }, [startDate])
+  //   if (startDate) {
+  //     form.setFieldValue('range_picker', [dayjs(starting, formatDate), dayjs(ending, formatDate)])
+  //   } else {
+  //     form.resetFields()
+  //   }
+  // }, [startDate, form])
   // const dateFormat = 'YYYY/MM/DD';
-  const starting = dayjs(event && event?.start as string) .format('YYYY-MM-DD HH:mm:ss');
-  const ending = dayjs(event && event?.end as string).format('YYYY-MM-DD HH:mm:ss');
-// console.log(starting,"starting ")
-// console.log(ending,"ending ")
+
+  // console.log(starting,"starting ")
+  // console.log(ending,"ending ")
   return (
     <BasicModal
       open={open}
@@ -145,7 +152,6 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
         onFinish={handleFormSubmit}
         className='add-edit-event-form'
       >
-    
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <TextField name='name' label='Title*' placeholder='Enter Event Title' required />
@@ -164,20 +170,19 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
             <Form.Item
               label='Time and Date*'
               // name='range'
-              name={['range', 'dates']}
+              // name={['range', 'dates']}
+              name='range_picker'
               rules={[{ required: false }]}
               // rules={[{ type: 'array', required: true, message: 'Please select time and date!' }]}
 
               className='formItem'
             >
-              {event &&(
+              <RangePicker
+                //  {...(event && { defaultValue: [dayjs(starting), dayjs(ending)] })}
 
-                <RangePicker 
-                    defaultValue={[dayjs(starting), dayjs(ending)]}
-                
                 showTime
-                 style={{ width: '100%' }} />
-              )}
+                style={{ width: '100%' }}
+              />
             </Form.Item>
           </Col>
 

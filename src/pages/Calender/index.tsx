@@ -104,7 +104,6 @@ const Calender: React.FC = () => {
     })
     setUpdatedDate(updatedEvents)
   }, [events])
-
   return (
     <>
       <PageHeader
@@ -147,7 +146,7 @@ const Calender: React.FC = () => {
           ),
           [updatedDate]
         )}
-          <AddEditEvent
+         {open && <AddEditEvent
             open={open}
             isEdit={editMode}
             handleClose={() => {
@@ -156,7 +155,7 @@ const Calender: React.FC = () => {
             }}
             event={event}
             startDate={startDate}
-          />
+          />}
 
         <EventDetail
           open={isEventModal}

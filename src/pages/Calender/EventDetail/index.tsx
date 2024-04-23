@@ -17,7 +17,6 @@ interface IProps {
 }
 
 const EventDetail = ({ event, handleClose, onDelete, onEdit, open, isActionEnabled }: IProps) => {
-  console.log(event,"AAA")
   return (
     <>
       <BasicModal
