@@ -1,4 +1,15 @@
-import { Button, Checkbox, Divider, Menu, MenuProps, SiderProps, Space, message, theme } from 'antd'
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Menu,
+  MenuProps,
+  SiderProps,
+  Space,
+  Tooltip,
+  message,
+  theme
+} from 'antd'
 import SidebarWrapper from './SideBarWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { CSSProperties, useEffect, useState } from 'react'
@@ -19,10 +30,8 @@ import {
   useGetAllCalenderQuery
 } from '~/store/services/calender.service'
 import { BsPlus } from 'react-icons/bs'
-import { FaChevronDown,FaChevronUp } from "react-icons/fa";
+// import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 
-
-import SubMenu from 'antd/es/menu/SubMenu'
 import DropDown from '../DropDown'
 import usePermission from '~/hooks/usePermission'
 import ConfirmationModal from '../ConfirmationModal'
@@ -47,32 +56,27 @@ const customTitle: CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  width: "95%",
-
+  width: '100%'
 }
 
-const innerDiv :CSSProperties ={
-  width: "80%",
-  margin: "auto",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-}
-const customDiv: CSSProperties = {
+const innerDiv: CSSProperties = {
+  width: '80%',
+  margin: 'auto',
   display: 'flex',
-  justifyContent: "space-between",
-  width: "90%",
-  margin:" auto",
-  alignItems: "center",
-  color: "#fff",
-
+  gap: '10px',
+  alignItems: 'center',
+  marginTop: '6px'
+}
+const calenderTitle: CSSProperties = {
+  color: 'white',
+  flexGrow: 1,
+  flexShrink: 0
 }
 
 const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: SidebarProps) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { pathname } = useLocation()
-  console.log(pathname)
   const { useToken } = theme
   const { token } = useToken()
   const { colorBgContainer, colorPrimary, colorText } = token
@@ -82,7 +86,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { data } = useGetAllCalenderQuery('')
   const { calendarIds } = useCalenderSelector()
   const { isCalenderManagement } = usePermission()
-  const [showAccordion,setShowAccordion] = useState(false)
+  const [showAccordion, setShowAccordion] = useState(false)
 
   const [deleteModal, setDeleteModal] = useState(false)
   const [selectedCalId, setSelectedCalId] = useState('')
@@ -104,49 +108,44 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
         dispatch(setCalendarIds([...checkedItems, itemKey]))
       }
     }
-          /* eslint-disable */
+    /* eslint-disable */
 
     return (
-      <div  className='sidebarMenu'>
-        <div
-          key='subMenu'
-        >
-          <div style={customDiv} onClick={()=>
-            setShowAccordion((prev) => !prev)}>
-
-             <span style={customTitle}>
-              {!collapsed && 'SCHEDULES'}
-              <Button className='custom-plus-button' onClick={handleOpenModal}>
-                <BsPlus />
-                
-              </Button>
+      <div className='sidebarMenu'>
+        <div key='subMenu'>
+          <div className='add-schedules-wrapper' onClick={() => setShowAccordion((prev) => !prev)}>
+            <span style={customTitle}>
+              {!collapsed && <Tooltip title='See all schedules'>SCHEDULES</Tooltip>}
+              <Tooltip title='Add event'>
+                <Button className='custom-plus-button' onClick={handleOpenModal}>
+                  <BsPlus />
+                </Button>
+              </Tooltip>
             </span>
-            {showAccordion ? <FaChevronUp/> :  <FaChevronDown/>}
-          
-
+            {/* {showAccordion ? <FaChevronUp /> : <FaChevronDown />} */}
+          </div>
+          {showAccordion && (
+            <div>
+              {data?.data?.calendarItems.map((item: ICalender) => (
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                <div
+                  style={innerDiv}
+                  key={item._id}
+                  onClick={() => handleItemClick(item._id)}
+                  className='sidebarMenu'
+                >
+                  <Checkbox checked={checkedItems.includes(item._id)} />
+                  <span style={calenderTitle}>{item.name}</span>
+                  <DropDown
+                    dot
+                    items={calenderActionItems}
+                    onPopupClick={(e) => handleClickItem(e, item._id)}
+                    color='white'
+                  />
+                </div>
+              ))}
             </div>
-            {showAccordion &&<div >
-
-          {data?.data?.calendarItems.map((item: ICalender) => (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-            <div
-            style={innerDiv}
-              key={item._id}
-              onClick={() => handleItemClick(item._id)}
-              className='sidebarMenu'
-            >
-              <Checkbox checked={checkedItems.includes(item._id)} />
-              <span className='text-white'>{item.name}</span>
-              <DropDown
-                  dot
-                  items={calenderActionItems}
-                  onPopupClick={(e) => handleClickItem(e, item._id)}
-                  color='white'
-                />
-            </div>
-          ))}
-            </div>}
-
+          )}
         </div>
       </div>
     )

@@ -222,13 +222,33 @@
 }
 
 .custom-plus-button {
-  margin-right: 10px;
+  // margin-right: 10px;
   width: 30px;
   height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: white;
+  background-color: #5978ff;
   text-align: center;
   padding: 0;
+  border: 1px solid #5978ff
+}
+
+.custom-plus-button:hover {
+  color: white !important;
+}
+
+.add-schedules-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 82%;
+  margin: auto;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+
+  @media screen and (max-width: 1200px) {
+    width: 50%;
+  }
 }

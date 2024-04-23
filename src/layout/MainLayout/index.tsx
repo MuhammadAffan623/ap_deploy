@@ -4,10 +4,12 @@ import './styles.scss'
 
 import { Outlet } from 'react-router-dom'
 import { Header, SideBar } from '~/components'
+import { useAppSelector } from '~/store/hooks'
 const { Content } = Layout
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(true)
+  const { calenderSideBarOpen } = useAppSelector((state) => state.events)
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed)
@@ -33,7 +35,9 @@ const MainLayout = () => {
         <Header toggleSidebar={toggleSidebar} isCollapsed={collapsed} />
 
         <Layout>
-          <Content className='mainContent'>
+          <Content
+            className={`mainContent ${calenderSideBarOpen ? 'overflow-hidden' : 'overflow-auto'}`}
+          >
             <Outlet />
           </Content>
         </Layout>
