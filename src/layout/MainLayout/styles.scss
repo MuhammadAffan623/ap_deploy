@@ -7,3 +7,11 @@
   display: flex;
   flex-direction: column;
 }
+
+.overflow-hidden {
+  overflow-y: hidden;
+}
+
+.overflow-auto {
+  overflow-y: auto;
+}

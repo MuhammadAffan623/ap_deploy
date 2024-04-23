@@ -241,6 +241,12 @@ export const formatEventDate = (date: string) => {
   return d
 }
 
+export const formattedTime = (date: string)=>{
+  const d = dayjs(date).format('hh:mm:ss A');
+  return d
+}
+
+
 export const colorsToHex = (colorNames: string[]): string[] => {
   const colorMap: Record<any, string> = {
     red: '#FD7972',

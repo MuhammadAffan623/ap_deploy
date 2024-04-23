@@ -5,6 +5,14 @@
   font-size: 14px;
   position: relative
 }
+.fc-toolbar-chunk  button {
+  text-transform: capitalize !important;
+}
+
+.fc-toolbar-chunk .fc-button-group button {
+  text-transform: capitalize !important;
+}
+
 
 .demo-app-sidebar {
   width: 400px;

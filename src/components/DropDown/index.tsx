@@ -29,7 +29,7 @@ const DropDown = ({
   return (
     <AntDropDown menu={menuProps}>
       {dot ? (
-        <Button type='text' style={{ color: color }}>
+        <Button size='small' type='text' style={{ color: color }}>
           <EllipsisOutlined rev={false} />
         </Button>
       ) : (
