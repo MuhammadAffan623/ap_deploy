@@ -1,7 +1,7 @@
 import GoogleMapReact from 'google-map-react'
 import MarkerImage from '../../assets/icons/location-pin.png'
 
-const AnyReactComponent = () => (
+const AnyReactComponent = ({ lat, lng }: { lat: number; lng: number }) => (
   <div
     style={{
       width: '30px',
@@ -9,7 +9,7 @@ const AnyReactComponent = () => (
       backgroundImage: `url(${MarkerImage})`,
       backgroundSize: 'cover',
       textAlign: 'center',
-      color: 'white',
+      color: 'black',
       fontWeight: 'bold',
       fontSize: '16px',
       display: 'flex',
@@ -17,7 +17,7 @@ const AnyReactComponent = () => (
       alignItems: 'center'
     }}
   >
-    {/* {text} */}
+    <div style={{ display: 'none' }}>{lat + lng}</div>
   </div>
 )
 
@@ -40,7 +40,7 @@ export default function Map({ latitude, longitude }: { latitude: number; longitu
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >
-        <AnyReactComponent />
+        <AnyReactComponent lat={latitude} lng={longitude} />
       </GoogleMapReact>
     </div>
   )

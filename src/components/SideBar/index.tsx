@@ -72,6 +72,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { pathname } = useLocation()
+  console.log(pathname)
   const { useToken } = theme
   const { token } = useToken()
   const { colorBgContainer, colorPrimary, colorText } = token
@@ -242,6 +243,15 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
       ? filterMenuItems(navigationMenuItems, userPermissions)
       : navigationMenuItems
 
+  let activeKey
+  if (pathname.includes('/blueprints-hub')) {
+    activeKey = '/blueprints-hub'
+  } else if (pathname.includes('/add-group')) {
+    activeKey = '/user-and-groups'
+  } else {
+    activeKey = pathname
+  }
+
   return (
     <SidebarWrapper
       setCollapsed={setCollapsed}
@@ -274,7 +284,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
         <Divider />
         <div style={childrenWrapperStyles} className='scrollbar-hidden'>
           <Menu
-            selectedKeys={[pathname]}
+            selectedKeys={[activeKey]}
             openKeys={isOpenMenu}
             onOpenChange={onOpenChange}
             items={filteredMenuItems}
