@@ -87,8 +87,8 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
 
   useEffect(() => {
     if (event) {
-      const startDate = dayjs(event.start?.toLocaleString(), formatDate)
-      const endDate = dayjs(event.start?.toLocaleString(), formatDate)
+      // const startDate = dayjs(event.start?.toLocaleString(), formatDate)
+      // const endDate = dayjs(event.start?.toLocaleString(), formatDate)
 
       form.setFieldsValue({
         name: event.title,
