@@ -93,11 +93,8 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const [deleteCalender] = useDeleteCalenderMutation()
 
   const SheduleMenuItem = ({ collapsed }: { collapsed: boolean | undefined }) => {
-    const [checkedItems, setCheckedItems] = useState<string[]>([])
 
-    useEffect(() => {
-      setCheckedItems(calendarIds)
-    }, [calendarIds])
+    const [checkedItems, setCheckedItems] = useState<string[]>(calendarIds||[])
     const handleItemClick = (itemKey: string) => {
       const isChecked = checkedItems.includes(itemKey)
       if (isChecked) {
