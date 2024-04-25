@@ -48,7 +48,6 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
   }
   const [form] = Form.useForm()
 
-console.log(form.getFieldsValue())
   const { calenders } = useCalenderSelector()
   const [calendarItems, setCalenderItems] = useState(defaultItems)
   const [createEvent, { isLoading }] = useCreateEventMutation()
