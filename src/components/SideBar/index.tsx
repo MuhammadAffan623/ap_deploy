@@ -93,8 +93,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const [deleteCalender] = useDeleteCalenderMutation()
 
   const SheduleMenuItem = ({ collapsed }: { collapsed: boolean | undefined }) => {
-
-    const [checkedItems, setCheckedItems] = useState<string[]>(calendarIds||[])
+    const [checkedItems, setCheckedItems] = useState<string[]>(calendarIds || [])
     const handleItemClick = (itemKey: string) => {
       const isChecked = checkedItems.includes(itemKey)
       if (isChecked) {
@@ -108,43 +107,56 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
     /* eslint-disable */
 
     return (
-      <div className='sidebarMenu'>
-        <div key='subMenu'>
-          <div className='add-schedules-wrapper' onClick={() => setShowAccordion((prev) => !prev)}>
-            <span style={customTitle}>
-              {!collapsed && <Tooltip title='See all schedules'>SCHEDULES</Tooltip>}
-              <Tooltip title='Add event'>
-                <Button className='custom-plus-button' onClick={handleOpenModal}>
-                  <BsPlus />
-                </Button>
-              </Tooltip>
-            </span>
-            {/* {showAccordion ? <FaChevronUp /> : <FaChevronDown />} */}
-          </div>
-          {showAccordion && (
-            <div>
-              {data?.data?.calendarItems.map((item: ICalender) => (
-                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                <div
-                  style={innerDiv}
-                  key={item._id}
-                  onClick={() => handleItemClick(item._id)}
-                  className='sidebarMenu'
-                >
-                  <Checkbox checked={checkedItems.includes(item._id)} />
-                  <span style={calenderTitle}>{item.name}</span>
-                  <DropDown
-                    dot
-                    items={calenderActionItems}
-                    onPopupClick={(e) => handleClickItem(e, item._id)}
-                    color='white'
-                  />
-                </div>
-              ))}
+      <>
+        <div className='sidebarMenu'>
+          <div key='subMenu'>
+            <div
+              className='add-schedules-wrapper'
+              onClick={() => setShowAccordion((prev) => !prev)}
+            >
+              <span style={customTitle}>
+                {!collapsed && <Tooltip title='See all schedules'>SCHEDULES</Tooltip>}
+                <Tooltip title='Add event'>
+                  <Button className='custom-plus-button' onClick={handleOpenModal}>
+                    <BsPlus />
+                  </Button>
+                </Tooltip>
+              </span>
+              {/* {showAccordion ? <FaChevronUp /> : <FaChevronDown />} */}
             </div>
-          )}
+            {showAccordion && (
+              <div>
+                {data?.data?.calendarItems.map((item: ICalender) => (
+                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                  <div
+                    style={innerDiv}
+                    key={item._id}
+                    onClick={() => handleItemClick(item._id)}
+                    className='sidebarMenu'
+                  >
+                    <div
+                      className='coloring'
+                      style={{ '--checkbox-bg-color': item.color } as React.CSSProperties}
+                    >
+                      <Checkbox checked={checkedItems.includes(item._id)} />
+                    </div>
+                    <span style={calenderTitle}>{item.name}</span>
+                    <div >
+                      <DropDown
+                        dot
+                        overlayClassName='popupStyling'
+                        items={calenderActionItems}
+                        onPopupClick={(e) => handleClickItem(e, item._id)}
+                        color='white'
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 

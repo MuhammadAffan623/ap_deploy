@@ -48,7 +48,7 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
   }
   const [form] = Form.useForm()
 
-
+console.log(form.getFieldsValue())
   const { calenders } = useCalenderSelector()
   const [calendarItems, setCalenderItems] = useState(defaultItems)
   const [createEvent, { isLoading }] = useCreateEventMutation()
@@ -86,16 +86,15 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
   }
 
   useEffect(() => {
-    if (event) {
-      // const startDate = dayjs(event.start?.toLocaleString(), formatDate)
-      // const endDate = dayjs(event.start?.toLocaleString(), formatDate)
 
+    if (event) {
       form.setFieldsValue({
         name: event.title,
         description: event.description,
         start: event.start,
         end: event.end,
-        range_picker:[dayjs(starting, formatDate), dayjs(ending, formatDate)]
+        range_picker:[dayjs(starting, formatDate), dayjs(ending, formatDate)],
+        calender:event.calendar
       })
     } else {
       form.setFieldsValue({
@@ -178,8 +177,6 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
               className='formItem'
             >
               <RangePicker
-                //  {...(event && { defaultValue: [dayjs(starting), dayjs(ending)] })}
-
                 showTime
                 style={{ width: '100%' }}
               />
@@ -200,7 +197,9 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
           <Col span={24}>
             <Form.Item label='Calender' name='calender' className='formItem'>
               <CustomSelect
-                handleChange={(value) => form.setFieldValue('calender', value)}
+                handleChange={(value) => {
+                  form.setFieldValue('calender', value)
+                }}
                 options={calendarItems}
                 placeholder='Select a calendar'
               />

@@ -8,7 +8,8 @@ const DropDown = ({
   onPopupClick,
   dot,
   color = 'black',
-  title = 'Actions'
+  title = 'Actions',
+  overlayClassName
 }: {
   items: MenuProps['items']
   handleClickItem?: (e: string) => void
@@ -16,6 +17,7 @@ const DropDown = ({
   dot?: boolean
   title?: string
   color?: string
+  overlayClassName?: string
 }) => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     handleClickItem && handleClickItem(e.key)
@@ -27,14 +29,14 @@ const DropDown = ({
     onClick: handleMenuClick
   }
   return (
-    <AntDropDown menu={menuProps}>
+    <AntDropDown overlayClassName={overlayClassName}  menu={menuProps}>
       {dot ? (
         <Button size='small' type='text' style={{ color: color }}>
           <EllipsisOutlined rev={false} />
         </Button>
       ) : (
         <Button size='large' style={{ boxShadow: 'none' }}>
-          <Space>
+          <Space >
             {title}
             <DownOutlined rev={false} />
           </Space>
