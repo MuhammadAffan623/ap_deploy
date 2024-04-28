@@ -42,6 +42,7 @@ const Calender: React.FC = () => {
   }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
+
     if (data) {
       setEvent({
         id: clickInfo.event.extendedProps._id,
@@ -50,6 +51,7 @@ const Calender: React.FC = () => {
         start: clickInfo.event.start,
         end: clickInfo.event.end,
         color: clickInfo.event.backgroundColor,
+        allDay: clickInfo.event.allDay,
         description: clickInfo.event.extendedProps.description
       })
       setIsEventModal(true)
