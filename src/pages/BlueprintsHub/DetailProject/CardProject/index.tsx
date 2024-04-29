@@ -1,12 +1,12 @@
 import { Card, Map } from '~/components'
 import { Col, DatePicker, Row, Typography } from 'antd'
 import './style.scss'
-import { CloudUploadOutlined } from '@ant-design/icons'
 import CountCard from '~/components/CountCard'
 import NewProject from '../../../../assets/images/Project.png'
 import MapIcon from '../../../../assets/images/Map.png'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import Weather from '~/components/Weather'
 
 const CardProject = ({
   handleSheetClick,
@@ -76,49 +76,7 @@ const CardProject = ({
         </CountCard>
       </Col>
       <Col span={24} xxl={12}>
-        <Card>
-          <Col className='Column-wrapper'>
-            <Typography.Title level={4} className='Heading' type='secondary'>
-              Weather
-            </Typography.Title>
-            <Typography.Title level={4} className='Heading' type='secondary'>
-              Saint Cloud Flourida
-            </Typography.Title>
-          </Col>
-          <Col className='Wrapper'>
-            <Col>
-              <CloudUploadOutlined className='icon-color' rev={undefined} />
-            </Col>
-            <Col>
-              <Typography.Title level={5} className='Title'>
-                Clear
-              </Typography.Title>
-              <Typography.Title level={5} className='Title'>
-                High: 91 F Low: 73 F
-              </Typography.Title>
-            </Col>
-            <Col>
-              {' '}
-              <Typography.Title level={5} className='Title'>
-                Wind: 9 MPH, NE
-              </Typography.Title>
-              <Typography.Title level={5} className='Title'>
-                Humidity: 66%
-              </Typography.Title>
-              <Typography.Title level={5} className='Title'>
-                Percipitation: 0.0
-              </Typography.Title>
-            </Col>
-          </Col>
-          <Col>
-            <Typography.Title level={5} className='Title'>
-              Powered by Weather
-            </Typography.Title>
-            <Typography.Title level={5} className='Title'>
-              show more
-            </Typography.Title>
-          </Col>
-        </Card>
+        <Weather />
       </Col>
       {showMap && (
         <Col xs={24}>

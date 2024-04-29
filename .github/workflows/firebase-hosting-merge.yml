@@ -21,6 +21,7 @@ jobs:
           ENV_KEY_VITE_DEVELOPMENT_BASE_URL: http://localhost:5000/api/v1
           ENV_KEY_VITE_PRODUCTION_BASE_URL: https://apsone.atlanticpipe.us/api/v1
           ENV_KEY_VITE_GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
+          ENV_KEY_VITE_WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
 
       
       - run: npm ci && npm run build
