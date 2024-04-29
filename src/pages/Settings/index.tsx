@@ -147,7 +147,7 @@ const Settings = () => {
                   <Col span={24} md={12}>
                     <TextField
                       name='firstName'
-                      label='First Name'
+                      label='First Name*'
                       placeholder='Enter first name'
                       required
                     />
@@ -155,7 +155,7 @@ const Settings = () => {
                   <Col span={24} md={12}>
                     <TextField
                       name='lastName'
-                      label='Last Name'
+                      label='Last Name*'
                       placeholder='Enter last name'
                       required
                     />
@@ -165,7 +165,7 @@ const Settings = () => {
                     <TextField
                       name='email'
                       type='email'
-                      label='Email'
+                      label='Email*'
                       placeholder='Enter email'
                       required
                     />
@@ -175,7 +175,8 @@ const Settings = () => {
                     <Row gutter={[20, 10]}>
                       <Col span={24}>
                         <Typography.Text style={{ color: colorTextTertiary }}>
-                          Phone
+                          Phone*
+                          
                         </Typography.Text>
                       </Col>
                       <Col span={24}>

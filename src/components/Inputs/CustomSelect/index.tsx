@@ -14,15 +14,16 @@ export interface IItem {
 const CustomSelect = ({
   handleChange,
   options: items = [],
-  placeholder = ''
+  placeholder = '',
+  initialValue = ''
 }: {
   handleChange: (key: string) => void
   options: IItem[]
   placeholder: string
+  initialValue?: string;
 }) => {
-  const [key, setKey] = useState('liniting-schedule')
+  const [key, setKey] = useState(initialValue || 'liniting-schedule')
   const [color, setColor] = useState('tomato')
-
   const handleSelect = ({ key }: { key: React.Key }) => {
     const findObj: IItem | undefined = items.find((item: IItem) => item?.key === key)
     setColor(findObj ? findObj.color : '')

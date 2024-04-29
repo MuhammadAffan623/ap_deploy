@@ -42,13 +42,16 @@ const Calender: React.FC = () => {
   }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
+
     if (data) {
       setEvent({
         id: clickInfo.event.extendedProps._id,
+        calendar: clickInfo.event.extendedProps.calendar,
         title: clickInfo.event.title,
         start: clickInfo.event.start,
         end: clickInfo.event.end,
         color: clickInfo.event.backgroundColor,
+        allDay: clickInfo.event.allDay,
         description: clickInfo.event.extendedProps.description
       })
       setIsEventModal(true)
@@ -99,6 +102,7 @@ const Calender: React.FC = () => {
         ...ele,
         start: subtractFiveHours(new Date( ele?.start)),
         end:subtractFiveHours(new Date(ele?.end)),
+        display: 'block',
 
       }
     })
@@ -125,12 +129,16 @@ const Calender: React.FC = () => {
           () => (
             <div className='demo-app-main'>
               <FullCalendar
+              firstDay={1}
+              stickyFooterScrollbar ={false}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 headerToolbar={{
                   left: 'prev,next today',
                   center: 'title',
                   right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 }}
+            
+                
                 initialView='dayGridMonth'
                 editable={true}
                 selectable={true}
