@@ -2,8 +2,7 @@ import type { ColumnsType } from 'antd/es/table'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { Button } from '~/components'
 
-export const columns = (isShow:boolean, handleDelete: any): ColumnsType<any> => {
-  console.log(isShow,"isShow isShow isShow")
+export const columns = (isShow: boolean, handleDelete: any): ColumnsType<any> => {
   return [
     {
       title: 'Sheet Name',
@@ -31,12 +30,11 @@ export const columns = (isShow:boolean, handleDelete: any): ColumnsType<any> => 
       sortDirections: ['descend'],
       render: (_, { _id }) => {
         return (
-          isShow &&(
-
-            <Button onClick={(e)=>  handleDelete(e,_id)}>
-            <AiOutlineDelete />
-          </Button>
-            )
+          isShow && (
+            <Button onClick={(e) => handleDelete(e, _id)}>
+              <AiOutlineDelete />
+            </Button>
+          )
         )
       }
     }
