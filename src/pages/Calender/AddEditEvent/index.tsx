@@ -84,7 +84,6 @@ const AddEditEvent = ({ event, handleClose, open, isEdit = false, startDate = ''
         .catch((err) => message.error(err?.data?.error))
     }
   }
-
   useEffect(() => {
 
     if (event) {

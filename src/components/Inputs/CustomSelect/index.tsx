@@ -23,7 +23,9 @@ const CustomSelect = ({
   initialValue?: string;
 }) => {
   const [key, setKey] = useState(initialValue || 'liniting-schedule')
-  const [color, setColor] = useState('tomato')
+  const [color, setColor] = useState(items.find((item: IItem) => item?.key === initialValue)?.color ||'tomato')
+  
+  
   const handleSelect = ({ key }: { key: React.Key }) => {
     const findObj: IItem | undefined = items.find((item: IItem) => item?.key === key)
     setColor(findObj ? findObj.color : '')
@@ -33,8 +35,10 @@ const CustomSelect = ({
 
   const getSelectedValueLabel = () => {
     const findObj: IItem | undefined = items.find((item: IItem) => item?.key === key)
+    
     return findObj ? findObj?.label : ''
   }
+
 
   return (
     <Dropdown
