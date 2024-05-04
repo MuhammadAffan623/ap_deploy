@@ -31,7 +31,7 @@ const Calender: React.FC = () => {
   const { isCalenderManagement } = usePermission()
   const { calendarIds } = useCalenderSelector()
   const { data } = useGetAllEventsQuery({ calendarIds })
-  const [updatedDate , setUpdatedDate] = useState<any>([])
+  const [updatedDate, setUpdatedDate] = useState<any>([])
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     setEvent(null)
     setEditMode(false)
@@ -49,7 +49,7 @@ const Calender: React.FC = () => {
         calendar: clickInfo.event.extendedProps.calendar,
         title: clickInfo.event.title,
         start: clickInfo.event.start,
-        end: clickInfo.event.end,
+        end: clickInfo.event.extendedProps.endt,
         color: clickInfo.event.backgroundColor,
         allDay: clickInfo.event.allDay,
         description: clickInfo.event.extendedProps.description
@@ -93,17 +93,15 @@ const Calender: React.FC = () => {
     return new Date(date.getTime() - 5 * 60 * 60 * 1000)
   }
 
-
-
-
   useEffect(() => {
-    const updatedEvents = events.map((ele:any) => {
+    const updatedEvents = events.map((ele: any) => {
       return {
         ...ele,
-        start: subtractFiveHours(new Date( ele?.start)),
-        end:subtractFiveHours(new Date(ele?.end)),
+        start: subtractFiveHours(new Date(ele?.start)),
+        end: subtractFiveHours(new Date(ele?.end)),
+        endt: subtractFiveHours(new Date(ele?.end)),
         display: 'block',
-
+        backgroundColor: ele.backgroundColor + '7a'
       }
     })
     setUpdatedDate(updatedEvents)
@@ -111,14 +109,13 @@ const Calender: React.FC = () => {
   return (
     <>
       <PageHeader
-        title='Calender'
+        title='Calendar'
         buttonText={isCalenderManagement ? 'Add Event' : ''}
         onButtonClick={() => {
           setEditMode(false)
           setStartDate(null)
           setOpen(true)
           setEvent(null)
-
         }}
       />
 
@@ -129,16 +126,15 @@ const Calender: React.FC = () => {
           () => (
             <div className='demo-app-main'>
               <FullCalendar
-              firstDay={1}
-              stickyFooterScrollbar ={false}
+                showNonCurrentDates={false}
+                firstDay={1}
+                stickyFooterScrollbar={false}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 headerToolbar={{
                   left: 'prev,next today',
                   center: 'title',
                   right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 }}
-            
-                
                 initialView='dayGridMonth'
                 editable={true}
                 selectable={true}
@@ -146,6 +142,11 @@ const Calender: React.FC = () => {
                 dayMaxEvents={true}
                 weekends={weekendsVisible}
                 events={updatedDate}
+                eventTimeFormat={{ 
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                }}
                 select={handleDateSelect}
                 eventContent={renderEventContent}
                 eventClick={handleEventClick}
@@ -154,7 +155,8 @@ const Calender: React.FC = () => {
           ),
           [updatedDate]
         )}
-         {open && <AddEditEvent
+        {open && (
+          <AddEditEvent
             open={open}
             isEdit={editMode}
             handleClose={() => {
@@ -163,7 +165,8 @@ const Calender: React.FC = () => {
             }}
             event={event}
             startDate={startDate}
-          />}
+          />
+        )}
 
         <EventDetail
           open={isEventModal}

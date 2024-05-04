@@ -3,6 +3,7 @@ import { baseUrl, prepareHeaders } from './_utils'
 
 export const eventApi = createApi({
   reducerPath: 'eventApi',
+  refetchOnMountOrArgChange:true,
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders
@@ -14,6 +15,7 @@ export const eventApi = createApi({
         url: `/event/getAllEvents?calendarIds=${calendarIds?.join(', ')}`,
         method: 'GET'
       }),
+      
 
       providesTags: ['event']
     }),

@@ -176,7 +176,6 @@ const Settings = () => {
                       <Col span={24}>
                         <Typography.Text style={{ color: colorTextTertiary }}>
                           Phone*
-                          
                         </Typography.Text>
                       </Col>
                       <Col span={24}>
