@@ -41,6 +41,8 @@ const Settings = () => {
   const [updateProfile, { isLoading: isProfileLoading }]: any = useUpdateProfileMutation()
   const [uploadFile]: any = useUploadFileMutation()
   const [getFile]: any = useGetFileMutation()
+  const [numberCode, setNumberCode] = useState([])
+
 
   useEffect(() => {
     if (user) {
@@ -95,6 +97,8 @@ const Settings = () => {
     }
   }
   const handleFormSubmit = (values: any) => {
+
+
     const body = {
       id: user?._id,
       name: `${values.firstName} ${values.lastName}`,
@@ -114,6 +118,7 @@ const Settings = () => {
   }
 
   const handleUpdatePassword = (values: any) => {
+
     updatePassword(values)
       .unwrap()
       .then((res) => {
@@ -125,6 +130,20 @@ const Settings = () => {
       })
   }
 
+  useEffect(() => {
+    const numCode = getCountries().filter(
+      ({ code, dial_code }: { dial_code: string; code: string }) => {
+        if (code !== 'cx') {
+          return {
+            label: `${dial_code} - ${code.toUpperCase()}`,
+            value: dial_code
+          }
+        }
+      }
+    )
+
+    setNumberCode(numCode)
+  }, [])
   return (
     <div>
       <PageHeader title='Profile Setting' />
@@ -180,11 +199,12 @@ const Settings = () => {
                       </Col>
                       <Col span={24}>
                         <Row className='phone-number-combined-field'>
-                          <SelectField
+                          {/* <SelectField
                             name='countryCode'
-                            options={getCountries().map(
+                            options={numberCode.map(
                               ({ code, dial_code }: { dial_code: string; code: string }) => ({
                                 label: `${dial_code} - ${code.toUpperCase()}`,
+        
                                 value: dial_code
                               })
                             )}
@@ -193,12 +213,17 @@ const Settings = () => {
                             defaultActiveFirstOption
                             formItemClass='country-code-select-field'
                             style={{ border: 'none', width: '100%' }}
-                          />
+                          /> */}
                           <TextField
                             name='phoneNo'
                             placeholder='Enter phone'
                             required
                             formItemClass='phone-number-form-item'
+                            onChange={(e) => {
+                              const cleanedValue = e.target.value.replace(/\D/g, '');
+                              form.setFieldValue("phoneNo",cleanedValue)
+                          }}
+                          
                           />
                         </Row>
                       </Col>
@@ -243,7 +268,7 @@ const Settings = () => {
                   </Col>
 
                   <Col span={24} style={{ textAlign: 'right' }}>
-                    <Button type='primary' htmlType='submit' loading={isPasswordLoading}>
+                    <Button disabled={isPasswordLoading} type='primary' htmlType='submit' loading={isPasswordLoading}>
                       Change Password
                     </Button>
                   </Col>
