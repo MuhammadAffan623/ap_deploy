@@ -203,7 +203,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
               <Typography.Text style={{ color: colorTextTertiary }}>Phone *</Typography.Text>
             </Col>
             <Row className='phone-number-combined-field'>
-              <SelectField
+              {/* <SelectField
                 name='countryCode'
                 options={getCountries().map(
                   ({ code, dial_code }: { dial_code: string; code: string }) => ({
@@ -216,7 +216,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
                 defaultActiveFirstOption
                 formItemClass='country-code-select-field'
                 style={{ border: 'none', width: '100%' }}
-              />
+              /> */}
               <TextField
                 name='phone'
                 placeholder='Enter phone'
