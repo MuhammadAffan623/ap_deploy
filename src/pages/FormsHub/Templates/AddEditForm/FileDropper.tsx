@@ -30,7 +30,11 @@ const FileDropper = ({
     }
   }
   return (
-    <Dragger {...props}>
+    <Dragger 
+    
+    accept='"application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+    text/plain, application/pdf'
+    {...props}>
       <p className='ant-upload-text'>Embed Attachment in Page</p>
       <p className='ant-upload-drag-icon'>
         <FaCloudUploadAlt size={100} color='rgba(165, 161, 161, 1)' />
