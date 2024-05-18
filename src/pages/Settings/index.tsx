@@ -54,7 +54,7 @@ const Settings = () => {
         email: user.email,
         firstName: firstName,
         lastName: lastName,
-        phoneNo: user.Phone_No
+        phoneNo: user.phoneNo
       })
     }
   }, [user])
@@ -103,7 +103,7 @@ const Settings = () => {
       id: user?._id,
       name: `${values.firstName} ${values.lastName}`,
       email: values.email,
-      phoneNo: values.Phone_No,
+      phoneNo: values.phoneNo,
       avatar: uploadedImgUrl
     }
 
@@ -199,7 +199,7 @@ const Settings = () => {
                       </Col>
                       <Col span={24}>
                         <Row className='phone-number-combined-field'>
-                          <SelectField
+                          {/* <SelectField
                             name='countryCode'
                             options={numberCode.map(
                               ({ code, dial_code }: { dial_code: string; code: string }) => ({
@@ -213,15 +213,15 @@ const Settings = () => {
                             defaultActiveFirstOption
                             formItemClass='country-code-select-field'
                             style={{ border: 'none', width: '100%' }}
-                          />
+                          /> */}
                           <TextField
-                            name='Phone_No'
+                            name='phoneNo'
                             placeholder='Enter phone'
                             required
                             formItemClass='phone-number-form-item'
                             onChange={(e) => {
                               const cleanedValue = e.target.value.replace(/\D/g, '');
-                              form.setFieldValue("Phone_No",cleanedValue)
+                              form.setFieldValue("phoneNo",cleanedValue)
                           }}
                           
                           />
