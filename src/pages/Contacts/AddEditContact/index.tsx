@@ -18,6 +18,8 @@ import {
 } from '~/store/services/contact.services'
 import { getCountries } from 'country-state-picker'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
+import { FaPlus } from "react-icons/fa";
+
 
 interface IAddEditContactProps {
   open: boolean
@@ -53,9 +55,11 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
   const handleFormSubmit = (body: any) => {
     const newObj = {
       ...body,
-      phone: body.countryCode + body.phone,
+      phone:  body.phone,
       avatar: uploadedImgUrl ?? contact?.avatar ?? ''
     }
+
+
 
     if (isEdit) {
       updateUserById({
@@ -71,7 +75,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
           message.error(err?.data?.error ?? 'Something went wrong')
         })
     } else {
-      createUserById({ ...newObj, phone: body.countryCode + body.phone })
+      createUserById({ ...newObj, phone:  body.phone })
         .unwrap()
         .then((res) => {
           message?.success(res?.data?.message ?? 'Contact created successfully')
@@ -141,7 +145,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
       notes: contact?.notes,
       avatar: contact?.avatar ?? ''
     })
-    setUploadedImgUrl(contact?.avatar ?? userImg)
+    setUploadedImgUrl(contact?.avatar ?? <FaPlus/>)
   }, [contact, open])
 
   return (
@@ -176,7 +180,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
                   </label>
 
                   <Avatar
-                    src={(uploadedImgUrl as string) ?? userImg}
+                    src={(uploadedImgUrl as string) ?? <FaPlus/>}
                     name=''
                     shape='square'
                     style={getAvatarContainerStyle(colorTextTertiary)}
@@ -199,7 +203,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
               <Typography.Text style={{ color: colorTextTertiary }}>Phone *</Typography.Text>
             </Col>
             <Row className='phone-number-combined-field'>
-              <SelectField
+              {/* <SelectField
                 name='countryCode'
                 options={getCountries().map(
                   ({ code, dial_code }: { dial_code: string; code: string }) => ({
@@ -212,7 +216,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
                 defaultActiveFirstOption
                 formItemClass='country-code-select-field'
                 style={{ border: 'none', width: '100%' }}
-              />
+              /> */}
               <TextField
                 name='phone'
                 placeholder='Enter phone'

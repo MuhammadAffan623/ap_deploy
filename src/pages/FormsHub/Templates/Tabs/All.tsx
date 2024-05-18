@@ -28,7 +28,6 @@ const All = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [open, setOpen] = useState<boolean>(false)
   const [selectedId, setSelectedId] = useState<string[] | null>(null)
-
   const [deleteTemplate] = useDeleteTemplateMutation()
 
   const handleClickItem = (key: string) => {
