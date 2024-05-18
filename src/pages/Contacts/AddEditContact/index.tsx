@@ -59,7 +59,6 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
       avatar: uploadedImgUrl ?? contact?.avatar ?? ''
     }
 
-    console.log(newObj)
 
 
     if (isEdit) {
