@@ -32,13 +32,13 @@ const DropDown = ({
     <AntDropDown overlayClassName={overlayClassName}  menu={menuProps}>
       {dot ? (
         <Button size='small' type='text' style={{ color: color }}>
-          <EllipsisOutlined rev={false} />
+          <EllipsisOutlined  />
         </Button>
       ) : (
         <Button size='large' style={{ boxShadow: 'none' }}>
           <Space >
             {title}
-            <DownOutlined rev={false} />
+            <DownOutlined  />
           </Space>
         </Button>
       )}

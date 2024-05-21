@@ -80,7 +80,7 @@ export const navigationMenuItems: MenuItem[] = [
     'User & Groups',
     '/user-and-groups',
     [PermissionEnums.MANAGEMENT_USERS_GROUPS],
-    <UserOutlined rev={false} />,
+    <UserOutlined  />,
     null,
     'menuItem'
   ),

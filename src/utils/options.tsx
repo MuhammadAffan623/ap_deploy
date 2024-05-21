@@ -6,12 +6,12 @@ export const itemsActions: MenuProps['items'] = [
   {
     label: 'Delete',
     key: '1',
-    icon: <DeleteOutlined rev={false} />
+    icon: <DeleteOutlined  />
   },
   {
     label: 'Move',
     key: '2',
-    icon: <SwitcherOutlined rev={false} />
+    icon: <SwitcherOutlined  />
   }
 ]
 

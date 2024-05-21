@@ -1,13 +1,13 @@
 import { Col, Divider, Form, Row, Skeleton, Typography, message, theme } from 'antd'
-import { Avatar, Button, Card, ImagesBox, PageHeader, SelectField, TextField } from '~/components'
-import './style.scss'
-import { getCountries } from 'country-state-picker'
+// import { getCountries } from 'country-state-picker'
 import { CSSProperties, useEffect, useState } from 'react'
-import userImg from '~/assets/images/user.png'
 import editIcon from '~/assets/icons/edit.svg'
+import userImg from '~/assets/images/user.png'
+import { Avatar, Button, Card, ImagesBox, PageHeader, TextField } from '~/components'
+import { useUserSelector } from '~/store/hooks'
 import { useUpdatePasswordMutation, useUpdateProfileMutation } from '~/store/services/auth.services'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
-import { useUserSelector } from '~/store/hooks'
+import './style.scss'
 
 const getAvatarContainerStyle = (borderColor: string): CSSProperties => {
   return {
@@ -41,7 +41,7 @@ const Settings = () => {
   const [updateProfile, { isLoading: isProfileLoading }]: any = useUpdateProfileMutation()
   const [uploadFile]: any = useUploadFileMutation()
   const [getFile]: any = useGetFileMutation()
-  const [numberCode, setNumberCode] = useState([])
+  // const [numberCode, setNumberCode] = useState([])
 
 
   useEffect(() => {
@@ -130,20 +130,20 @@ const Settings = () => {
       })
   }
 
-  useEffect(() => {
-    const numCode = getCountries().filter(
-      ({ code, dial_code }: { dial_code: string; code: string }) => {
-        if (code !== 'cx') {
-          return {
-            label: `${dial_code} - ${code.toUpperCase()}`,
-            value: dial_code
-          }
-        }
-      }
-    )
+  // useEffect(() => {
+  //   const numCode = getCountries().filter(
+  //     ({ code, dial_code }: { dial_code: string; code: string }) => {
+  //       if (code !== 'cx') {
+  //         return {
+  //           label: `${dial_code} - ${code.toUpperCase()}`,
+  //           value: dial_code
+  //         }
+  //       }
+  //     }
+  //   )
 
-    setNumberCode(numCode)
-  }, [])
+  //   setNumberCode(numCode)
+  // }, [])
   return (
     <div>
       <PageHeader title='Profile Setting' />

@@ -54,7 +54,7 @@ const CustomSelect = ({
           <ColorIcon color={color} />{' '}
           {getSelectedValueLabel() || <span className='custom-placeholder'>{placeholder}</span>}
         </Space>
-        <DownOutlined rev />
+        <DownOutlined  />
       </Space>
     </Dropdown>
   )

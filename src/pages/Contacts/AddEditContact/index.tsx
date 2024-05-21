@@ -1,24 +1,22 @@
 import { Col, Form, Row, Skeleton, Typography, message, theme } from 'antd'
 import { CSSProperties, useEffect, useState } from 'react'
-import userImg from '~/assets/images/user.png'
+import { FaPlus } from "react-icons/fa"
 import editIcon from '~/assets/icons/edit.svg'
 import {
   Avatar,
   BasicModal,
   Button,
   ImagesBox,
-  SelectField,
   TextArea,
   TextField
 } from '~/components'
-import './styles.scss'
 import {
   useCreateUserByIdMutation,
   useUpdateUserByIdMutation
 } from '~/store/services/contact.services'
-import { getCountries } from 'country-state-picker'
 import { useGetFileMutation, useUploadFileMutation } from '~/store/services/file.services'
-import { FaPlus } from "react-icons/fa";
+import './styles.scss'
+import { IconType } from 'react-icons'
 
 
 interface IAddEditContactProps {
@@ -46,7 +44,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
   const { useToken } = theme
   const [uploadFile]: any = useUploadFileMutation()
   const [getFile]: any = useGetFileMutation()
-  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | null>('')
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string | IconType |null>('')
   const [uploading, setUploading] = useState<boolean>(false)
   const {
     token: { colorTextTertiary }
@@ -145,7 +143,7 @@ const AddEditContact = ({ contact, handleClose, open, isEdit = false }: IAddEdit
       notes: contact?.notes,
       avatar: contact?.avatar ?? ''
     })
-    setUploadedImgUrl(contact?.avatar ?? <FaPlus/>)
+    setUploadedImgUrl(contact?.avatar ?? null)
   }, [contact, open])
 
   return (
