@@ -21,11 +21,7 @@ export const calenderActionItems: MenuProps['items'] = [
     key: '1',
     icon: <BsEye />
   },
-  {
-    label: 'Hide this from list',
-    key: '2',
-    icon: <BsEyeSlash />
-  },
+
   {
     label: 'Settings',
     key: '3',

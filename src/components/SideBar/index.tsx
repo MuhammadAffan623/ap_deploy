@@ -88,6 +88,8 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { isCalenderManagement } = usePermission()
   const [showAccordion, setShowAccordion] = useState(false)
 
+console.log(data?.data?.calendarItems,"123 321")
+
   const [deleteModal, setDeleteModal] = useState(false)
   const [selectedCalId, setSelectedCalId] = useState('')
   const [deleteCalender] = useDeleteCalenderMutation()
@@ -102,6 +104,30 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
       } else {
         setCheckedItems([...checkedItems, itemKey])
         dispatch(setCalendarIds([...checkedItems, itemKey]))
+      }
+    }
+
+
+    const handleClickItem = (e: any, id: string) => {
+      // e.stopPropagation()
+      setSelectedCalId(id)
+      switch (e.key) {
+        case '1':
+          setCheckedItems([id])
+          dispatch(setCalendarIds([id]))
+          console.log('display this only')
+          break
+        case '2':
+          console.log('hide this from list')
+          break
+        case '3':
+          console.log('setting')
+          break
+        case '4':
+          setDeleteModal(true)
+          break
+        default:
+          return null
       }
     }
     /* eslint-disable */
@@ -128,25 +154,25 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
               <div>
                 {data?.data?.calendarItems.map((item: ICalender) => (
                   // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                  <div
-                    style={innerDiv}
-                    key={item._id}
-                    onClick={() => handleItemClick(item._id)}
-                    className='sidebarMenu'
-                  >
+                  <div style={innerDiv} key={item._id} className='sidebarMenu'>
                     <div
                       className='coloring'
                       style={{ '--checkbox-bg-color': item.color } as React.CSSProperties}
                     >
-                      <Checkbox checked={checkedItems.includes(item._id)} />
+                      <Checkbox
+                        onClick={() => handleItemClick(item._id)}
+                        checked={checkedItems.includes(item._id)}
+                      />
                     </div>
                     <span style={calenderTitle}>{item.name}</span>
-                    <div >
+                    <div>
                       <DropDown
                         dot
                         overlayClassName='popupStyling'
                         items={calenderActionItems}
-                        onPopupClick={(e) => handleClickItem(e, item._id)}
+                        onPopupClick={(e) => {
+                          handleClickItem(e, item._id)
+                        }}
                         color='white'
                       />
                     </div>
@@ -192,26 +218,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
     dispatch(setCalenderModalOpen())
   }
 
-  const handleClickItem = (e: any, id: string) => {
-    // e.stopPropagation()
-    setSelectedCalId(id)
-    switch (e.key) {
-      case '1':
-        console.log('hide this from list')
-        break
-      case '2':
-        console.log('display this only')
-        break
-      case '3':
-        console.log('setting')
-        break
-      case '4':
-        setDeleteModal(true)
-        break
-      default:
-        return null
-    }
-  }
+ 
 
   const confirmToDelete = () => {
     if (selectedCalId) {
