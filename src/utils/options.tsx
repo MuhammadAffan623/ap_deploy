@@ -1,6 +1,6 @@
-import { MenuProps } from 'antd'
 import { DeleteOutlined, SwitcherOutlined } from '@ant-design/icons'
-import { BsEye, BsEyeSlash, BsGear, BsTrash } from 'react-icons/bs'
+import { MenuProps } from 'antd'
+import { BsEye, BsGear, BsTrash } from 'react-icons/bs'
 
 export const itemsActions: MenuProps['items'] = [
   {
