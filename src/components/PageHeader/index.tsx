@@ -49,7 +49,7 @@ const PageHeader = ({
           <Button
             type='primary'
             size='large'
-            icon={<PlusOutlined  />}
+            icon={<PlusOutlined rev='rev' />}
             onClick={onButtonClick}
             className='btn'
             disabled={btnLoader}

@@ -119,7 +119,7 @@ export const columns = (
                 }}
                 style={btnStyle}
               >
-                <MoreOutlined  style={{ fontSize: '22px' }} />
+                <MoreOutlined  rev='rev' style={{ fontSize: '22px' }} />
               </button>
             </Dropdown>
           </Space>
