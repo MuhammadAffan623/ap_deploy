@@ -97,7 +97,7 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
               }}
               style={btnStyle}
             >
-              <EllipsisOutlined rev />
+              <EllipsisOutlined  />
             </button>
           </Dropdown>
         </Space>

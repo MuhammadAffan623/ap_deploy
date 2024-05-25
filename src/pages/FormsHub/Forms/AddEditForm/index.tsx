@@ -23,7 +23,7 @@ const AddEditForm = ({
   refetch
 }: IAddEditLibraryProps) => {
   const [form] = Form.useForm()
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
+  const [uploadedUrl, setUploadedUrl] = useState<any>(null)
   const [uploading, setUploading] = useState<boolean>(false)
   const [uploadFile] = useUploadFileMutation()
   const [getFile] = useGetFileMutation()
@@ -33,7 +33,7 @@ const AddEditForm = ({
   const handleFormSubmit = (values: any) => {
     const body = {
       ...values,
-      file: uploadedUrl
+      file: uploadedUrl?._id
     }
     if (isEdit) {
       updateForm({ id: editItem?._id, ...body })
@@ -72,11 +72,15 @@ const AddEditForm = ({
           key: res.data.uploadedFile.key,
           versionId: res.data.uploadedFile.s3VersionId
         }
+        const dummyObj = {
+          _id:res?.data?.file?._id,
+          versions:[res?.data?.uploadedFile]
+        }
         getFile(params)
           .unwrap()
           .then(() => {
             setUploading(false)
-            setUploadedUrl(res.data.file._id)
+            setUploadedUrl(dummyObj)
             form.setFieldValue('file', res.data.file._id)
             message.success('File uploaded successfully')
           })
@@ -98,7 +102,7 @@ const AddEditForm = ({
         owner: editItem.owner,
         status: editItem.status
       })
-      setUploadedUrl(editItem.file?._id)
+      setUploadedUrl(editItem.file)
     } else {
       form.resetFields()
       setUploadedUrl(null)
@@ -122,10 +126,10 @@ const AddEditForm = ({
       >
         <Row gutter={[16, 16]}>
           <Col span={24}>
-            <TextField name='name' label='Name' placeholder='Enter Name' required />
+            <TextField name='name' label='Name*' placeholder='Enter Name' required />
           </Col>
           <Col span={24}>
-            <TextField name='owner' label='Owner' placeholder='Enter Owner Name' required />
+            <TextField name='owner' label='Owner*' placeholder='Enter Owner Name' required />
           </Col>
 
           {editItem && (
@@ -145,7 +149,7 @@ const AddEditForm = ({
           <Col span={24}>
             <Divider style={{ border: '1px solid rgba(151, 151, 151, 1)' }} />
             <div>
-              <FileDropper handleUpload={handleUpload} isLoading={uploading} />
+              <FileDropper  uploadedUrl={uploadedUrl} setUploadedUrl={setUploadedUrl} handleUpload={handleUpload} isLoading={uploading} />
             </div>
           </Col>
 

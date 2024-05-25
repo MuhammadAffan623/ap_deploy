@@ -56,7 +56,7 @@ export const columns = (
       title: 'STATUS',
       dataIndex: 'isActive',
       key: 'isActive',
-      sorter: (a, b) => a.status.length - b.status.length,
+      sorter: (a, b) =>  a?.isActive - b?.isActive,
       sortDirections: ['descend'],
       render: (_, { isActive }) => {
         const text = isActive ? 'Available' : 'Disabled'
@@ -97,7 +97,7 @@ export const columns = (
                 }}
                 style={btnStyle}
               >
-                <MoreOutlined rev style={{ fontSize: '22px' }} />
+                <MoreOutlined  style={{ fontSize: '22px' }} />
               </button>
             </Dropdown>
           </Space>

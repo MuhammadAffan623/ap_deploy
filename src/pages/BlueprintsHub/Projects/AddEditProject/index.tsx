@@ -192,7 +192,7 @@ const AddEditProject = ({
                       onChange={onNameChange}
                       onKeyDown={(e) => e.stopPropagation()}
                     />
-                    <Button type='text' icon={<PlusOutlined rev={false} />} onClick={addItem}>
+                    <Button type='text' icon={<PlusOutlined  />} onClick={addItem}>
                       Add item
                     </Button>
                   </Space>

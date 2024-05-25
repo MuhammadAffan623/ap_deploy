@@ -19,13 +19,13 @@ const UserPopup = ({ user, sm }: { user: IUser | null; sm: boolean | undefined }
     ? {
         key: '1',
         label: <Link to='/settings'>Account Settings</Link>,
-        icon: <SettingOutlined rev />
+        icon: <SettingOutlined  />
       }
     : null,
     {
       key: '2',
       label: 'Logout',
-      icon: <LogoutOutlined rev />,
+      icon: <LogoutOutlined  />,
       onClick: () => dispatch(logout())
     }
   ]

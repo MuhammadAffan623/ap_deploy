@@ -103,7 +103,7 @@ export const columns = (
                 }}
                 style={btnStyle}
               >
-                <EllipsisOutlined rev />
+                <EllipsisOutlined  />
               </button>
             </Dropdown>
           </Space>
@@ -198,7 +198,7 @@ export const Bluecolumns = (handleResolve: any, handleDelete: any): ColumnsType<
               }}
               style={btnStyle}
             >
-              <EllipsisOutlined rev />
+              <EllipsisOutlined  />
             </button>
           </Dropdown>
         </Space>
@@ -266,7 +266,7 @@ export const BlueProjectcolumns = (handleResolve: any, handleDelete: any): Colum
               }}
               style={btnStyle}
             >
-              <EllipsisOutlined rev />
+              <EllipsisOutlined  />
             </button>
           </Dropdown>
         </Space>
