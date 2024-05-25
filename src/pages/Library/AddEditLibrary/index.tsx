@@ -175,7 +175,7 @@ const AddEditLibrary = ({
                       onChange={onNameChange}
                       onKeyDown={(e) => e.stopPropagation()}
                     />
-                    <Button type='text' icon={<PlusOutlined  />} onClick={addItem}>
+                    <Button type='text' icon={<PlusOutlined rev='rev'  />} onClick={addItem}>
                       Add item
                     </Button>
                   </Space>
