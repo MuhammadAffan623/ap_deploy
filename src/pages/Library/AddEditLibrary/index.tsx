@@ -43,8 +43,6 @@ const AddEditLibrary = ({
   const [createLibrary] = useCreateLibraryMutation()
   const [updateLibrary] = useUpdateLibraryMutation()
 
-  console.log(library, 'library library library')
-
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value)
   }
@@ -109,7 +107,6 @@ const AddEditLibrary = ({
               key: response?.data,
               versions: [res?.data?.uploadedFile]
             }
-            console.log(dummyObj, 'dummyObj dummyObj dummyObj')
             setUploading(false)
             setUploadedUrl(dummyObj)
             form.setFieldValue('fileUrl', response.data)
