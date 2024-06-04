@@ -22,6 +22,7 @@ const items: MenuProps['items'] = [
   }
 ]
 
+
 export const columns = (
   handleResolve: any,
   handleDelete: any,
@@ -49,7 +50,7 @@ export const columns = (
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
       sortDirections: ['descend'],
-      render: ({ updatedAt }) => formatDate(updatedAt)
+      render: ( updatedAt ) => formatDate(updatedAt)
     },
 
     {

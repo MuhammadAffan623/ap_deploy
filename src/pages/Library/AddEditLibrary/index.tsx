@@ -165,12 +165,12 @@ const AddEditLibrary = ({
       >
         <Row gutter={[16, 16]}>
           <Col span={24} md={12}>
-            <TextField name='title' label='Title' placeholder='Enter Title' required />
+            <TextField name='title' label='Title*' placeholder='Enter Title' required />
           </Col>
           <Col span={24} md={12}>
             <SelectField
               name='category'
-              label='Category'
+              label='Category*'
               options={items?.map((item) => ({ label: item, value: item }))}
               inverseBg
               placeholder='select category'
@@ -205,12 +205,12 @@ const AddEditLibrary = ({
             />
           </Col>
           <Col span={24} md={12}>
-            <TextField name='fileUrl' label='Direct URL' placeholder='Enter url' required />
+            <TextField name='fileUrl' label='Direct URL*' placeholder='Enter url' required />
           </Col>
           <Col span={24} md={12}>
             <DatePicker
               name='selectedDate'
-              label=' '
+              label='Select Date*'
               placeholder='Select Date'
               style={{ marginTop: '3px' }}
               fullWidth
