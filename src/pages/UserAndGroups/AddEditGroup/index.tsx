@@ -38,7 +38,7 @@ const AddEditGroup = () => {
     blueprintHubPermissions: [],
     calendarPermissions: []
   })
-
+  console.log(permissions, 'permissions permissions permissions')
   const [advancedPermissionsModalOpen, setAdvancedPermissionsModalOpen] = useState(false)
   const [editingGroup, setEditingGroup] = useState<any>(null)
   const [createGroup, { isLoading }] = useCreateGroupsMutation()
@@ -195,13 +195,89 @@ const AddEditGroup = () => {
                               name={permission.value}
                               selectedPermissions={permissions.managementPermissions}
                               childrenPermissions={permission?.children ?? []}
-                              onChange={(value, name) => {
+                              onChange={(value, name, label) => {
                                 handlePermissionChange(
                                   value,
                                   name,
-                                  permission.label,
+                                  label as string,
                                   'managementPermissions'
                                 )
+
+                                if (name === 'management_forms_hub' && value) {
+                                  const formsHubUserPermissions = [
+                                    { name: 'Form Templates', key: 'user_form_templates' },
+                                    { name: 'Forms', key: 'user_forms' },
+                                    { name: 'Public Forms', key: 'user_public_forms' },
+                                    { name: 'Delivery Activity', key: 'user_delivery_activity' }
+                                  ]
+                                  setPermissions((prevPermissions) => ({
+                                    ...prevPermissions,
+                                    userPermissions: [
+                                      ...prevPermissions.userPermissions,
+                                      ...formsHubUserPermissions.filter(
+                                        (perm) =>
+                                          !prevPermissions.userPermissions.some(
+                                            (p) => p.key === perm.key
+                                          )
+                                      )
+                                    ]
+                                  }))
+                                } else if (name === 'management_forms_hub' && !value) {
+                                  const formsHubUserKeys = [
+                                    'user_form_templates',
+                                    'user_forms',
+                                    'user_public_forms',
+                                    'user_delivery_activity'
+                                  ]
+                                  setPermissions((prevPermissions) => ({
+                                    ...prevPermissions,
+                                    userPermissions: prevPermissions.userPermissions.filter(
+                                      (p) => !formsHubUserKeys.includes(p.key)
+                                    )
+                                  }))
+                                }
+
+                                if (name === 'management_blueprints_hub' && value) {
+                                  const blueprintsHubUserPermission = {
+                                    name: 'Projects',
+                                    key: 'user_projects'
+                                  }
+                                  if (
+                                    !permissions.userPermissions.some(
+                                      (p) => p.key === blueprintsHubUserPermission.key
+                                    )
+                                  ) {
+                                    setPermissions((prevPermissions) => ({
+                                      ...prevPermissions,
+                                      userPermissions: [
+                                        ...prevPermissions.userPermissions,
+                                        blueprintsHubUserPermission
+                                      ]
+                                    }))
+                                  }
+                                } else if (name === 'management_blueprints_hub' && !value) {
+                                  setPermissions((prevPermissions) => ({
+                                    ...prevPermissions,
+                                    userPermissions: prevPermissions.userPermissions.filter(
+                                      (p) => p.key !== 'user_projects'
+                                    )
+                                  }))
+                                }
+
+                                const userPerm = userPermissions.find((p) => p.label === label)
+                                if (userPerm) {
+                                  setPermissions((prevPermissions) => ({
+                                    ...prevPermissions,
+                                    userPermissions: value
+                                      ? [
+                                          ...prevPermissions.userPermissions,
+                                          { name: userPerm.label, key: userPerm.value }
+                                        ]
+                                      : prevPermissions.userPermissions.filter(
+                                          (p) => p.key !== userPerm.value
+                                        )
+                                  }))
+                                }
                               }}
                               description=''
                             />
@@ -243,6 +319,13 @@ const AddEditGroup = () => {
                               name={permission.value}
                               selectedPermissions={permissions.userPermissions}
                               onChange={(value, name, label) => {
+                                console.log(
+                                  value,
+                                  name,
+                                  label as string,
+                                  'userPermissions',
+                                  'childddd'
+                                )
                                 handlePermissionChange(
                                   value,
                                   name,
