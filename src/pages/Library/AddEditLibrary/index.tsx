@@ -10,6 +10,7 @@ import {
   useCreateLibraryMutation,
   useUpdateLibraryMutation
 } from '~/store/services/library.service'
+import dayjs from 'dayjs'
 
 interface IAddEditLibraryProps {
   open: boolean
@@ -35,7 +36,7 @@ const AddEditLibrary = ({
   const inputRef = useRef<InputRef>(null)
 
   const [form] = Form.useForm()
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
+  const [uploadedUrl, setUploadedUrl] = useState<any>(null)
   const [uploading, setUploading] = useState<boolean>(false)
   const [uploadFile] = useUploadFileMutation()
   const [getFile] = useGetFileMutation()
@@ -59,7 +60,7 @@ const AddEditLibrary = ({
     const body = {
       ...values,
       selectedDate: new Date(values.selectedDate).toISOString(),
-      fileUrl: uploadedUrl
+      fileUrl: uploadedUrl?.key
     }
     if (isEdit) {
       updateLibrary({ libraries: [library?._id], libraryValues: { ...body } })
@@ -98,11 +99,16 @@ const AddEditLibrary = ({
           key: res.data.uploadedFile.key,
           versionId: res.data.uploadedFile.s3VersionId
         }
+
         getFile(params)
           .unwrap()
           .then((response: any) => {
+            const dummyObj = {
+              key: response?.data,
+              versions: [res?.data?.uploadedFile]
+            }
             setUploading(false)
-            setUploadedUrl(response.data)
+            setUploadedUrl(dummyObj)
             form.setFieldValue('fileUrl', response.data)
             message.success('File uploaded successfully')
           })
@@ -119,12 +125,21 @@ const AddEditLibrary = ({
 
   useEffect(() => {
     if (library) {
+      const date = new Date(library?.selectedDate)
+      const isoString = date.toISOString()
+
       form.setFieldsValue({
         title: library.title,
         category: library.category,
         status: library.status,
-        fileUrl: library.fileUrl
+        fileUrl: library.fileUrl,
+        selectedDate: dayjs(isoString)
       })
+      const dummyObj = {
+        key: library.fileUrl,
+        versions: [{ key: 'File Already' }]
+      }
+      setUploadedUrl(dummyObj)
     } else {
       form.resetFields()
     }
@@ -150,12 +165,12 @@ const AddEditLibrary = ({
       >
         <Row gutter={[16, 16]}>
           <Col span={24} md={12}>
-            <TextField name='title' label='Title' placeholder='Enter Title' required />
+            <TextField name='title' label='Title*' placeholder='Enter Title' required />
           </Col>
           <Col span={24} md={12}>
             <SelectField
               name='category'
-              label='Category'
+              label='Category*'
               options={items?.map((item) => ({ label: item, value: item }))}
               inverseBg
               placeholder='select category'
@@ -175,7 +190,13 @@ const AddEditLibrary = ({
                       onChange={onNameChange}
                       onKeyDown={(e) => e.stopPropagation()}
                     />
-                    <Button type='text' icon={<PlusOutlined rev='rev'  />} onClick={addItem}>
+                    <Button
+                      type='text'
+                      icon={<PlusOutlined rev='rev' />}
+                      onClick={(e:any) => {
+                        inputRef?.current?.input?.value && addItem(e)
+                      }}
+                    >
                       Add item
                     </Button>
                   </Space>
@@ -184,12 +205,12 @@ const AddEditLibrary = ({
             />
           </Col>
           <Col span={24} md={12}>
-            <TextField name='fileUrl' label='Direct URL' placeholder='Enter url' required />
+            <TextField name='fileUrl' label='Direct URL*' placeholder='Enter url' required />
           </Col>
           <Col span={24} md={12}>
             <DatePicker
               name='selectedDate'
-              label=' '
+              label='Select Date*'
               placeholder='Select Date'
               style={{ marginTop: '3px' }}
               fullWidth
@@ -199,7 +220,12 @@ const AddEditLibrary = ({
           <Col span={24}>
             <Divider style={{ border: '1px solid rgba(151, 151, 151, 1)' }} />
             <div>
-              <LibraryFileDropper handleUpload={handleUpload} isLoading={uploading} />
+              <LibraryFileDropper
+                uploadedUrl={uploadedUrl}
+                setUploadedUrl={setUploadedUrl}
+                handleUpload={handleUpload}
+                isLoading={uploading}
+              />
             </div>
           </Col>
 
