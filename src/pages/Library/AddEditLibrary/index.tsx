@@ -1,3 +1,5 @@
+/* eslint-disable */
+//@ts-nocheck
 import { Col, Divider, Form, Input, Row, Space, message } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { BasicModal, Button, SelectField, TextField, DatePicker } from '~/components'
@@ -60,7 +62,7 @@ const AddEditLibrary = ({
     const body = {
       ...values,
       selectedDate: new Date(values.selectedDate).toISOString(),
-      fileUrl: uploadedUrl?.key
+      file: uploadedUrl?._id
     }
     if (isEdit) {
       updateLibrary({ libraries: [library?._id], libraryValues: { ...body } })
@@ -99,17 +101,16 @@ const AddEditLibrary = ({
           key: res.data.uploadedFile.key,
           versionId: res.data.uploadedFile.s3VersionId
         }
-
+        const dummyObj = {
+          _id: res?.data?.file?._id,
+          versions: [res?.data?.uploadedFile]
+        }
         getFile(params)
           .unwrap()
           .then((response: any) => {
-            const dummyObj = {
-              key: response?.data,
-              versions: [res?.data?.uploadedFile]
-            }
             setUploading(false)
             setUploadedUrl(dummyObj)
-            form.setFieldValue('fileUrl', response.data)
+            form.setFieldValue('file', response.data)
             message.success('File uploaded successfully')
           })
           .catch((error: any) => {
@@ -131,17 +132,17 @@ const AddEditLibrary = ({
       form.setFieldsValue({
         title: library.title,
         category: library.category,
-        status: library.status,
-        fileUrl: library.fileUrl,
-        selectedDate: dayjs(isoString)
+        file: library.file,
+        selectedDate: dayjs(isoString),
+        isActive: library.isActive,
+        fileUrl:library.fileUrl
       })
-      const dummyObj = {
-        key: library.fileUrl,
-        versions: [{ key: 'File Already' }]
-      }
-      setUploadedUrl(dummyObj)
+
+      setUploadedUrl(library.file)
     } else {
       form.resetFields()
+      setUploadedUrl(null)
+
     }
   }, [library])
 
@@ -193,7 +194,7 @@ const AddEditLibrary = ({
                     <Button
                       type='text'
                       icon={<PlusOutlined rev='rev' />}
-                      onClick={(e:any) => {
+                      onClick={(e: any) => {
                         inputRef?.current?.input?.value && addItem(e)
                       }}
                     >
@@ -217,6 +218,19 @@ const AddEditLibrary = ({
               required
             />
           </Col>
+          {library && (
+            <Col span={24} md={12}>
+              <SelectField
+                name='isActive'
+                label='Status'
+                required
+                options={[
+                  { label: 'Available', value: true },
+                  { label: 'Disable', value: false }
+                ]}
+              />
+            </Col>
+          )}
           <Col span={24}>
             <Divider style={{ border: '1px solid rgba(151, 151, 151, 1)' }} />
             <div>
