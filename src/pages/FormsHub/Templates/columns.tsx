@@ -48,7 +48,8 @@ export const columns = (
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
       sortDirections: ['descend'],
-      render: ( updatedAt ) => formatDate(updatedAt)
+      render: (updatedAt ) => { 
+        return formatDate(updatedAt)}
     },
     {
       title: 'VERSION',
@@ -147,7 +148,7 @@ export const Bluecolumns = (handleResolve: any, handleDelete: any): ColumnsType<
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
       sortDirections: ['descend'],
-      render: ({ updatedAt }) => formatDate(updatedAt)
+      render: ( updatedAt ) => formatDate(updatedAt)
     },
     {
       title: 'VERSION',

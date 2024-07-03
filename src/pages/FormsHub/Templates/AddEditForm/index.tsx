@@ -33,7 +33,6 @@ const AddEditForm = ({
   const [createTemplate] = useCreateTemplateMutation()
   const [updateTemplate] = useUpdateTemplatesMutation()
 
-
   const handleFormSubmit = (values: any) => {
     const body = {
       ...values,
@@ -59,6 +58,8 @@ const AddEditForm = ({
           refetch()
           form.resetFields()
           message.success(res.message)
+      setUploadedUrl(null)
+
         })
         .catch((err) => {
           message.error(err?.data?.error)
@@ -78,8 +79,8 @@ const AddEditForm = ({
         }
 
         const dummyObj = {
-          _id:res?.data?.file?._id,
-          versions:[res?.data?.uploadedFile]
+          _id: res?.data?.file?._id,
+          versions: [res?.data?.uploadedFile]
         }
         getFile(params)
           .unwrap()
@@ -102,8 +103,6 @@ const AddEditForm = ({
 
   useEffect(() => {
     if (editItem) {
-
-      console.log(editItem,"editItem editItem editItem")
       form.setFieldsValue({
         name: editItem.name,
         folder: editItem.folder,
@@ -112,6 +111,9 @@ const AddEditForm = ({
       setUploadedUrl(editItem.file)
     } else {
       form.resetFields()
+      setUploadedUrl(null)
+    }
+    return () => {
       setUploadedUrl(null)
     }
   }, [editItem])
@@ -144,6 +146,7 @@ const AddEditForm = ({
               name='status'
               label='Status*'
               required
+              placeholder="Select Status"
               options={[
                 { label: 'Available', value: 'Available' },
                 { label: 'Disabled', value: 'Disabled' },
@@ -155,7 +158,12 @@ const AddEditForm = ({
           <Col span={24}>
             <Divider style={{ border: '1px solid rgba(151, 151, 151, 1)' }} />
             <div>
-              <FileDropper uploadedUrl={uploadedUrl} setUploadedUrl={setUploadedUrl} handleUpload={handleUpload} isLoading={uploading} />
+              <FileDropper
+                uploadedUrl={uploadedUrl}
+                setUploadedUrl={setUploadedUrl}
+                handleUpload={handleUpload}
+                isLoading={uploading}
+              />
             </div>
           </Col>
 

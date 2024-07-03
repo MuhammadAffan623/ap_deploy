@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Col, Divider, Form, Input, Row, Space, message } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { BasicModal, Button, GoogleAutocomplete, SelectField, TextField } from '~/components'

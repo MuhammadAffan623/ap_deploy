@@ -73,8 +73,8 @@ const AddEditForm = ({
           versionId: res.data.uploadedFile.s3VersionId
         }
         const dummyObj = {
-          _id:res?.data?.file?._id,
-          versions:[res?.data?.uploadedFile]
+          _id: res?.data?.file?._id,
+          versions: [res?.data?.uploadedFile]
         }
         getFile(params)
           .unwrap()
@@ -128,7 +128,12 @@ const AddEditForm = ({
           <Col span={24}>
             <TextField name='name' label='Name*' placeholder='Enter Name' required />
           </Col>
-          <Col span={24}>
+          <Col
+            span={24}
+            style={{
+              height: '67px'
+            }}
+          >
             <TextField name='owner' label='Owner*' placeholder='Enter Owner Name' required />
           </Col>
 
@@ -149,7 +154,12 @@ const AddEditForm = ({
           <Col span={24}>
             <Divider style={{ border: '1px solid rgba(151, 151, 151, 1)' }} />
             <div>
-              <FileDropper  uploadedUrl={uploadedUrl} setUploadedUrl={setUploadedUrl} handleUpload={handleUpload} isLoading={uploading} />
+              <FileDropper
+                uploadedUrl={uploadedUrl}
+                setUploadedUrl={setUploadedUrl}
+                handleUpload={handleUpload}
+                isLoading={uploading}
+              />
             </div>
           </Col>
 

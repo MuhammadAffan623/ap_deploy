@@ -65,6 +65,8 @@ const AddEditLibrary = ({
       file: uploadedUrl?._id
     }
     if (isEdit) {
+      if (!uploadedUrl) return message.error('please upload file')
+
       updateLibrary({ libraries: [library?._id], libraryValues: { ...body } })
         .unwrap()
         .then((res: any) => {
@@ -77,6 +79,7 @@ const AddEditLibrary = ({
           message.error(err?.data?.error)
         })
     } else {
+      if (!uploadedUrl) return message.error('please upload file')
       createLibrary(body)
         .unwrap()
         .then((res) => {
@@ -135,20 +138,21 @@ const AddEditLibrary = ({
         file: library.file,
         selectedDate: dayjs(isoString),
         isActive: library.isActive,
-        fileUrl:library.fileUrl
+        fileUrl: library.fileUrl
       })
 
       setUploadedUrl(library.file)
     } else {
       form.resetFields()
       setUploadedUrl(null)
-
     }
   }, [library])
 
   useEffect(() => {
     setItems(categories)
+    
   }, [categories])
+ 
 
   return (
     <BasicModal
