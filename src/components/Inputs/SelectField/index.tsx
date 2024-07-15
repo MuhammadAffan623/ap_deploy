@@ -84,8 +84,7 @@ const SelectField = ({
         }}
         {...rest}
       />
-     <div>
-     </div>
+   
     </Form.Item>
 
   )

@@ -101,7 +101,7 @@ const Calender: React.FC = () => {
         end: subtractFiveHours(new Date(ele?.end)),
         endt: subtractFiveHours(new Date(ele?.end)),
         display: 'block',
-        backgroundColor: ele.backgroundColor + '7a'
+        backgroundColor: ele.calendarColor + '7a'
       }
     })
     setUpdatedDate(updatedEvents)

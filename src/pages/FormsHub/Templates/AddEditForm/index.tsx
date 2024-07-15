@@ -117,7 +117,11 @@ const AddEditForm = ({
       setUploadedUrl(null)
     }
   }, [editItem])
-
+  const options = [
+    { label: 'Available', value: 'Available' },
+    { label: 'Disabled', value: 'Disabled' },
+    { label: 'Archived', value: 'Archived' }
+  ];
   return (
     <BasicModal
       open={open}
@@ -131,7 +135,7 @@ const AddEditForm = ({
         layout='vertical'
         onFinish={handleFormSubmit}
         className='add-edit-library-form'
-        initialValues={{ name: '', owner: '', status: '', file: '' }}
+        initialValues={{ name: '', owner: '', status:  options[0].value, file: '' }}
       >
         <Row gutter={[16, 16]}>
           <Col span={24} md={12}>
@@ -147,11 +151,7 @@ const AddEditForm = ({
               label='Status*'
               required
               placeholder="Select Status"
-              options={[
-                { label: 'Available', value: 'Available' },
-                { label: 'Disabled', value: 'Disabled' },
-                { label: 'Archived', value: 'Archived' }
-              ]}
+              options={options}
             />
           </Col>
 

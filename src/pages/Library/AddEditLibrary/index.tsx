@@ -35,8 +35,9 @@ const AddEditLibrary = ({
 }: IAddEditLibraryProps) => {
   const [items, setItems] = useState<string[]>([])
   const [name, setName] = useState('')
-  const inputRef = useRef<InputRef>(null)
+  const [showMsg, setShowMsg] = useState(false)
 
+  const inputRef = useRef<InputRef>(null)
   const [form] = Form.useForm()
   const [uploadedUrl, setUploadedUrl] = useState<any>(null)
   const [uploading, setUploading] = useState<boolean>(false)
@@ -53,6 +54,7 @@ const AddEditLibrary = ({
     e.preventDefault()
     setItems([...items, name || `New item ${index++}`])
     setName('')
+    setShowMsg(true)
     setTimeout(() => {
       inputRef.current?.focus()
     }, 0)
@@ -208,6 +210,7 @@ const AddEditLibrary = ({
                 </>
               )}
             />
+            {showMsg && "Category will only be saved upon submission"}
           </Col>
           <Col span={24} md={12}>
             <TextField name='fileUrl' label='Direct URL*' placeholder='Enter url' required />

@@ -29,7 +29,6 @@ const Settings = () => {
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
   const { useToken } = theme
-
   const {
     token: { colorTextTertiary }
   } = useToken()
@@ -198,33 +197,24 @@ const Settings = () => {
                         </Typography.Text>
                       </Col>
                       <Col span={24}>
-                        <Row className='phone-number-combined-field'>
-                          {/* <SelectField
-                            name='countryCode'
-                            options={numberCode.map(
-                              ({ code, dial_code }: { dial_code: string; code: string }) => ({
-                                label: `${dial_code} - ${code.toUpperCase()}`,
-        
-                                value: dial_code
-                              })
-                            )}
-                            inverseBg
-                            placeholder='code'
-                            defaultActiveFirstOption
-                            formItemClass='country-code-select-field'
-                            style={{ border: 'none', width: '100%' }}
-                          /> */}
-                          <TextField
+                       <Row >
+                          <Form.Item
                             name='phoneNo'
-                            placeholder='Enter phone'
-                            required
-                            formItemClass='phone-number-form-item'
-                            onChange={(e) => {
-                              const cleanedValue = e.target.value.replace(/\D/g, '');
-                              form.setFieldValue("phoneNo",cleanedValue)
-                          }}
                           
-                          />
+                            rules={[
+                              { required: true, message: 'Please enter your phone number' }
+                            ]}
+                          >
+                            <TextField
+                            name='phoneNo'
+
+                              placeholder='Enter phone'
+                              onChange={(e) => {
+                                const cleanedValue = e.target.value.replace(/\D/g, '');
+                                form.setFieldValue("phoneNo", cleanedValue)
+                              }}
+                            />
+                          </Form.Item>
                         </Row>
                       </Col>
                     </Row>

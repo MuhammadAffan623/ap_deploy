@@ -124,15 +124,14 @@ const AddEditForm = ({
         className='add-edit-library-form'
         initialValues={{ name: '', owner: '', status: '', file: '' }}
       >
-        <Row gutter={[16, 16]}>
-          <Col span={24}>
+        <Row>
+          <Col className={"input_css"} span={24}
+          >
             <TextField name='name' label='Name*' placeholder='Enter Name' required />
           </Col>
           <Col
             span={24}
-            style={{
-              height: '67px'
-            }}
+            className={"input_css"}
           >
             <TextField name='owner' label='Owner*' placeholder='Enter Owner Name' required />
           </Col>
