@@ -321,7 +321,7 @@ console.log(data?.data?.calendarItems,"123 321")
         open={deleteModal}
         onCancel={() => setDeleteModal(false)}
         onOk={confirmToDelete}
-        message='Are you sure you want to delete this calender?'
+        message='Are you sure you want to delete this calendar?'
       />
     </SidebarWrapper>
   )

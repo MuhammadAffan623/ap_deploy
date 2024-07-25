@@ -94,6 +94,8 @@ const AddEditLibrary = ({
           message.error(err?.data?.error)
         })
     }
+    setUploadedUrl(null)
+    setShowMsg(false)
   }
 
   const handleUpload = (formData: FormData) => {
@@ -148,13 +150,15 @@ const AddEditLibrary = ({
       form.resetFields()
       setUploadedUrl(null)
     }
+
+    return () => {
+      setUploadedUrl(null)
+    }
   }, [library])
 
   useEffect(() => {
     setItems(categories)
-    
   }, [categories])
- 
 
   return (
     <BasicModal
@@ -210,7 +214,7 @@ const AddEditLibrary = ({
                 </>
               )}
             />
-            {showMsg && "Category will only be saved upon submission"}
+            {showMsg && 'Category will only be saved upon submission'}
           </Col>
           <Col span={24} md={12}>
             <TextField name='fileUrl' label='Direct URL*' placeholder='Enter url' required />

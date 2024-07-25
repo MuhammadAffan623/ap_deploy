@@ -49,7 +49,7 @@ const AddNewCalender = ({ handleClose }: IProps) => {
       <Button onClick={handleClose} className='new-calender-close'>
         <BsX />
       </Button>
-      <Typography.Title level={3}>New Calender</Typography.Title>
+      <Typography.Title level={3}>New Calendar</Typography.Title>
       <Form
         form={form}
         initialValues={initialValues}
