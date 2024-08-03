@@ -5,6 +5,11 @@
 
 [Deployed-url](https://apsone-frontend.web.app/)
 
+# Login details
+```
+email: karl@yopmail.com
+password: Client@123
+```
  Node Version
 
 ```
