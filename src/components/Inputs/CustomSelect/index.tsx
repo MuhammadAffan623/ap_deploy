@@ -3,6 +3,7 @@ import { DownOutlined } from '@ant-design/icons'
 import { Dropdown, Space } from 'antd'
 import './style.scss'
 import ColorIcon from '~/components/ColorIcon'
+import RevIcon from '~/components/RevIcons'
 
 export interface IItem {
   key: string
@@ -20,12 +21,13 @@ const CustomSelect = ({
   handleChange: (key: string) => void
   options: IItem[]
   placeholder: string
-  initialValue?: string;
+  initialValue?: string
 }) => {
   const [key, setKey] = useState(initialValue || 'liniting-schedule')
-  const [color, setColor] = useState(items.find((item: IItem) => item?.key === initialValue)?.color ||'tomato')
-  
-  
+  const [color, setColor] = useState(
+    items.find((item: IItem) => item?.key === initialValue)?.color || 'tomato'
+  )
+
   const handleSelect = ({ key }: { key: React.Key }) => {
     const findObj: IItem | undefined = items.find((item: IItem) => item?.key === key)
     setColor(findObj ? findObj.color : '')
@@ -35,10 +37,9 @@ const CustomSelect = ({
 
   const getSelectedValueLabel = () => {
     const findObj: IItem | undefined = items.find((item: IItem) => item?.key === key)
-    
+
     return findObj ? findObj?.label : ''
   }
-
 
   return (
     <Dropdown
@@ -54,7 +55,9 @@ const CustomSelect = ({
           <ColorIcon color={color} />{' '}
           {getSelectedValueLabel() || <span className='custom-placeholder'>{placeholder}</span>}
         </Space>
-        <DownOutlined rev='rev'/>
+        <RevIcon rev='rev'>
+          <DownOutlined />
+        </RevIcon>
       </Space>
     </Dropdown>
   )

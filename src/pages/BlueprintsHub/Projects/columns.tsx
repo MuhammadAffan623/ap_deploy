@@ -4,6 +4,7 @@ import { MoreOutlined } from '@ant-design/icons'
 import { Pill } from '~/components'
 import { CSSProperties } from 'react'
 import { formatDate } from '~/utils/helper'
+import RevIcon from '~/components/RevIcons'
 
 const btnStyle: CSSProperties = {
   border: 'none',
@@ -57,7 +58,7 @@ export const columns = (
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
       sortDirections: ['descend'],
-      render: ( updatedAt ) => formatDate(updatedAt)
+      render: (updatedAt) => formatDate(updatedAt)
     },
     {
       title: 'Version',
@@ -119,7 +120,9 @@ export const columns = (
                 }}
                 style={btnStyle}
               >
-                <MoreOutlined  rev='rev' style={{ fontSize: '22px' }} />
+                <RevIcon rev='rev'>
+                  <MoreOutlined style={{ fontSize: '22px' }} />
+                </RevIcon>
               </button>
             </Dropdown>
           </Space>

@@ -4,6 +4,7 @@ import { RxDashboard, RxLayers, RxFileText, RxCalendar, RxDotFilled } from 'reac
 import { AiOutlineMobile } from 'react-icons/ai'
 import { BsFolder2 } from 'react-icons/bs'
 import { PermissionEnums } from '~/enums/permission'
+import RevIcon from '../RevIcons'
 
 export const navigationMenuItems: MenuItem[] = [
   getMenuItem('Dashboard', '/dashboard', '', <RxDashboard size={20} />, null, 'menuItem'),
@@ -80,7 +81,9 @@ export const navigationMenuItems: MenuItem[] = [
     'User & Groups',
     '/user-and-groups',
     [PermissionEnums.MANAGEMENT_USERS_GROUPS],
-    <UserOutlined  rev='rev'/>,
+    <RevIcon rev='rev'>
+      <UserOutlined />
+    </RevIcon>,
     null,
     'menuItem'
   ),
@@ -88,7 +91,9 @@ export const navigationMenuItems: MenuItem[] = [
     'Settings',
     '/settings',
     [PermissionEnums.MANAGEMENT_SETTINGS],
-    <SettingOutlined rev='rev' />,
+    <RevIcon rev='rev'>
+      <SettingOutlined />
+    </RevIcon>,
     null,
     'menuItem'
   )

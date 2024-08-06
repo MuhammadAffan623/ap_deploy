@@ -3,6 +3,7 @@ import Button from '../Button/'
 import './style.scss'
 import SelectField from '../Inputs/SelectField/'
 import { PlusOutlined } from '@ant-design/icons'
+import RevIcon from '../RevIcons'
 
 interface IProps {
   title?: string
@@ -49,7 +50,13 @@ const PageHeader = ({
           <Button
             type='primary'
             size='large'
-            icon={<PlusOutlined rev='rev' />}
+            icon={
+              <>
+                <RevIcon rev='rev'>
+                  <PlusOutlined />
+                </RevIcon>
+              </>
+            }
             onClick={onButtonClick}
             className='btn'
             disabled={btnLoader}

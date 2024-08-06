@@ -9,23 +9,32 @@ import dropdownIcon from '~/assets/icons/arrow.svg'
 import { logout } from '~/store/features/user'
 import { useDispatch } from 'react-redux'
 import usePermission from '~/hooks/usePermission'
+import RevIcon from '../RevIcons'
 
 const UserPopup = ({ user, sm }: { user: IUser | null; sm: boolean | undefined }) => {
   const dispatch = useDispatch()
   const { isSettingsManagement } = usePermission()
 
   const items: MenuProps['items'] = [
-     isSettingsManagement
-    ? {
-        key: '1',
-        label: <Link to='/settings'>Account Settings</Link>,
-        icon: <SettingOutlined rev='rev' />
-      }
-    : null,
+    isSettingsManagement
+      ? {
+          key: '1',
+          label: <Link to='/settings'>Account Settings</Link>,
+          icon: (
+            <RevIcon rev='rev'>
+              <SettingOutlined />
+            </RevIcon>
+          )
+        }
+      : null,
     {
       key: '2',
       label: 'Logout',
-      icon: <LogoutOutlined  rev='rev'/>,
+      icon: (
+        <RevIcon rev='rev'>
+          <LogoutOutlined />
+        </RevIcon>
+      ),
       onClick: () => dispatch(logout())
     }
   ]

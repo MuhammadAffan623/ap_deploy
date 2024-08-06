@@ -2,6 +2,7 @@ import { CSSProperties, useEffect, useState } from 'react'
 import { Form, Input, InputProps, theme } from 'antd'
 import './style.scss'
 import SearchOutlined from '@ant-design/icons/SearchOutlined'
+import RevIcon from '~/components/RevIcons'
 
 interface IProps extends InputProps {
   styleFormItem?: CSSProperties
@@ -73,7 +74,13 @@ const SearchField = ({
           ...searchInverseStyles,
           ...style
         }}
-        prefix={<SearchOutlined rev='rev' style={searchFieldPrefixIconStyles} />}
+        prefix={
+          <>
+            <RevIcon rev='rev'>
+              <SearchOutlined style={searchFieldPrefixIconStyles} />
+            </RevIcon>
+          </>
+        }
         suffix={suffix}
         {...rest}
       />

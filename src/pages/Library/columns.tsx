@@ -4,6 +4,7 @@ import { MoreOutlined } from '@ant-design/icons'
 import { Pill } from '~/components'
 import { CSSProperties } from 'react'
 import { formatDate } from '~/utils/helper'
+import RevIcon from '~/components/RevIcons'
 
 const btnStyle: CSSProperties = {
   border: 'none',
@@ -21,7 +22,6 @@ const items: MenuProps['items'] = [
     label: 'Delete'
   }
 ]
-
 
 export const columns = (
   handleResolve: any,
@@ -50,14 +50,14 @@ export const columns = (
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
       sortDirections: ['descend'],
-      render: ( updatedAt ) => formatDate(updatedAt)
+      render: (updatedAt) => formatDate(updatedAt)
     },
 
     {
       title: 'STATUS',
       dataIndex: 'isActive',
       key: 'isActive',
-      sorter: (a, b) =>  a?.isActive - b?.isActive,
+      sorter: (a, b) => a?.isActive - b?.isActive,
       sortDirections: ['descend'],
       render: (_, { isActive }) => {
         const text = isActive ? 'Available' : 'Disabled'
@@ -98,7 +98,9 @@ export const columns = (
                 }}
                 style={btnStyle}
               >
-                <MoreOutlined rev='rev' style={{ fontSize: '22px' }} />
+                <RevIcon rev='rev'>
+                  <MoreOutlined style={{ fontSize: '22px' }} />
+                </RevIcon>
               </button>
             </Dropdown>
           </Space>

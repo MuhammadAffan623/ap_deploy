@@ -3,6 +3,7 @@ import { Dropdown, MenuProps, Space } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { CSSProperties } from 'react'
 import { Pill } from '~/components'
+import RevIcon from '~/components/RevIcons'
 
 const btnStyle: CSSProperties = {
   border: 'none',
@@ -37,9 +38,9 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
       key: 'group',
       sorter: (a, b) => a.group?.name.length - b.group?.name.length,
       // sortDirections: ['descend'],
-      render: (_, { group,userType }) => {
-        const text =  userType === "Admin" ? "Super Admin" :  group?.name
-        const textColor = userType === "Admin" ? "#fd3030" :'#304FFD'
+      render: (_, { group, userType }) => {
+        const text = userType === 'Admin' ? 'Super Admin' : group?.name
+        const textColor = userType === 'Admin' ? '#fd3030' : '#304FFD'
         const bgColor = '#304FFD1A'
         return <Pill text={text} textColor={textColor} bgColor={bgColor} />
       }
@@ -97,7 +98,9 @@ export const columns = (handleResolve: any, handleDelete: any): ColumnsType<any>
               }}
               style={btnStyle}
             >
-              <EllipsisOutlined rev='rev' />
+              <RevIcon rev='rev'>
+                <EllipsisOutlined />
+              </RevIcon>
             </button>
           </Dropdown>
         </Space>

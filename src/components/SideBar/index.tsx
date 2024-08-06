@@ -36,6 +36,7 @@ import DropDown from '../DropDown'
 import usePermission from '~/hooks/usePermission'
 import ConfirmationModal from '../ConfirmationModal'
 import { setCalendarIds } from '~/store/features/calender'
+import RevIcon from '../RevIcons'
 
 interface SidebarProps extends SiderProps {
   setCollapsed: (collapsed: boolean) => void
@@ -88,7 +89,7 @@ const SiderBar = ({ collapsible, collapsed, style, setCollapsed, ...rest }: Side
   const { isCalenderManagement } = usePermission()
   const [showAccordion, setShowAccordion] = useState(false)
 
-console.log(data?.data?.calendarItems,"123 321")
+  console.log(data?.data?.calendarItems, '123 321')
 
   const [deleteModal, setDeleteModal] = useState(false)
   const [selectedCalId, setSelectedCalId] = useState('')
@@ -106,7 +107,6 @@ console.log(data?.data?.calendarItems,"123 321")
         dispatch(setCalendarIds([...checkedItems, itemKey]))
       }
     }
-
 
     const handleClickItem = (e: any, id: string) => {
       // e.stopPropagation()
@@ -187,9 +187,20 @@ console.log(data?.data?.calendarItems,"123 321")
   }
 
   const logoutMenuItem: MenuItem[] = [
-    getMenuItem('Logout', 'logout', '', <LogoutOutlined rev='rev' />, null, 'menuItem', {}, () => {
-      dispatch(logout())
-    })
+    getMenuItem(
+      'Logout',
+      'logout',
+      '',
+      <RevIcon rev='rev' >
+        <LogoutOutlined />
+      </RevIcon>,
+      null,
+      'menuItem',
+      {},
+      () => {
+        dispatch(logout())
+      }
+    )
   ]
 
   // check on refresh if menu is already opened
@@ -217,8 +228,6 @@ console.log(data?.data?.calendarItems,"123 321")
     e.stopPropagation()
     dispatch(setCalenderModalOpen())
   }
-
- 
 
   const confirmToDelete = () => {
     if (selectedCalId) {

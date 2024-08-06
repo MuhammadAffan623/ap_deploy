@@ -17,7 +17,6 @@ import {
   Templates,
   UserAndGroups,
   AddEditGroup,
-  PDFEditor
 } from '~/pages'
 import DetailProject from '~/pages/BlueprintsHub/DetailProject'
 import PublicRoutes from './PublicRoutes'
@@ -27,6 +26,7 @@ import { useGetUserFromTokenMutation } from '~/store/services/auth.services'
 import { PermissionEnums } from '~/enums/permission'
 import { useUserSelector } from '~/store/hooks'
 import { Loader } from '~/components'
+import Pdfme from '~/components/Pdfme'
 
 const dynamicRoutes = [
   { path: 'dashboard', element: <Dashboard /> },
@@ -126,7 +126,7 @@ const Routes = () => {
       element: <ProtectedRoute navLink='/login' component={MainLayout} />,
       children: filteredRoutes
     },
-    { path: 'editor', element: <PDFEditor /> },
+    { path: 'editor', element: <Pdfme /> },
     { path: '404', element: <NotFound /> },
     {
       path: '*',

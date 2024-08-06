@@ -126,7 +126,9 @@ declare global {
     label: string
     value: string
   }
-
+  interface CustomIconProps {
+    rev?: string
+  }
   interface IGroupPermissionsKeyValue {
     name: string
     key: string

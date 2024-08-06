@@ -4,6 +4,7 @@ import { EllipsisOutlined } from '@ant-design/icons'
 import { Pill } from '~/components'
 import { CSSProperties } from 'react'
 import { formatDate } from '~/utils/helper'
+import RevIcon from '~/components/RevIcons'
 
 const btnStyle: CSSProperties = {
   border: 'none',
@@ -48,7 +49,7 @@ export const columns = (
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
       sortDirections: ['descend'],
-      render: (updatedAt ) => formatDate(updatedAt)
+      render: (updatedAt) => formatDate(updatedAt)
     },
     {
       title: 'VERSION',
@@ -103,7 +104,9 @@ export const columns = (
                 }}
                 style={btnStyle}
               >
-                <EllipsisOutlined rev='rev' />
+                <RevIcon rev='rev'>
+                  <EllipsisOutlined />
+                </RevIcon>
               </button>
             </Dropdown>
           </Space>
@@ -147,7 +150,7 @@ export const Bluecolumns = (handleResolve: any, handleDelete: any): ColumnsType<
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt.length - b.updatedAt.length,
       sortDirections: ['descend'],
-      render: ( updatedAt ) => formatDate(updatedAt)
+      render: (updatedAt) => formatDate(updatedAt)
     },
     {
       title: 'VERSION',
@@ -198,7 +201,9 @@ export const Bluecolumns = (handleResolve: any, handleDelete: any): ColumnsType<
               }}
               style={btnStyle}
             >
-              <EllipsisOutlined rev='rev'  />
+              <RevIcon rev='rev'>
+                <EllipsisOutlined />
+              </RevIcon>
             </button>
           </Dropdown>
         </Space>
@@ -266,7 +271,9 @@ export const BlueProjectcolumns = (handleResolve: any, handleDelete: any): Colum
               }}
               style={btnStyle}
             >
-              <EllipsisOutlined rev='rev'  />
+              <RevIcon rev='rev'>
+                <EllipsisOutlined />
+              </RevIcon>
             </button>
           </Dropdown>
         </Space>

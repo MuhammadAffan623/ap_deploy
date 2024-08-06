@@ -1,6 +1,7 @@
 import { Button, Dropdown as AntDropDown, Space } from 'antd'
 import type { MenuProps } from 'antd'
 import { DownOutlined, EllipsisOutlined } from '@ant-design/icons'
+import RevIcon from '../RevIcons'
 
 const DropDown = ({
   items,
@@ -32,13 +33,18 @@ const DropDown = ({
     <AntDropDown overlayClassName={overlayClassName}  menu={menuProps}>
       {dot ? (
         <Button size='small' type='text' style={{ color: color }}>
-          <EllipsisOutlined rev='rev' />
+          <RevIcon rev='rev'>
+          <EllipsisOutlined />
+          </RevIcon>
         </Button>
       ) : (
         <Button size='large' style={{ boxShadow: 'none' }}>
           <Space >
             {title}
-            <DownOutlined rev='rev' />
+            <RevIcon  rev='rev'>
+
+            <DownOutlined  />
+            </RevIcon>
           </Space>
         </Button>
       )}
