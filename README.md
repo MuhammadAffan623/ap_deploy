@@ -3,7 +3,12 @@
 
 [FIGMA-COPY](https://www.figma.com/file/9V1GwPduMmoaAaCZh6ROej/APSONE-(Copy)?type=design&node-id=0-1&mode=design)
 
-[Deployed-url](https://apsone-frontend.web.app/)
+## Vercel deployed URL
+[VERCEL](https://apsone-frontend.vercel.app/)
+
+## Firebase deployed URL
+[FIREBASEl](https://apsone-frontend.web.app/)
+
 
 # Login details
 ```
