@@ -7,7 +7,7 @@
 [VERCEL](https://apsone-frontend.vercel.app/)
 
 ## Firebase deployed URL
-[FIREBASEl](https://apsone-frontend.web.app/)
+[FIREBASE](https://apsone-frontend.web.app/)
 
 
 # Login details
