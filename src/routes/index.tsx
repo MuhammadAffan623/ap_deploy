@@ -16,7 +16,7 @@ import {
   Settings,
   Templates,
   UserAndGroups,
-  AddEditGroup,
+  AddEditGroup
 } from '~/pages'
 import DetailProject from '~/pages/BlueprintsHub/DetailProject'
 import PublicRoutes from './PublicRoutes'
@@ -88,6 +88,11 @@ const dynamicRoutes = [
     path: 'settings',
     element: <Settings />,
     permissionkey: [PermissionEnums.MANAGEMENT_SETTINGS]
+  },
+  {
+    path: 'editor',
+    element: <Pdfme />,
+    permissionkey: [PermissionEnums.USER_FORMS, PermissionEnums.MANAGEMENT_FORMS_HUB]
   }
 ]
 

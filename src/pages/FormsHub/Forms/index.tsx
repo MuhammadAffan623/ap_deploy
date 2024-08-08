@@ -10,6 +10,7 @@ import AddEditForm from './AddEditForm'
 import { defautlPagination } from '~/utils/constant'
 import { useGetFormsMutation } from '~/store/services/form.service'
 import usePermission from '~/hooks/usePermission'
+import { useNavigate } from 'react-router-dom'
 
 const Forms = () => {
   const [allData, setAllData] = useState([])
@@ -25,7 +26,7 @@ const Forms = () => {
 
   const [getForms, { isLoading }] = useGetFormsMutation()
   const { isFormManagement } = usePermission()
-
+  const navigate = useNavigate()
   useEffect(() => {
     fetchForms()
   }, [pagination.current, pagination.searchText])
@@ -71,9 +72,12 @@ const Forms = () => {
   }
 
   const handleAdd = () => {
-    setEditingItem(null)
-    setOpen(true)
-    setEdit(false)
+
+    // navigate to pdf me page and take file input there
+    // setEditingItem(null)
+    // setOpen(true)
+    // setEdit(false
+    navigate("/editor")
   }
   const handleSelectChange = (value: string) => {
     setSelectedFilter(value)
@@ -116,9 +120,18 @@ const Forms = () => {
   }
 
   const handleEdit = (editingLibrary: IForm) => {
-    setOpen(true)
-    setEdit(true)
-    setEditingItem({ ...editingItem, ...editingLibrary })
+    console.log({editingLibrary})
+    console.log('>>> ', editingLibrary?.file?.versions?.slice(-1)[0])
+    console.log('>>> ', editingLibrary?.file?.versions?.[0])
+    const fileLastVersion  =  editingLibrary?.file?.versions?.slice(-1)[0]
+    if(fileLastVersion.awsVersionId && fileLastVersion.key){
+      console.log('>> :', `/editor/${fileLastVersion.key}/${fileLastVersion.awsVersionId}`)
+      navigate(`/editor?fileKey=${fileLastVersion.key}&fileAwsVersionId=${fileLastVersion.awsVersionId}`)
+      // navigate(`/editor?fileUrl=${editingLibrary?.file?.versions?.slice(-1)[0].key}&versionId=${editingLibrary?.file?.versions?.[0].awsVersionId}`)
+    }
+    // setOpen(true)
+    // setEdit(true)
+    // setEditingItem({ ...editingItem, ...editingLibrary })
   }
 
   const tabsItems = [

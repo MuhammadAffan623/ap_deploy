@@ -22,6 +22,8 @@ import {
   ellipse
 } from '@pdfme/schemas'
 import plugins from './plugins'
+import axios from 'axios'
+
 const fontObjList = [
   {
     fallback: true,
@@ -98,5 +100,32 @@ export const generatePDF = async (currentRef: Designer | Form | Viewer | null) =
   } catch (e) {
     alert(e + '\n\nCheck the console for full stack trace')
     throw e
+  }
+}
+export const cloneDeep = (obj: unknown) => JSON.parse(JSON.stringify(obj))
+
+export const fetchFileAsDataURL = async (fileUrl: string) => {
+  try {
+    console.log({ fileUrl })
+    const response = await axios.get(fileUrl, {
+      responseType: 'blob',
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }
+    })
+    console.log({ response })
+    const blob = response.data
+    console.log({ blob })
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result)
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  } catch (error) {
+    console.error('Error fetching the file:', error)
+    throw error
   }
 }
