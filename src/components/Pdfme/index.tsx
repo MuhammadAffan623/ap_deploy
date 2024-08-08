@@ -74,7 +74,7 @@ const Pdfme = () => {
             updateBasePDF(res.data)
           }
         })
-        .catch((error: any) => {})
+        .catch(() => {})
     }
   }, [fileKey, fileAwsVersionId])
 

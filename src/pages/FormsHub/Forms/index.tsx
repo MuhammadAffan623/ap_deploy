@@ -21,8 +21,8 @@ const Forms = () => {
   const [disabledPagination, setDisabledPagination] = useState<IPagination>(defautlPagination)
   const [open, setOpen] = useState<boolean>(false)
   const [selectedFilter, setSelectedFilter] = useState<string>('last7days')
-  const [isEdit, setEdit] = useState<boolean>(false)
-  const [editingItem, setEditingItem] = useState<IForm | null>(null)
+  const [isEdit] = useState<boolean>(false)
+  const [editingItem] = useState<IForm | null>(null)
 
   const [getForms, { isLoading }] = useGetFormsMutation()
   const { isFormManagement } = usePermission()
