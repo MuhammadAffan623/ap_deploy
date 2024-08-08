@@ -1,14 +1,16 @@
-import React from 'react';
-import { Button } from 'antd';
-import EditableText from './EditableTitle';
+import React from 'react'
+import { Button } from 'antd'
+import EditableText from './EditableTitle'
 
 interface HeaderProps {
-  onPreview: () => void;
-  onSaveDraft: () => void;
-  onPublish: () => void;
+  onPreview: () => void
+  onSaveDraft: () => void
+  onPublish: () => void
+  text: string
+  setText: (value: string) => void
 }
 
-const PdfHeader: React.FC<HeaderProps> = ({ onPreview, onSaveDraft, onPublish }) => {
+const PdfHeader: React.FC<HeaderProps> = ({ onPreview, onSaveDraft, onPublish, text, setText }) => {
   return (
     <header
       style={{
@@ -17,10 +19,10 @@ const PdfHeader: React.FC<HeaderProps> = ({ onPreview, onSaveDraft, onPublish })
         justifyContent: 'space-between',
         margin: '0 1rem',
         height: '120px',
-        fontSize: 'small',
+        fontSize: 'small'
       }}
     >
-      <EditableText />
+      <EditableText text={text} setText={setText} />
       <div style={{ display: 'flex', gap: '8px' }}>
         <Button type='primary' size='large' onClick={onPreview} className='btn'>
           Preview
@@ -44,7 +46,7 @@ const PdfHeader: React.FC<HeaderProps> = ({ onPreview, onSaveDraft, onPublish })
         </Button>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default PdfHeader;
+export default PdfHeader
